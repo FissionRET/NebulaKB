@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulaKB.Server", "NebulaKB.Server\NebulaKB.Server.csproj", "{C5ABF350-BEED-41A2-8829-34BFE84B4EBE}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "nebulakb.client", "nebulakb.client\nebulakb.client.esproj", "{979373A1-25B4-4226-881E-F9CA48102438}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5ABF350-BEED-41A2-8829-34BFE84B4EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5ABF350-BEED-41A2-8829-34BFE84B4EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5ABF350-BEED-41A2-8829-34BFE84B4EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5ABF350-BEED-41A2-8829-34BFE84B4EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979373A1-25B4-4226-881E-F9CA48102438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979373A1-25B4-4226-881E-F9CA48102438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979373A1-25B4-4226-881E-F9CA48102438}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{979373A1-25B4-4226-881E-F9CA48102438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979373A1-25B4-4226-881E-F9CA48102438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{979373A1-25B4-4226-881E-F9CA48102438}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F0FC1CB-7878-48C4-A240-0ECD09569814}
+	EndGlobalSection
+EndGlobal

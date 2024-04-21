@@ -1,0 +1,6 @@
+@NebulaKB.Server_HostAddress = http://localhost:1337
+
+# GET {{NebulaKB.Server_HostAddress}}/weatherforecast/
+# Accept: application/json
+
+###
