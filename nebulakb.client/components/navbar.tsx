@@ -1,7 +1,7 @@
-﻿"use client";
-
-import React from "react"
+﻿import React, { SyntheticEvent } from "react"
 import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import axios from "axios"
 
 // Icons
 
@@ -20,11 +20,14 @@ import {
     Option,
     PackageCheck,
     PackagePlus,
+    Power,
+    ReceiptText,
     Shell,
     ShoppingBasket,
     SquareArrowRight,
     Trello,
     Type,
+    User,
 } from "lucide-react"
 
 // Components
@@ -42,17 +45,19 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
+    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useToast } from "@/components/ui/use-toast"
 
 // NextUI Components
 
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 
-export default function NavigationBar() {
+export default function NavigationBar(props: { auth: any }) {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const menuItems = [
@@ -213,6 +218,107 @@ export default function NavigationBar() {
         }
     ];
 
+    const router = useRouter();
+
+    const { toast, dismiss } = useToast();
+
+    const logoutHandler = async () => {
+        try {
+            const resp = await axios.post(
+                'http://localhost:1337/api/logout',
+                {},  // empty data
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+                    }
+                }
+            );
+
+            if (resp.data.message == "success") {
+                sessionStorage.clear();
+            }
+
+            toast({
+                title: "Logout successful !",
+                description: "Authorization Handler / Next.js (turbo)",
+            });
+
+            setTimeout(() => {
+                dismiss();
+                router.push("/auth/login");
+            }, 2000);
+        } catch (err) {
+            console.error('err: ', err);
+
+            toast({
+                title: "An unexpected error occurred !",
+                description: "Authorization Handler / Next.js (turbo)",
+            });
+
+            setTimeout(() => {
+                dismiss();
+            }, 2000);
+        }
+    }
+
+    let authorizedItems;
+
+    if (!props.auth) {
+        authorizedItems = (
+            <NavbarItem className="hidden lg:flex">
+                <Button variant="default" asChild>
+                    <Link href={"/auth/login"}>Đăng nhập</Link>
+                </Button>
+            </NavbarItem>
+        );
+    } else {
+        authorizedItems = (
+            <>
+                <NavbarItem>
+                    <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
+                        <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
+                    </Link>
+                </NavbarItem>
+
+                <NavbarItem>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
+                            </Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent className="w-56">
+                            <DropdownMenuLabel>👋 Xin chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <User className="mr-2 h-4 w-4" />
+                                    <span>Thông tin cá nhân</span>
+                                </DropdownMenuItem>
+
+                                <DropdownMenuItem>
+                                    <ReceiptText className="mr-2 h-4 w-4"/>
+                                    <span>Đơn hàng của tôi</span>
+                                </DropdownMenuItem>
+
+                                <DropdownMenuSeparator />
+
+                                <DropdownMenuItem onClick={logoutHandler} className="text-danger">
+                                    <Power className="mr-2 h-4 w-4" />
+                                    <span>Đăng xuất</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                            
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </NavbarItem>
+            </>
+        );
+    }
+
     return (
         <Navbar isBlurred isBordered onMenuOpenChange={setIsMenuOpen}>
             <NavbarContent justify="start">
@@ -306,17 +412,7 @@ export default function NavigationBar() {
                     <ModeToggle />
                 </NavbarItem>
 
-                <NavbarItem>
-                    <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
-                        <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem className="hidden lg:flex">
-                    <Button variant="default" asChild>
-                        <Link href={"/auth/login"}>Đăng nhập</Link>
-                    </Button>
-                </NavbarItem>
+                {authorizedItems}
 
             </NavbarContent>
             <NavbarMenu>
