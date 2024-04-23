@@ -15,7 +15,7 @@ namespace NebulaKB.Server.Helpers
 
         public string Generate(int id)
         {
-            if(_configuration == null)
+            if (_configuration == null)
             {
                 throw new InvalidOperationException("Configuration is not set.");
             }
@@ -32,7 +32,7 @@ namespace NebulaKB.Server.Helpers
 
         public JwtSecurityToken Verify(string jwt)
         {
-            if(_configuration == null)
+            if (_configuration == null)
             {
                 throw new InvalidOperationException("Configuration is not set.");
             }
@@ -44,7 +44,8 @@ namespace NebulaKB.Server.Helpers
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                ValidateLifetime = true
             }, out SecurityToken validatedToken);
 
             return (JwtSecurityToken)validatedToken;

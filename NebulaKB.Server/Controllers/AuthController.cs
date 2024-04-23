@@ -21,6 +21,7 @@ namespace NebulaKB.Server.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginDTO dto)
         {
             var user = _repository.GetByUsername(dto.Username);
@@ -52,6 +53,7 @@ namespace NebulaKB.Server.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public IActionResult Register(RegisterDTO dto)
         {
             var user = new User
@@ -63,6 +65,7 @@ namespace NebulaKB.Server.Controllers
             return Created("success", _repository.Create(user));
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
@@ -83,6 +86,7 @@ namespace NebulaKB.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("user")]
         public IActionResult UserInfo()
         {
