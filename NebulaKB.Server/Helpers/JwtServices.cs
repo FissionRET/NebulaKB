@@ -6,11 +6,21 @@ namespace NebulaKB.Server.Helpers
 {
     public class JwtServices
     {
-        private string secureKey = "YourSuperSecretKeyHereWithAtLeast32BytesForHS256";
+        private readonly IConfiguration? _configuration;
+
+        public JwtServices(IConfiguration? configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
 
         public string Generate(int id)
         {
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secureKey));
+            if(_configuration == null)
+            {
+                throw new InvalidOperationException("Configuration is not set.");
+            }
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
             var header = new JwtHeader(credentials);
 
@@ -22,8 +32,13 @@ namespace NebulaKB.Server.Helpers
 
         public JwtSecurityToken Verify(string jwt)
         {
+            if(_configuration == null)
+            {
+                throw new InvalidOperationException("Configuration is not set.");
+            }
+
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secureKey);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
             tokenHandler.ValidateToken(jwt, new TokenValidationParameters
             {
                 IssuerSigningKey = new SymmetricSecurityKey(key),

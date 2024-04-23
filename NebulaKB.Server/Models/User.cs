@@ -6,7 +6,9 @@ namespace NebulaKB.Server.Models
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        [JsonIgnore] public string Password { get; set; }
+        
+        [JsonIgnore] 
+        public string Password { get; set; }
 
         // Using json ignore will ignore the field when request Get
     }

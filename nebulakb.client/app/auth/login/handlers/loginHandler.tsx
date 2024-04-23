@@ -23,7 +23,10 @@ export default function LoginForm() {
         event.preventDefault();       
 
         try {
-            const resp = await axios.post("http://localhost:1337/api/login", { username, password, withCredentials: true });
+            const resp = await axios.post("http://localhost:1337/api/login",
+                { username, password },
+                { withCredentials: true }
+            );
 
             if (resp.data.message == "success") {
                 const token = resp.data.token;
