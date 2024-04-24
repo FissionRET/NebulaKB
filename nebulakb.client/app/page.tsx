@@ -9,6 +9,7 @@ import CheckAuthorization from '@/app/handlers/userinfo/get'
 
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
+import Footer from "@/components/footer";
 
 export default function Home() {
     // Authorization check
@@ -41,6 +42,8 @@ export default function Home() {
                 <Navbar auth={auth} />
 
                 <Hero />
+
+                <Footer/>
             </div>      
         </>
     );

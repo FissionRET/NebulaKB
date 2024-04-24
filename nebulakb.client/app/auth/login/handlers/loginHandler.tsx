@@ -35,8 +35,8 @@ export default function LoginForm() {
             }
 
             toast({
-                title: "Login successful !",
-                description: "Authorization Handler / Next.js (turbo)",
+                title: "Đăng nhập thành công !",
+                description: "Trình xử lý ủy quyền / Next.js (turbo)",
             });
 
             setTimeout(() => {
@@ -47,8 +47,8 @@ export default function LoginForm() {
             console.error('err: ', err);
 
             toast({
-                title: "Login failed !",
-                description: "Authorization Handler / Next.js (turbo)",
+                title: "Đăng nhập thất bại !",
+                description: "Trình xử lý ủy quyền / Next.js (turbo)",
             });
 
             setTimeout(() => {

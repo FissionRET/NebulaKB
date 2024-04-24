@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿namespace NebulaKB.Server.Models;
 
-namespace NebulaKB.Server.Models
+public partial class User
 {
-    public class User
-    {
-        public int Id { get; set; }
+    public string Id { get; set; } = null!;
 
-        [Required]
-        public string Username { get; set; }
+    public string Username { get; set; } = null!;
 
-        [JsonIgnore]
-        public string Password { get; set; }
+    public string Password { get; set; } = null!;
 
-        // Using json ignore will ignore the field when request Get
-    }
+    public int? Status { get; set; }
+
+    public int? Role { get; set; }
+
+    public virtual Customer? Customer { get; set; }
+
+    public virtual Employee? Employee { get; set; }
 }

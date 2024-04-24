@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NebulaKB.Server.Data.Users;
-using NebulaKB.Server.DTOs;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
+using NebulaKB.Server.TokenModels;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace NebulaKB.Server.Controllers
 {
@@ -11,99 +12,114 @@ namespace NebulaKB.Server.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly IUserRepository _repository;
+        private readonly NebulaKBContext _context;
         private readonly JwtServices _jwtServices;
 
-        public AuthController(IUserRepository repository, JwtServices jwtServices)
+        public AuthController(NebulaKBContext context, JwtServices jwtServices)
         {
-            _repository = repository;
+            _context = context;
             _jwtServices = jwtServices;
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public IActionResult Login(LoginDTO dto)
+        public IActionResult Login(User user)
         {
-            var user = _repository.GetByUsername(dto.Username);
-
-            if (user == null)
+            var existingUser = _context.Users.SingleOrDefault(u => u.Username == user.Username && u.Password == user.Password);
+            if (existingUser == null)
             {
                 return BadRequest(new
                 {
-                    message = "Invalid credentials"
+                    message = "Username or password doesn\'t match data in database"
                 });
             }
 
-            if (dto.Password != user.Password)
-            {
-                return BadRequest(new
-                {
-                    message = "Invalid credentials"
-                });
-            }
-
-            var jwt = _jwtServices.Generate(user.Id);
-
-            return Ok(new
-            {
-                message = "success",
-                username = dto.Username,
-                token = jwt,
-            });
+            var token = _jwtServices.Generate(existingUser);
+            return Ok(new { token });
         }
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public IActionResult Register(RegisterDTO dto)
+        public IActionResult Register(User user)
         {
-            var user = new User
+            if (_context.Users.Any(u => u.Username == user.Username))
             {
-                Username = dto.Username,
-                Password = dto.Password, // BCrypt.Net.BCrypt.HashPassword(dto.Password) crypt later
-            };
+                return BadRequest(new
+                {
+                    message = "Username already exists"
+                });
+            }
 
-            return Created("success", _repository.Create(user));
+            user.Id = Guid.NewGuid().ToString();
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            var token = _jwtServices.Generate(user);
+            return Ok(new { token });
         }
 
         [Authorize]
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            try
-            {
-                var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var token = _jwtServices.Verify(jwt);
-                int userId = int.Parse(token.Issuer);
-                var user = _repository.GetById(userId);
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-                return Ok(new
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new
                 {
-                    message = "success"
+                    message = "Invalid provided token"
                 });
             }
-            catch
+
+            var tokenDescriptor = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+
+            if (tokenDescriptor == null)
             {
-                return Unauthorized();
+                return BadRequest(new
+                {
+                    message = "Invalid token"
+                });
             }
+
+            var expireAt = DateTime.Parse(tokenDescriptor.Claims.First(claim => claim.Type == "exp").Value);
+
+            _context.TokenBlacklists.Add(new TokenBlacklist
+            {
+                Token = token,
+                ExpireAt = expireAt
+            });
+
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                message = "Logout successful"
+            });
         }
 
         [Authorize]
         [HttpGet("user")]
         public IActionResult UserInfo()
         {
-            try
-            {
-                var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var token = _jwtServices.Verify(jwt);
-                int userId = int.Parse(token.Issuer);
-                var user = _repository.GetById(userId);
+            var username = User.FindFirst(ClaimTypes.Name)?.Value;
+            var user = _context.Users.SingleOrDefault(u => u.Username == username);
 
-                return Ok(user);
-            }
-            catch
+            if (user == null)
             {
-                return Unauthorized();
+                return NotFound(new
+                {
+                    message = "User not found"
+                });
             }
+
+            return Ok(new
+            {
+                user.Id,
+                user.Username,
+                user.Status,
+                user.Role
+            });
         }
     }
 }

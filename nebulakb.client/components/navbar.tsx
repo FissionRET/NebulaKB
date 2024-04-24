@@ -2,6 +2,7 @@
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import Logout from '@/app/handlers/auth/logout'
+import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
 
 // Icons
 
@@ -33,7 +34,7 @@ import {
 // Components
 
 import { ModeToggle } from "@/components/mode-toggle"
-import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
+import { Tooltip } from "@nextui-org/react";
 
 // Shadcn components
 
@@ -79,17 +80,8 @@ export default function NavigationBar(props: { auth: any }) {
 
     const navMenuItems = [
         {
-            label: 'Cửa hàng',
+            label: 'Phụ kiện',
             dropdownContent: [
-                {
-                    label: 'Tất cả sản phẩm',
-                    icon: <Boxes className="mr-2 h-4 w-4" />,
-                    items: [
-                        { label: 'Còn hàng', icon: <PackageCheck className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Đặt trước', icon: <FileBox className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Đang nhập hàng', icon: <PackagePlus className="mr-2 h-4 w-4" />, link: '/' }
-                    ]
-                },
                 {
                     label: 'Bàn phím',
                     icon: <Keyboard className="mr-2 h-4 w-4" />,
@@ -149,7 +141,7 @@ export default function NavigationBar(props: { auth: any }) {
             ]
         },
         {
-            label: 'Keyboards',
+            label: 'Vật liệu',
             dropdownContent: [
                 {
                     label: 'Cases (Vỏ bàn phím)',
@@ -237,8 +229,8 @@ export default function NavigationBar(props: { auth: any }) {
                     sessionStorage.clear();
 
                     toast({
-                        title: "Logout successful !",
-                        description: "Authorization Handler / Next.js (turbo)",
+                        title: "Đăng xuất thành công !",
+                        description: "Trình xử lý ủy quyền / Next.js (turbo)",
                     });
 
                     setTimeout(() => {
@@ -251,8 +243,8 @@ export default function NavigationBar(props: { auth: any }) {
             console.error('Error: ', err);
 
             toast({
-                title: "An unexpected error occurred !",
-                description: "Authorization Handler / Next.js (turbo)",
+                title: "Có lỗi không xác định xảy ra !",
+                description: "Trình xử lý ủy quyền / Next.js (turbo)",
             });
 
             setTimeout(() => {
@@ -283,11 +275,13 @@ export default function NavigationBar(props: { auth: any }) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ type: "spring", delay: 0.5 }}
                 >
-                    <NavbarItem>
-                        <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
-                            <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
-                        </Link>
-                    </NavbarItem>
+                    <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Giỏ hàng">
+                        <NavbarItem>
+                            <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
+                                <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
+                            </Link>
+                        </NavbarItem>
+                    </Tooltip>
                 </motion.div>
 
                 <motion.div
@@ -295,41 +289,43 @@ export default function NavigationBar(props: { auth: any }) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ type: "spring", delay: 0.5 }}
                 >
-                    <NavbarItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline">
-                                    <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
-                                </Button>
-                            </DropdownMenuTrigger>
+                    <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Thông tin của bạn">
+                        <NavbarItem>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline">
+                                        <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
+                                    </Button>
+                                </DropdownMenuTrigger>
 
-                            <DropdownMenuContent className="w-56">
-                                <DropdownMenuLabel>👋 Xin chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
-
-                                <DropdownMenuSeparator />
-
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <User className="mr-2 h-4 w-4" />
-                                        <span>Thông tin cá nhân</span>
-                                    </DropdownMenuItem>
-
-                                    <DropdownMenuItem>
-                                        <ReceiptText className="mr-2 h-4 w-4" />
-                                        <span>Đơn hàng của tôi</span>
-                                    </DropdownMenuItem>
+                                <DropdownMenuContent className="w-56">
+                                    <DropdownMenuLabel>👋 Xin chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
 
                                     <DropdownMenuSeparator />
 
-                                    <DropdownMenuItem onClick={logoutHandler} className="text-danger">
-                                        <Power className="mr-2 h-4 w-4" />
-                                        <span>Đăng xuất</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <User className="mr-2 h-4 w-4" />
+                                            <span>Thông tin cá nhân</span>
+                                        </DropdownMenuItem>
 
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </NavbarItem>
+                                        <DropdownMenuItem>
+                                            <ReceiptText className="mr-2 h-4 w-4" />
+                                            <span>Đơn hàng của tôi</span>
+                                        </DropdownMenuItem>
+
+                                        <DropdownMenuSeparator />
+
+                                        <DropdownMenuItem onClick={logoutHandler} className="text-danger">
+                                            <Power className="mr-2 h-4 w-4" />
+                                            <span>Đăng xuất</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </NavbarItem>
+                    </Tooltip>
                 </motion.div>
             </>
         );
@@ -468,9 +464,11 @@ export default function NavigationBar(props: { auth: any }) {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ type: "spring", delay: 0.5 }}
                     >
-                        <NavbarItem>
-                            <ModeToggle />
-                        </NavbarItem>
+                        <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Thay đổi màu">
+                            <NavbarItem>
+                                <ModeToggle />
+                            </NavbarItem>
+                        </Tooltip>
                     </motion.div>
 
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using NebulaKB.Server.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace NebulaKB.Server.Helpers
@@ -13,24 +15,7 @@ namespace NebulaKB.Server.Helpers
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-        public string Generate(int id)
-        {
-            if (_configuration == null)
-            {
-                throw new InvalidOperationException("Configuration is not set.");
-            }
-
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-            var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
-            var header = new JwtHeader(credentials);
-
-            var payload = new JwtPayload(id.ToString(), null, null, null, DateTime.Today.AddDays(1)); // 1 day
-            var securityToken = new JwtSecurityToken(header, payload);
-
-            return new JwtSecurityTokenHandler().WriteToken(securityToken);
-        }
-
-        public JwtSecurityToken Verify(string jwt)
+        public string Generate(User user)
         {
             if (_configuration == null)
             {
@@ -39,16 +24,21 @@ namespace NebulaKB.Server.Helpers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!);
-            tokenHandler.ValidateToken(jwt, new TokenValidationParameters
-            {
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true
-            }, out SecurityToken validatedToken);
 
-            return (JwtSecurityToken)validatedToken;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role.ToString()!)
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
