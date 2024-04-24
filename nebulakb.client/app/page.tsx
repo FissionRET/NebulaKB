@@ -1,36 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from 'axios'
+// Hooks
 
-import Navbar from "../components/navbar";
+import { useEffect, useState } from "react";
+import CheckAuthorization from '@/app/handlers/userinfo/get'
+
+// Local components
+
+import Navbar from "@/components/navbar";
+import Hero from "@/components/hero";
 
 export default function Home() {
-    const [auth, setAuth] = useState(false);
+    // Authorization check
+
+    const [auth, setAuth] = useState<boolean>(false);
 
     useEffect(() => {
-        (
-            async () => {
-                try {
-                    const resp = await axios.get('http://localhost:1337/api/user', {
-                        headers: {
-                            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
-                        }
-                    });
+        const checkAuth = async () => {
+            try {
+                const token = sessionStorage.getItem('token');
 
-                    if (resp.status == 200) {
-                        setAuth(true); // Authenticated
-                    }                    
-                } catch {
-                    setAuth(false); // Deauthorized
+                if (token) {
+                    const isAuth = await CheckAuthorization({ token });
+                    setAuth(isAuth);
+                } else {
+                    setAuth(false);
                 }
+            } catch (err) {
+                console.error('Authentication error: ', err);
+                setAuth(false);
             }
-        )();
-    }, []);
+        };
+
+        checkAuth();
+    }, []); // Only run once to avoid re-renders
 
     return (
         <>
-            <Navbar auth={auth} />
+            <div className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
+                <Navbar auth={auth} />
+
+                <Hero />
+            </div>      
         </>
     );
 }

@@ -34,7 +34,7 @@ namespace NebulaKB.Server.Controllers
                 });
             }
 
-            if(dto.Password != user.Password)
+            if (dto.Password != user.Password)
             {
                 return BadRequest(new
                 {
@@ -48,7 +48,7 @@ namespace NebulaKB.Server.Controllers
             {
                 message = "success",
                 username = dto.Username,
-                token = jwt,               
+                token = jwt,
             });
         }
 
@@ -80,7 +80,8 @@ namespace NebulaKB.Server.Controllers
                 {
                     message = "success"
                 });
-            } catch
+            }
+            catch
             {
                 return Unauthorized();
             }
@@ -98,7 +99,8 @@ namespace NebulaKB.Server.Controllers
                 var user = _repository.GetById(userId);
 
                 return Ok(user);
-            } catch
+            }
+            catch
             {
                 return Unauthorized();
             }

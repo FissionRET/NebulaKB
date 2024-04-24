@@ -20,7 +20,7 @@ namespace NebulaKB.Server.Helpers
                 throw new InvalidOperationException("Configuration is not set.");
             }
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
             var header = new JwtHeader(credentials);
 
@@ -38,7 +38,7 @@ namespace NebulaKB.Server.Helpers
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!);
             tokenHandler.ValidateToken(jwt, new TokenValidationParameters
             {
                 IssuerSigningKey = new SymmetricSecurityKey(key),

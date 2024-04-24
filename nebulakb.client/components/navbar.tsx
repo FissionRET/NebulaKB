@@ -1,7 +1,7 @@
-﻿import React, { SyntheticEvent } from "react"
+﻿import React, { SyntheticEvent, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
-import axios from "axios"
+import Logout from '@/app/handlers/auth/logout'
 
 // Icons
 
@@ -33,6 +33,7 @@ import {
 // Components
 
 import { ModeToggle } from "@/components/mode-toggle"
+import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
 
 // Shadcn components
 
@@ -58,7 +59,14 @@ import { useToast } from "@/components/ui/use-toast"
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 
 export default function NavigationBar(props: { auth: any }) {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    // Variables
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const router = useRouter();
+    const { toast, dismiss } = useToast();
+    let authorizedItems;
+
+    // Logic
 
     const menuItems = [
         "Trang chủ",
@@ -115,7 +123,7 @@ export default function NavigationBar(props: { auth: any }) {
                     label: 'Stabilizers (Bộ ổn định)',
                     icon: <AlignJustify className="mr-2 h-4 w-4" />,
                     items: [
-                        { headerLabel: 'Các hãng stab', type: 'headerLabel' },
+                        { headerLabel: 'Các hãng stab', headerType: 'headerLabel' },
                         { label: 'TX', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
                         { label: 'DUROCK', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
                         { label: 'Gateron', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
@@ -218,37 +226,29 @@ export default function NavigationBar(props: { auth: any }) {
         }
     ];
 
-    const router = useRouter();
-
-    const { toast, dismiss } = useToast();
-
     const logoutHandler = async () => {
         try {
-            const resp = await axios.post(
-                'http://localhost:1337/api/logout',
-                {},  // empty data
-                {
-                    headers: {
-                        'Authorization': 'Bearer ' + sessionStorage.getItem("token")
-                    }
+            const token = sessionStorage.getItem('token');
+
+            if (token) {
+                const message = await Logout({ token });
+
+                if (message === "success") {
+                    sessionStorage.clear();
+
+                    toast({
+                        title: "Logout successful !",
+                        description: "Authorization Handler / Next.js (turbo)",
+                    });
+
+                    setTimeout(() => {
+                        dismiss();
+                        router.push("/auth/login");
+                    }, 2000);
                 }
-            );
-
-            if (resp.data.message == "success") {
-                sessionStorage.clear();
             }
-
-            toast({
-                title: "Logout successful !",
-                description: "Authorization Handler / Next.js (turbo)",
-            });
-
-            setTimeout(() => {
-                dismiss();
-                router.push("/auth/login");
-            }, 2000);
         } catch (err) {
-            console.error('err: ', err);
+            console.error('Error: ', err);
 
             toast({
                 title: "An unexpected error occurred !",
@@ -261,169 +261,232 @@ export default function NavigationBar(props: { auth: any }) {
         }
     }
 
-    let authorizedItems;
-
     if (!props.auth) {
         authorizedItems = (
-            <NavbarItem className="hidden lg:flex">
-                <Button variant="default" asChild>
-                    <Link href={"/auth/login"}>Đăng nhập</Link>
-                </Button>
-            </NavbarItem>
+            <motion.div
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ type: "spring", delay: 0.5 }}
+            >
+                <NavbarItem className="hidden lg:flex">
+                    <Button variant="default" asChild>
+                        <Link href={"/auth/login"}>Đăng nhập</Link>
+                    </Button>
+                </NavbarItem>
+            </motion.div>
         );
     } else {
         authorizedItems = (
             <>
-                <NavbarItem>
-                    <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
-                        <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
-                    </Link>
-                </NavbarItem>
+                <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ type: "spring", delay: 0.5 }}
+                >
+                    <NavbarItem>
+                        <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
+                            <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
+                        </Link>
+                    </NavbarItem>
+                </motion.div>
 
-                <NavbarItem>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline">
-                                <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
-                            </Button>
-                        </DropdownMenuTrigger>
+                <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ type: "spring", delay: 0.5 }}
+                >
+                    <NavbarItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline">
+                                    <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
+                                </Button>
+                            </DropdownMenuTrigger>
 
-                        <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>👋 Xin chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    <User className="mr-2 h-4 w-4" />
-                                    <span>Thông tin cá nhân</span>
-                                </DropdownMenuItem>
-
-                                <DropdownMenuItem>
-                                    <ReceiptText className="mr-2 h-4 w-4"/>
-                                    <span>Đơn hàng của tôi</span>
-                                </DropdownMenuItem>
+                            <DropdownMenuContent className="w-56">
+                                <DropdownMenuLabel>👋 Xin chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
 
                                 <DropdownMenuSeparator />
 
-                                <DropdownMenuItem onClick={logoutHandler} className="text-danger">
-                                    <Power className="mr-2 h-4 w-4" />
-                                    <span>Đăng xuất</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                            
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </NavbarItem>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem>
+                                        <User className="mr-2 h-4 w-4" />
+                                        <span>Thông tin cá nhân</span>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <ReceiptText className="mr-2 h-4 w-4" />
+                                        <span>Đơn hàng của tôi</span>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuSeparator />
+
+                                    <DropdownMenuItem onClick={logoutHandler} className="text-danger">
+                                        <Power className="mr-2 h-4 w-4" />
+                                        <span>Đăng xuất</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </NavbarItem>
+                </motion.div>
             </>
         );
     }
 
+    // Framer
+
+    const [isCompleted, setIsCompleted] = useState(false);
+
     return (
-        <Navbar isBlurred isBordered onMenuOpenChange={setIsMenuOpen}>
-            <NavbarContent justify="start">
-                <NavbarMenuToggle
-                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden"
-                />
+        <motion.div
+            key="navbarAnimation"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ type: "spring", damping: 20, stiffness: 100, delay: 0.5 }}
+            exit={{ opacity: 0 }}
+            onAnimationComplete={() => setIsCompleted(true)}
+        >
+            <Navbar isBlurred isBordered onMenuOpenChange={setIsMenuOpen}>
+                <NavbarContent justify="start">
+                    <NavbarMenuToggle
+                        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                        className="sm:hidden"
+                    />
 
-                <Link href={"/"}>
-                    <NavbarBrand>
-                        <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-                            <path
-                                clipRule="evenodd"
-                                d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-                                fill="currentColor"
-                                fillRule="evenodd"
-                            />
-                        </svg>
+                    <Link href={"/"}>
+                        <NavbarBrand>
+                            <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
+                                <path
+                                    clipRule="evenodd"
+                                    d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
+                                    fill="currentColor"
+                                    fillRule="evenodd"
+                                />
+                            </svg>
 
-                        <p className="font-bold text-inherit">Nebula Keyboard</p>
-                    </NavbarBrand>
-                </Link>
-            </NavbarContent>
+                            <p className="font-bold text-inherit">Nebula Keyboard</p>
+                        </NavbarBrand>
+                    </Link>
+                </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem>
-                    <Link href={"/"} className={buttonVariants({ variant: "outline" })}>Trang chủ</Link>
-                </NavbarItem>
+                <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                    <AnimatePresence>
+                        {isCompleted ? (
+                            <>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 100, scale: 0.3 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    transition={{ type: "spring", delay: 0.1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <NavbarItem>
+                                        <Link href={"/"} className={buttonVariants({ variant: "outline" })}>Trang chủ</Link>
+                                    </NavbarItem>
+                                </motion.div>
 
-                <NavbarItem>
-                    <Link href={"/about"} className={buttonVariants({ variant: "outline" })}>Giới thiệu</Link>
-                </NavbarItem>
-                
-                {navMenuItems.map((item, index) => (
-                    <NavbarItem key={index}>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline">{item.label}</Button>
-                            </DropdownMenuTrigger>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 100, scale: 0.3 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    transition={{ type: "spring", delay: 0.2 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <NavbarItem>
+                                        <Link href={"/about"} className={buttonVariants({ variant: "outline" })}>Giới thiệu</Link>
+                                    </NavbarItem>
+                                </motion.div>
 
-                            <DropdownMenuContent className="w-56">
-                                <DropdownMenuGroup>
+                                {navMenuItems.map((item, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 100, scale: 0.3 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        transition={{ type: "spring", delay: index * 0.2 }}
+                                        exit={{ opacity: 0 }}
+                                    >
+                                        <NavbarItem key={index}>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="outline">{item.label}</Button>
+                                                </DropdownMenuTrigger>
 
-                                    {item.dropdownContent.map((subItem, subIndex) => (
-                                        <DropdownMenuSub key={`${index}-${subIndex}`}>
-                                            <DropdownMenuSubTrigger>
-                                                {subItem.icon}
-                                                <span>{subItem.label}</span>
-                                            </DropdownMenuSubTrigger>
+                                                <DropdownMenuContent className="w-56">
+                                                    <DropdownMenuGroup>
 
-                                            <DropdownMenuPortal>
-                                                <DropdownMenuSubContent>
-                                                    {subItem.items.map((nestItem, nestIndex) => (
-                                                        <React.Fragment key={`${index}-${subIndex}-${nestIndex}`}>
-                                                            {nestItem.type === 'headerLabel' ? (
-                                                                <>
-                                                                    <DropdownMenuLabel>
-                                                                        {nestItem.headerLabel}
-                                                                    </DropdownMenuLabel>
+                                                        {item.dropdownContent.map((subItem, subIndex) => (
+                                                            <DropdownMenuSub key={`${index}-${subIndex}`}>
+                                                                <DropdownMenuSubTrigger>
+                                                                    {subItem.icon}
+                                                                    <span>{subItem.label}</span>
+                                                                </DropdownMenuSubTrigger>
 
-                                                                    <DropdownMenuSeparator />
-                                                                </>
-                                                            ) : (
-                                                                <DropdownMenuItem asChild key={`${index}-${subIndex}-${nestIndex}`}>
-                                                                    <Link href={`${nestItem.link}`}>
-                                                                        {nestItem.icon}
-                                                                        <span>{nestItem.label}</span>
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                            )}
-                                                        </React.Fragment>
-                                                    ))}
+                                                                <DropdownMenuPortal>
+                                                                    <DropdownMenuSubContent>
+                                                                        {subItem.items.map((nestItem, nestIndex) => (
+                                                                            <React.Fragment key={`${index}-${subIndex}-${nestIndex}`}>
+                                                                                {nestItem.headerType === 'headerLabel' ? (
+                                                                                    <>
+                                                                                        <DropdownMenuLabel>
+                                                                                            {nestItem.headerLabel}
+                                                                                        </DropdownMenuLabel>
 
-                                                </DropdownMenuSubContent>
-                                            </DropdownMenuPortal>
+                                                                                        <DropdownMenuSeparator />
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <DropdownMenuItem asChild key={`${index}-${subIndex}-${nestIndex}`}>
+                                                                                        <Link href={`${nestItem.link}`}>
+                                                                                            {nestItem.icon}
+                                                                                            <span>{nestItem.label}</span>
+                                                                                        </Link>
+                                                                                    </DropdownMenuItem>
+                                                                                )}
+                                                                            </React.Fragment>
+                                                                        ))}
 
-                                        </DropdownMenuSub>
-                                    ))}
+                                                                    </DropdownMenuSubContent>
+                                                                </DropdownMenuPortal>
 
-                                </DropdownMenuGroup>
-                            </DropdownMenuContent>
+                                                            </DropdownMenuSub>
+                                                        ))}
 
-                        </DropdownMenu>
-                    </NavbarItem>
-                ))}
+                                                    </DropdownMenuGroup>
+                                                </DropdownMenuContent>
 
-            </NavbarContent>
+                                            </DropdownMenu>
+                                        </NavbarItem>
+                                    </motion.div>
+                                ))}
+                            </>
+                        ) : ''}
+                    </AnimatePresence>
+                </NavbarContent>
 
-            <NavbarContent justify="end">
-                <NavbarItem>
-                    <ModeToggle />
-                </NavbarItem>
+                <NavbarContent justify="end">
+                    <motion.div
+                        initial={{ opacity: 0, x: 100 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ type: "spring", delay: 0.5 }}
+                    >
+                        <NavbarItem>
+                            <ModeToggle />
+                        </NavbarItem>
+                    </motion.div>
 
-                {authorizedItems}
 
-            </NavbarContent>
-            <NavbarMenu>
-                {menuItems.map((item, index) => (
-                    <NavbarMenuItem key={`${item}-${index}`}>
-                        <Link className="w-full" href="#">
-                            {item}
-                        </Link>
-                    </NavbarMenuItem>
-                ))}
-            </NavbarMenu>
-        </Navbar>
+                    {authorizedItems}
+                </NavbarContent>
+
+                <NavbarMenu>
+                    {menuItems.map((item, index) => (
+                        <NavbarMenuItem key={`${item}-${index}`}>
+                            <Link className="w-full" href="#">
+                                {item}
+                            </Link>
+                        </NavbarMenuItem>
+                    ))}
+                </NavbarMenu>
+            </Navbar>
+        </motion.div>
     );
 }
