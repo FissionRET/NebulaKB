@@ -25,13 +25,19 @@ export default function LoginForm() {
         try {
             const resp = await axios.post("http://localhost:1337/api/login",
                 { username, password },
-                { withCredentials: true }
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                }
             );
 
-            if (resp.data.message == "success") {
-                const token = resp.data.token;
-                sessionStorage.setItem("token", token);
-                sessionStorage.setItem("username", username);
+            const data = resp.data;
+
+            if (resp.status === 200) {
+                sessionStorage.setItem("token", data.token);
+                sessionStorage.setItem("username", data.username);
             }
 
             toast({
@@ -62,7 +68,7 @@ export default function LoginForm() {
             <div className="grid gap-4">
                 <div className="grid gap-2">
                     <Label htmlFor="username">Tên đăng nhập</Label>
-                    <Input id="username" type="text" placeholder="VD: user1" required onChange={(e) => setUsername(e.target.value)} />
+                    <Input id="username" type="text" placeholder="keyboardlover69" required onChange={(e) => setUsername(e.target.value)} />
                 </div>
 
                 <div className="grid gap-2">

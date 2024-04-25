@@ -6,7 +6,7 @@ public partial class Customer
 
     public string FullName { get; set; } = null!;
 
-    public DateOnly? DoB { get; set; }
+    public DateTime? DoB { get; set; }
 
     public string? Address { get; set; }
 

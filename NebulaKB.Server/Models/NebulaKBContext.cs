@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NebulaKB.Server.TokenModels;
 
 namespace NebulaKB.Server.Models;
 
@@ -13,10 +12,6 @@ public partial class NebulaKBContext : DbContext
         : base(options)
     {
     }
-
-    // External Models
-
-    public DbSet<TokenBlacklist> TokenBlacklists { get; set; }
 
     public virtual DbSet<Cart> Carts { get; set; }
 

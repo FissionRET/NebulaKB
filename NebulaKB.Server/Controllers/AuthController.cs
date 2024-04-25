@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NebulaKB.Server.DTO.Authentication;
+using NebulaKB.Server.DTO.Users;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
-using NebulaKB.Server.TokenModels;
-using System.IdentityModel.Tokens.Jwt;
+using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Text;
 
 namespace NebulaKB.Server.Controllers
 {
@@ -23,10 +26,26 @@ namespace NebulaKB.Server.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public IActionResult Login(User user)
+        public IActionResult Login(LoginDTO dto) // using Task<> for asynchronous operation
         {
-            var existingUser = _context.Users.SingleOrDefault(u => u.Username == user.Username && u.Password == user.Password);
-            if (existingUser == null)
+            // Reading request body async
+
+            if (dto == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Empty request body" // Handle empty request body
+                });
+            }
+
+            if (string.IsNullOrEmpty(dto.Username) || string.IsNullOrEmpty(dto.Password))
+            {
+                return BadRequest(new { message = "Invalid user data" });
+            }
+
+            var isExist = _context.Users.FirstOrDefault(u => u.Username == dto.Username && u.Password == dto.Password);
+
+            if (isExist == null)
             {
                 return BadRequest(new
                 {
@@ -34,15 +53,30 @@ namespace NebulaKB.Server.Controllers
                 });
             }
 
-            var token = _jwtServices.Generate(existingUser);
-            return Ok(new { token });
+            var token = _jwtServices.Generate(isExist);
+            return Ok(new
+            {
+                isExist.Id,
+                isExist.Username,
+                isExist.Role,
+                token
+            });
         }
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public IActionResult Register(User user)
+        public async Task<IActionResult> Register(RegisterDTO dto)
         {
-            if (_context.Users.Any(u => u.Username == user.Username))
+
+            if (dto == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Empty request body" // Handle empty request body
+                });
+            }
+
+            if (_context.Users.Any(u => u.Username == dto.Username))
             {
                 return BadRequest(new
                 {
@@ -50,11 +84,33 @@ namespace NebulaKB.Server.Controllers
                 });
             }
 
-            user.Id = Guid.NewGuid().ToString();
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            var newUser = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Username = dto.Username,
+                Password = dto.Password,
+                Role = 0,
+                Status = 0
+            };
 
-            var token = _jwtServices.Generate(user);
+            var newCustomer = new Customer
+            {
+                Id = Guid.NewGuid().ToString(),
+                FullName = dto.FullName,
+                DoB = dto.DateOfBirth,
+                Address = dto.Address,
+                Rank = 0,
+                Point = 0,
+                User = newUser.Id
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            _context.Customers.Add(newCustomer);
+            await _context.SaveChangesAsync();
+
+            var token = _jwtServices.Generate(newUser);
             return Ok(new { token });
         }
 
@@ -71,26 +127,6 @@ namespace NebulaKB.Server.Controllers
                     message = "Invalid provided token"
                 });
             }
-
-            var tokenDescriptor = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
-
-            if (tokenDescriptor == null)
-            {
-                return BadRequest(new
-                {
-                    message = "Invalid token"
-                });
-            }
-
-            var expireAt = DateTime.Parse(tokenDescriptor.Claims.First(claim => claim.Type == "exp").Value);
-
-            _context.TokenBlacklists.Add(new TokenBlacklist
-            {
-                Token = token,
-                ExpireAt = expireAt
-            });
-
-            _context.SaveChanges();
 
             return Ok(new
             {
@@ -120,6 +156,41 @@ namespace NebulaKB.Server.Controllers
                 user.Status,
                 user.Role
             });
+        }
+
+        [Authorize]
+        [HttpDelete("user")]
+        public async Task<IActionResult> Delete(DeleteDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Empty request body" // Handle empty request body
+                });
+            }
+
+            if (dto.Role != 3 && dto.Role != 2)
+            {
+                return BadRequest(new { message = "You're not either Admin or Employee" });
+            }
+
+            if (string.IsNullOrEmpty(dto.UserId))
+            {
+                return BadRequest(new { message = "Invalid user id" });
+            }
+
+            var user = _context.Users.Find(dto.UserId);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User deleted successfully" });
         }
     }
 }

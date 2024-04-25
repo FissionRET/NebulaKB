@@ -368,7 +368,7 @@ export default function NavigationBar(props: { auth: any }) {
                 </NavbarContent>
 
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                    <AnimatePresence>
+                    <AnimatePresence mode="wait">
                         {isCompleted ? (
                             <>
                                 <motion.div

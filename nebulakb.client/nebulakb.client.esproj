@@ -9,7 +9,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="app\auth\login\handlers\" />
+    <Folder Include="app\auth\signup\" />
     <Folder Include="app\handlers\auth\" />
     <Folder Include="components\ui\" />
   </ItemGroup>

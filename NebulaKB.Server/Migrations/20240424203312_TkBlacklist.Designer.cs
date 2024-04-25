@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NebulaKB.Server.Models;
 
@@ -11,9 +12,11 @@ using NebulaKB.Server.Models;
 namespace NebulaKB.Server.Migrations
 {
     [DbContext(typeof(NebulaKBContext))]
-    partial class NebulaKBContextModelSnapshot : ModelSnapshot
+    [Migration("20240424203312_TkBlacklist")]
+    partial class TkBlacklist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,7 +296,7 @@ namespace NebulaKB.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TokenBlacklists", (string)null);
+                    b.ToTable("TokenBlacklists");
                 });
 
             modelBuilder.Entity("NebulaKB.Server.Models.Cart", b =>
