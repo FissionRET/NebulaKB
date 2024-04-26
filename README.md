@@ -84,8 +84,6 @@
 
 <br clear="both">
 
-<img src="https://raw.githubusercontent.com/FissionRET/FissionRET/output/snake.svg" alt="Snake animation" />
-
 ###
 
 <img align="right" height="200" src="https://external-preview.redd.it/YRtKWoTnh7DfJCBPCsl2CTD6d7-sXKKgNECdRBFIX40.gif?width=640&crop=smart&format=png8&s=7dea64dbdc9d9acc05b23977cb4e85236f0d01bc"  />
