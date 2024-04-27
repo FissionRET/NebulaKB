@@ -20,6 +20,7 @@ export default function Login() {
                     <div className="mx-auto grid w-[350px] gap-6">
                         <AnimatePresence mode="wait">
                             <motion.div
+                                key="headerAnimation"
                                 initial={{ opacity: 0, y: -100 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ type: 'spring', delay: 0.5 }}
@@ -34,6 +35,7 @@ export default function Login() {
                             </motion.div>
 
                             <motion.div
+                                key="bodyAnimation"
                                 initial={{ opacity: 0, scale: 0.3 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ type: "spring", delay: 0.1 }}
@@ -42,6 +44,7 @@ export default function Login() {
                             </motion.div>
 
                             <motion.div
+                                key="footerAnimation"
                                 initial={{ opacity: 0, y: 100 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ ease: 'easeIn', delay: 0.5 }}
