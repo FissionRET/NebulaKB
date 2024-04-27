@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NebulaKB.Server.DTO.Authentication;
 using NebulaKB.Server.DTO.Users;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
@@ -76,7 +75,7 @@ namespace NebulaKB.Server.Controllers
                 });
             }
 
-            if (_context.Users.Any(u => u.Username == dto.Username))
+            if (_context.Users.Any(u => u.Username == dto.user.Username))
             {
                 return BadRequest(new
                 {
@@ -87,8 +86,8 @@ namespace NebulaKB.Server.Controllers
             var newUser = new User
             {
                 Id = Guid.NewGuid().ToString(),
-                Username = dto.Username,
-                Password = dto.Password,
+                Username = dto.user.Username,
+                Password = dto.user.Password,
                 Role = 0,
                 Status = 0
             };
@@ -96,9 +95,19 @@ namespace NebulaKB.Server.Controllers
             var newCustomer = new Customer
             {
                 Id = Guid.NewGuid().ToString(),
-                FullName = dto.FullName,
-                DoB = dto.DateOfBirth,
-                Address = dto.Address,
+
+                // Customer info
+                FirstName = dto.customer.FirstName,
+                LastName = dto.customer.LastName,
+                Gender = dto.customer.Gender,
+                DoB = dto.customer.DoB,
+                Phone = dto.customer.Phone,
+                Email = dto.customer.Email,
+
+                // Address info
+                Address = JsonConvert.SerializeObject(dto.customer.Address),
+
+                // User info
                 Rank = 0,
                 Point = 0,
                 User = newUser.Id

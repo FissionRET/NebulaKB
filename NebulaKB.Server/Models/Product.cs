@@ -1,4 +1,7 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace NebulaKB.Server.Models;
 
 public partial class Product
 {
@@ -13,4 +16,6 @@ public partial class Product
     public int? Stock { get; set; }
 
     public string? Data { get; set; }
+
+    public string? Images { get; set; }
 }

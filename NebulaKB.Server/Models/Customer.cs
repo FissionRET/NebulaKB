@@ -1,14 +1,25 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace NebulaKB.Server.Models;
 
 public partial class Customer
 {
     public string Id { get; set; } = null!;
 
-    public string FullName { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
 
-    public DateTime? DoB { get; set; }
+    public string LastName { get; set; } = null!;
 
-    public string? Address { get; set; }
+    public int Gender { get; set; }
+
+    public DateOnly DoB { get; set; }
+
+    public string Phone { get; set; } = null!;
+
+    public string? Email { get; set; }
+
+    public string Address { get; set; } = null!;
 
     public int? Rank { get; set; }
 

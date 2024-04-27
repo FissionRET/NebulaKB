@@ -2,7 +2,7 @@
 
 // Hooks
 
-import { Suspense, SyntheticEvent, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
@@ -40,6 +40,15 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 // Icons
 
@@ -56,12 +65,15 @@ const steps = [
     { label: "Bước 2", description: "Thông tin cá nhân" }
 ] satisfies StepItem[];
 
-const formSchema = z.object({
+const userSchema = z.object({
+    // User table
+
     username: z.string().min(2, {
         message: "Tên đăng nhập phải 2 ký tự trở lên",
     }).max(30, {
         message: "Tối đa là 30 ký tự"
     }).trim().transform((value) => value.toLowerCase()),
+
     password: z.string()
         .min(8, {
             message: "Mật khẩu phải ít nhất 8 ký tự"
@@ -76,21 +88,61 @@ const formSchema = z.object({
             message: "Mật khẩu phải chứa ít nhất 1 ký tự số",
         }),
     repeatPassword: z.string(),
-    fullName: z.string().max(100, {
-        message: "Tối đa là 100 ký tự"
-    }),
-    dateOfBirth: z.date(),
-    address: z.string(),
 })
-    .refine((data) => data.password === data.repeatPassword, {
-        message: "Xác thực mật khẩu không khớp",
-        path: ["repeatPassword"]
-    });
+
+userSchema.refine((data) => data.password === data.repeatPassword, {
+    message: "Xác thực mật khẩu không khớp",
+    path: ["repeatPassword"]
+});
+
+const customerSchema = z.object({
+    // Customer table
+
+    firstName: z.string().trim().min(1, {
+        message: "Không thể để trống họ"
+    }).max(30, {
+        message: "Tối đa là 30 ký tự"
+    }),
+
+    lastName: z.string().trim().min(1, {
+        message: "Không thể để trống tên"
+    }).max(30, {
+        message: "Tối đa là 30 ký tự"
+    }),
+
+    gender: z.number().int(),
+
+    dateOfBirth: z.date(),
+
+    phone: z.string().trim().min(10).max(10, {
+        message: "Số điện thoại không hợp lệ"
+    }),
+
+    email: z.string().email().trim().min(1, {
+        message: "Không thể để trống email"
+    }),
+
+    // Address info
+
+    street: z.string().trim().min(1, {
+        message: "Không thể để trống phố"
+    }),
+
+    city: z.string().trim().min(1, {
+        message: "Không thể để trống thành phố"
+    }),
+
+    province: z.string().trim().min(1, {
+        message: "Không thể để trống tỉnh thành"
+    }),
+
+    country: z.string().trim().min(1, {
+        message: "Không thể để trống quốc gia"
+    }),
+})
 
 export default function Signup() {
     const [date, setDate] = useState<Date | undefined>(new Date());
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [zodStatus, setZodStatus] = useState(false);
 
     const { toast, dismiss } = useToast();
@@ -98,77 +150,126 @@ export default function Signup() {
 
     // Form
 
-    const form = useForm({
-        resolver: zodResolver(formSchema),
+    const [userJson, setUserJson] = useState('');
+    const [customerJson, setCustomerJson] = useState('');
+
+    const userForm = useForm<z.infer<typeof userSchema>>({
+        resolver: zodResolver(userSchema),
         defaultValues: {
             username: "",
             password: "",
             repeatPassword: "",
-            fullName: "",
-            dateOfBirth: new Date(),
-            address: ""
         },
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        //if (values.username === "" && values.password === "") {
-        //    return zodStatus;
-        //}
+    const customerForm = useForm<z.infer<typeof customerSchema>>({
+        resolver: zodResolver(customerSchema),
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            gender: 0,
+            dateOfBirth: new Date(),
+            phone: "",
+            email: "",
 
-        //await setZodStatus(true);
-        await toast({
-            title: "You submitted the following values:",
+            street: "",
+            city: "",
+            province: "",
+            country: ""
+        }
+    })
+
+    useEffect(() => {
+        //setZodStatus(userForm.formState.isValid);
+
+        // new approach
+
+        //const { isValid, errors } = userForm.formState;
+
+        //const usernameIsValid = !errors.username && userForm.getValues('username') !== '';
+        //const passwordIsValid = !errors.password && userForm.getValues('password') !== '';
+        //const repeatPasswordIsValid = !errors.repeatPassword && userForm.getValues('repeatPassword') !== '';
+
+        //const newStatus = usernameIsValid && passwordIsValid && repeatPasswordIsValid;
+
+        //setZodStatus(newStatus);
+
+        if (!userForm.getFieldState("username").isTouched && !userForm.getFieldState("password").isTouched || !userForm.getFieldState("repeatPassword").isTouched) {
+            setZodStatus(true);
+        }
+    }, [userForm]);
+
+    const userSubmit = async (values: z.infer<typeof userSchema>) => {
+        // Test
+
+        setUserJson(JSON.stringify(values, null, 2));
+
+        toast({
+            title: "You submitted user info:",
             description: (
                 <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+                    <code className="text-white">{userJson}</code>
                 </pre>
             ),
         })
     }
 
-    const loginHandler = async (event: SyntheticEvent) => {
-        event.preventDefault();
+    const customerSubmit = (values: z.infer<typeof customerSchema>) => {
+        setCustomerJson(JSON.stringify(values, null, 2));
 
-        try {
-            const resp = await axios.post("http://localhost:1337/api/login",
-                { username, password },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    withCredentials: true
-                }
-            );
-
-            const data = resp.data;
-
-            if (resp.status === 200) {
-                sessionStorage.setItem("token", data.token);
-                sessionStorage.setItem("username", data.username);
-            }
-
-            toast({
-                title: "Đăng nhập thành công !",
-                description: "Trình xử lý ủy quyền / Next.js (turbo)",
-            });
-
-            setTimeout(() => {
-                dismiss();
-                router.push("/");
-            }, 2000);
-        } catch (err) {
-            console.error('err: ', err);
-
-            toast({
-                title: "Đăng nhập thất bại !",
-                description: "Trình xử lý ủy quyền / Next.js (turbo)",
-            });
-
-            setTimeout(() => {
-                dismiss();
-            }, 2000);
-        }
+        toast({
+            title: "You submitted customer info:",
+            description: (
+                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                    <code className="text-white">{customerJson}</code>
+                </pre>
+            ),
+        })
     }
+
+    //const loginHandler = async (event: SyntheticEvent) => {
+    //    event.preventDefault();
+
+    //    try {
+    //        const resp = await axios.post("http://localhost:1337/api/login",
+    //            { username, password },
+    //            {
+    //                headers: {
+    //                    'Content-Type': 'application/json'
+    //                },
+    //                withCredentials: true
+    //            }
+    //        );
+
+    //        const data = resp.data;
+
+    //        if (resp.status === 200) {
+    //            sessionStorage.setItem("token", data.token);
+    //            sessionStorage.setItem("username", data.username);
+    //        }
+
+    //        toast({
+    //            title: "Đăng nhập thành công !",
+    //            description: "Trình xử lý ủy quyền / Next.js (turbo)",
+    //        });
+
+    //        setTimeout(() => {
+    //            dismiss();
+    //            router.push("/");
+    //        }, 2000);
+    //    } catch (err) {
+    //        console.error('err: ', err);
+
+    //        toast({
+    //            title: "Đăng nhập thất bại !",
+    //            description: "Trình xử lý ủy quyền / Next.js (turbo)",
+    //        });
+
+    //        setTimeout(() => {
+    //            dismiss();
+    //        }, 2000);
+    //    }
+    //}
 
     return (
         <>
@@ -193,15 +294,16 @@ export default function Signup() {
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ type: "spring", delay: 0.5 }}
                                 >
-                                    <Form {...form}>
-                                        <form onSubmit={form.handleSubmit(onSubmit)}>
-                                            <Stepper initialStep={0} steps={steps} className="mb-4">
-                                                {steps.map((stepProps, index) => {
-                                                    return (
-                                                        <Step key={stepProps.label} {...stepProps}>
-                                                            {index === 0 && (
+
+                                    <Stepper initialStep={0} steps={steps} className="mb-4">
+                                        {steps.map((stepProps, index) => {
+                                            return (
+                                                <Step key={stepProps.label} {...stepProps}>
+                                                    {index === 0 && (
+                                                        <Form {...userForm}>
+                                                            <form onSubmit={userForm.handleSubmit(userSubmit)}>
                                                                 <div className="grid gap-4">
-                                                                    <FormField control={form.control} name="username" rules={{ required: true }} render={({ field }) => (
+                                                                    <FormField control={userForm.control} name="username" rules={{ required: true }} render={({ field }) => (
                                                                         <FormItem className="grid gap-2">
                                                                             <FormLabel htmlFor={field.name.toString()}>Tên đăng nhập</FormLabel>
 
@@ -215,7 +317,7 @@ export default function Signup() {
                                                                     )}>
                                                                     </FormField>
 
-                                                                    <FormField control={form.control} name="password" rules={{ required: true }} render={({ field }) => (
+                                                                    <FormField control={userForm.control} name="password" rules={{ required: true }} render={({ field }) => (
                                                                         <FormItem className="grid gap-2">
                                                                             <FormLabel htmlFor={field.name.toString()}>Mật khẩu</FormLabel>
 
@@ -228,7 +330,7 @@ export default function Signup() {
                                                                     )}>
                                                                     </FormField>
 
-                                                                    <FormField control={form.control} name="repeatPassword" rules={{ required: true }} render={({ field }) => (
+                                                                    <FormField control={userForm.control} name="repeatPassword" rules={{ required: true }} render={({ field }) => (
                                                                         <FormItem className="grid gap-2">
                                                                             <FormLabel htmlFor={field.name.toString()}>Xác thực mật khẩu</FormLabel>
 
@@ -241,18 +343,22 @@ export default function Signup() {
                                                                     )}>
                                                                     </FormField>
                                                                 </div>
-                                                            )}
+                                                            </form>
+                                                        </Form>
+                                                    )}
 
-                                                            {index === 1 && (
+                                                    {index === 1 && (
+                                                        <Form {...customerForm}>
+                                                            <form onSubmit={customerForm.handleSubmit(customerSubmit)}>
                                                                 <div className="grid gap-4">
                                                                     <div className="grid grid-cols-2 gap-4">
                                                                         <div className="grid gap-2">
-                                                                            <FormField control={form.control} name="fullName" rules={{ required: true }} render={({ field }) => (
+                                                                            <FormField control={customerForm.control} name="firstName" rules={{ required: true }} render={({ field }) => (
                                                                                 <FormItem className="grid gap-2">
-                                                                                    <FormLabel htmlFor={field.name.toString()}>Tên đầy đủ</FormLabel>
+                                                                                    <FormLabel htmlFor={field.name.toString()}>Họ</FormLabel>
 
                                                                                     <FormControl>
-                                                                                        <Input placeholder="Nhập họ tên" id={field.name.toString()} {...field} />
+                                                                                        <Input placeholder="Nhập họ" id={field.name.toString()} {...field} />
                                                                                     </FormControl>
 
                                                                                     <FormMessage />
@@ -261,9 +367,50 @@ export default function Signup() {
                                                                             </FormField>
                                                                         </div>
 
+                                                                        <div className="grid gap-2">
+                                                                            <FormField control={customerForm.control} name="lastName" rules={{ required: true }} render={({ field }) => (
+                                                                                <FormItem className="grid gap-2">
+                                                                                    <FormLabel htmlFor={field.name.toString()}>Tên</FormLabel>
+
+                                                                                    <FormControl>
+                                                                                        <Input placeholder="Nhập tên" id={field.name.toString()} {...field} />
+                                                                                    </FormControl>
+
+                                                                                    <FormMessage />
+                                                                                </FormItem>
+                                                                            )}>
+                                                                            </FormField>
+                                                                        </div>
 
                                                                         <div className="grid gap-2">
-                                                                            <FormField control={form.control} name="dateOfBirth" rules={{ required: true }} render={({ field }) => (
+                                                                            <FormField control={customerForm.control} name="gender" render={({ field }) => (
+                                                                                <FormItem className="grid gap-2">
+                                                                                    <FormLabel htmlFor={field.name.toString()}>Giới tính</FormLabel>
+
+                                                                                    <FormControl>
+                                                                                        <Select>
+                                                                                            <SelectTrigger>
+                                                                                                <SelectValue placeholder="Chọn giới tính" id={field.name.toString()} {...field} />
+                                                                                            </SelectTrigger>
+                                                                                            <SelectContent>
+                                                                                                <SelectGroup>
+                                                                                                    <SelectLabel>Giới tính</SelectLabel>
+                                                                                                    <SelectItem value="0">Nam</SelectItem>
+                                                                                                    <SelectItem value="1">Nữ</SelectItem>
+
+                                                                                                </SelectGroup>
+                                                                                            </SelectContent>
+                                                                                        </Select>
+                                                                                    </FormControl>
+
+                                                                                    <FormMessage />
+                                                                                </FormItem>
+                                                                            )}>
+                                                                            </FormField>
+                                                                        </div>
+
+                                                                        <div className="grid gap-2">
+                                                                            <FormField control={customerForm.control} name="dateOfBirth" render={({ field }) => (
                                                                                 <FormItem className="grid gap-2">
                                                                                     <FormLabel htmlFor={field.name.toString()}>Ngày sinh</FormLabel>
 
@@ -297,38 +444,146 @@ export default function Signup() {
                                                                                 </FormItem>
                                                                             )}>
                                                                             </FormField>
-
                                                                         </div>
+
                                                                     </div>
 
                                                                     <div className="grid gap-2">
-                                                                        <FormField control={form.control} name="address" rules={{ required: true }} render={({ field }) => (
+                                                                        <FormField control={customerForm.control} name="phone" render={({ field }) => (
                                                                             <FormItem className="grid gap-2">
-                                                                                <FormLabel htmlFor={field.name.toString()}>Địa chỉ</FormLabel>
+                                                                                <FormLabel htmlFor={field.name.toString()}>Số điện thoại</FormLabel>
 
                                                                                 <FormControl>
-                                                                                    <Input placeholder="Nhập địa chỉ của bạn" id={field.name.toString()} {...field} />
+                                                                                    <Input placeholder="Nhập số điện thoại" id={field.name.toString()} {...field} />
                                                                                 </FormControl>
 
                                                                                 <FormMessage />
                                                                             </FormItem>
                                                                         )}>
                                                                         </FormField>
+                                                                    </div>
 
+                                                                    <div className="grid gap-2">
+                                                                        <FormField control={customerForm.control} name="email" render={({ field }) => (
+                                                                            <FormItem className="grid gap-2">
+                                                                                <FormLabel htmlFor={field.name.toString()}>Email</FormLabel>
+
+                                                                                <FormControl>
+                                                                                    <Input placeholder="Nhập email" id={field.name.toString()} {...field} />
+                                                                                </FormControl>
+
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}>
+                                                                        </FormField>
+                                                                    </div>
+
+                                                                    <div className="grid gap-2">
+                                                                        <FormField control={customerForm.control} name="street" render={({ field }) => (
+                                                                            <FormItem className="grid gap-2">
+                                                                                <FormLabel htmlFor={field.name.toString()}>Đường</FormLabel>
+
+                                                                                <FormControl>
+                                                                                    <Input placeholder="Nhập đường" id={field.name.toString()} {...field} />
+                                                                                </FormControl>
+
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}>
+                                                                        </FormField>
+                                                                    </div>
+
+                                                                    <div className="grid gap-2">
+                                                                        <FormField control={customerForm.control} name="city" render={({ field }) => (
+                                                                            <FormItem className="grid gap-2">
+                                                                                <FormLabel htmlFor={field.name.toString()}>Thành phố</FormLabel>
+
+                                                                                <FormControl>
+                                                                                    <Select>
+                                                                                        <SelectTrigger>
+                                                                                            <SelectValue placeholder="Chọn thành phố" id={field.name.toString()} {...field} />
+                                                                                        </SelectTrigger>
+                                                                                        <SelectContent>
+                                                                                            <SelectGroup>
+                                                                                                <SelectLabel>Danh sách thành phố</SelectLabel>
+                                                                                                <SelectItem value="halong">Hạ Long</SelectItem>
+                                                                                                <SelectItem value="uongbi">Uông Bí</SelectItem>
+                                                                                            </SelectGroup>
+                                                                                        </SelectContent>
+                                                                                    </Select>
+                                                                                </FormControl>
+
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}>
+                                                                        </FormField>
+                                                                    </div>
+
+                                                                    <div className="grid gap-2">
+                                                                        <FormField control={customerForm.control} name="province" render={({ field }) => (
+                                                                            <FormItem className="grid gap-2">
+                                                                                <FormLabel htmlFor={field.name.toString()}>Tỉnh thành</FormLabel>
+
+                                                                                <FormControl>
+                                                                                    <Select>
+                                                                                        <SelectTrigger>
+                                                                                            <SelectValue placeholder="Chọn tỉnh thành" id={field.name.toString()} {...field} />
+                                                                                        </SelectTrigger>
+                                                                                        <SelectContent>
+                                                                                            <SelectGroup>
+                                                                                                <SelectLabel>Danh sách tỉnh thành</SelectLabel>
+                                                                                                <SelectItem value="halong">Hạ Long</SelectItem>
+                                                                                                <SelectItem value="uongbi">Uông Bí</SelectItem>
+                                                                                            </SelectGroup>
+                                                                                        </SelectContent>
+                                                                                    </Select>
+                                                                                </FormControl>
+
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}>
+                                                                        </FormField>
+                                                                    </div>
+
+                                                                    <div className="grid gap-2">
+                                                                        <FormField control={customerForm.control} name="country" render={({ field }) => (
+                                                                            <FormItem className="grid gap-2">
+                                                                                <FormLabel htmlFor={field.name.toString()}>Quốc gia</FormLabel>
+
+                                                                                <FormControl>
+                                                                                    <Select>
+                                                                                        <SelectTrigger>
+                                                                                            <SelectValue placeholder="Chọn quốc gia" id={field.name.toString()} {...field} />
+                                                                                        </SelectTrigger>
+                                                                                        <SelectContent>
+                                                                                            <SelectGroup>
+                                                                                                <SelectLabel>Danh sách quốc gia</SelectLabel>
+                                                                                                <SelectItem value="halong">Hạ Long</SelectItem>
+                                                                                                <SelectItem value="uongbi">Uông Bí</SelectItem>
+                                                                                            </SelectGroup>
+                                                                                        </SelectContent>
+                                                                                    </Select>
+                                                                                </FormControl>
+
+                                                                                <FormMessage />
+                                                                            </FormItem>
+                                                                        )}>
+                                                                        </FormField>
                                                                     </div>
                                                                 </div>
-                                                            )}
-                                                        </Step>
-                                                    )
-                                                })}
+                                                            </form>
+                                                        </Form>
+                                                    )}
+                                                </Step>
+                                            )
+                                        })}
 
-                                                <Footer zodStatus={zodStatus} />
-                                            </Stepper>
-                                        </form>
-                                    </Form>
+                                        <Footer zodStatus={zodStatus} />
+                                    </Stepper>
                                 </motion.div>
 
                                 <motion.div
+                                    key="existUserAnimation"
                                     initial={{ opacity: 0, y: 100 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ ease: 'easeIn', delay: 0.5 }}
@@ -364,44 +619,35 @@ export default function Signup() {
     );
 }
 
-interface FooterProps {
-    zodStatus: boolean;
-}
-
-const Footer = ({ zodStatus }: FooterProps) => {
+const Footer = ({ zodStatus }: { zodStatus: boolean }) => {
     const {
         nextStep,
         prevStep,
-        resetSteps,
         hasCompletedAllSteps,
         isLastStep,
         isOptionalStep,
         isDisabledStep,
     } = useStepper()
 
-    //const [prevZodStatus, setPrevZodStatus] = useState(zodStatus);
+    const [canProceed, setCanProceed] = useState(false);
 
-    //useEffect(() => {
-    //    setPrevZodStatus(zodStatus);
-    //}, [zodStatus]);
+    // Watch for zodStatus variable
 
-    //const handleNext = () => {
-    //    if (zodStatus) {
-    //        nextStep();
-    //    }
-    //};
+    useEffect(() => {
+        setCanProceed(zodStatus);
+    }, [zodStatus]);
 
     return (
         <>
             {hasCompletedAllSteps && (
                 <div className="h-40 flex items-center justify-center my-2 border rounded-md">
-                    <h1 className="text-xl">Đăng ký thành công ! 🎉</h1>
+                    <h1 className="text-xl">Hãy ấn nút bên dưới để đăng ký ngay thôi ! 🎉</h1>
                 </div>
             )}
             <div className="w-full flex justify-end gap-2 my-4">
                 {hasCompletedAllSteps ? (
-                    <Button size="sm" onClick={resetSteps}>
-                        Reset
+                    <Button size="sm" type="submit">
+                        Đăng ký ngay
                     </Button>
                 ) : (
                     <>
@@ -414,7 +660,8 @@ const Footer = ({ zodStatus }: FooterProps) => {
                             Trở lại
                         </Button>
 
-                        <Button size="sm" onClick={nextStep}>
+                        <Button size="sm" type="button" onClick={() => canProceed && nextStep()}
+                            disabled={!canProceed}>
                             {isLastStep ? "Hoàn tất đăng ký" : isOptionalStep ? "Skip" : "Tiếp tục"}
                         </Button>
                     </>

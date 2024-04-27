@@ -130,7 +130,7 @@ export default function NavigationBar(props: { auth: any }) {
                     label: 'Springs (Lò xo)',
                     icon: <Shell className="mr-2 h-4 w-4" />,
                     items: [
-                        { headerLabel: 'Các hãng lò xo', type: 'headerLabel' },
+                        { headerLabel: 'Các hãng lò xo', headerType: 'headerLabel' },
                         { label: 'TX', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
                         { label: 'DUROCK', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
                         { label: 'GAZZEW', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },

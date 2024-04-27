@@ -59,7 +59,7 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id")
-                        .HasName("PK__Categori__3214EC07FFFB9D73");
+                        .HasName("PK__Categori__3214EC079FDC098A");
 
                     b.HasIndex("SubOf");
 
@@ -73,12 +73,30 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly?>("DoB")
+                    b.Property<DateOnly>("DoB")
                         .HasColumnType("date");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Email")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -94,9 +112,9 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id")
-                        .HasName("PK__Customer__3214EC07914D34D1");
+                        .HasName("PK__Customer__3214EC073F71CA40");
 
-                    b.HasIndex(new[] { "User" }, "UQ__Customer__BD20C6F1C81C634B")
+                    b.HasIndex(new[] { "User" }, "UQ__Customer__BD20C6F1C798F498")
                         .IsUnique()
                         .HasFilter("[User] IS NOT NULL");
 
@@ -113,10 +131,24 @@ namespace NebulaKB.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateOnly?>("DoB")
+                    b.Property<DateOnly>("DoB")
                         .HasColumnType("date");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -126,18 +158,42 @@ namespace NebulaKB.Server.Migrations
                     b.Property<DateOnly?>("OptOut")
                         .HasColumnType("date");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("User")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id")
-                        .HasName("PK__Employee__3214EC07EB8375C8");
+                        .HasName("PK__Employee__3214EC0709D67726");
 
-                    b.HasIndex(new[] { "User" }, "UQ__Employee__BD20C6F1A8FAAAC8")
+                    b.HasIndex(new[] { "User" }, "UQ__Employee__BD20C6F153E9EFF6")
                         .IsUnique()
                         .HasFilter("[User] IS NOT NULL");
 
                     b.ToTable("Employee", (string)null);
+                });
+
+            modelBuilder.Entity("NebulaKB.Server.Models.OderDetail", b =>
+                {
+                    b.Property<string>("Oder")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Product")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasIndex("Oder");
+
+                    b.HasIndex("Product");
+
+                    b.ToTable("OderDetails");
                 });
 
             modelBuilder.Entity("NebulaKB.Server.Models.Order", b =>
@@ -170,30 +226,11 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id")
-                        .HasName("PK__Orders__3214EC0796F39D5B");
+                        .HasName("PK__Orders__3214EC073070C9EC");
 
                     b.HasIndex("Customer");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("NebulaKB.Server.Models.OrderDetail", b =>
-                {
-                    b.Property<string>("Order")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Product")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasIndex("Order");
-
-                    b.HasIndex("Product");
-
-                    b.ToTable("OderDetails");
                 });
 
             modelBuilder.Entity("NebulaKB.Server.Models.Product", b =>
@@ -208,6 +245,9 @@ namespace NebulaKB.Server.Migrations
                     b.Property<string>("Des")
                         .HasColumnType("text");
 
+                    b.Property<string>("Images")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -219,7 +259,7 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id")
-                        .HasName("PK__Products__3214EC07DEC27877");
+                        .HasName("PK__Products__3214EC078CB13366");
 
                     b.ToTable("Products");
                 });
@@ -257,11 +297,12 @@ namespace NebulaKB.Server.Migrations
                     b.Property<int?>("Role")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(3)
-                        .HasColumnName("role");
+                        .HasDefaultValue(3);
 
                     b.Property<int?>("Status")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -269,31 +310,12 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id")
-                        .HasName("PK__User__3214EC077C134E6A");
+                        .HasName("PK__User__3214EC07402B94DD");
 
-                    b.HasIndex(new[] { "Username" }, "UQ__User__536C85E433C0D29B")
+                    b.HasIndex(new[] { "Username" }, "UQ__User__536C85E4BB203206")
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
-                });
-
-            modelBuilder.Entity("NebulaKB.Server.TokenModels.TokenBlacklist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpireAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TokenBlacklists", (string)null);
                 });
 
             modelBuilder.Entity("NebulaKB.Server.Models.Cart", b =>
@@ -301,14 +323,16 @@ namespace NebulaKB.Server.Migrations
                     b.HasOne("NebulaKB.Server.Models.Customer", "CustomerNavigation")
                         .WithMany()
                         .HasForeignKey("Customer")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK__Cart__Customer__2739D489");
+                        .HasConstraintName("FK__Cart__Customer__4B0D20AB");
 
                     b.HasOne("NebulaKB.Server.Models.Product", "ProductsNavigation")
                         .WithMany()
                         .HasForeignKey("Products")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK__Cart__Products__282DF8C2");
+                        .HasConstraintName("FK__Cart__Products__4C0144E4");
 
                     b.Navigation("CustomerNavigation");
 
@@ -320,7 +344,7 @@ namespace NebulaKB.Server.Migrations
                     b.HasOne("NebulaKB.Server.Models.Category", "SubOfNavigation")
                         .WithMany("InverseSubOfNavigation")
                         .HasForeignKey("SubOf")
-                        .HasConstraintName("FK__Categorie__SubOf__2B0A656D");
+                        .HasConstraintName("FK__Categorie__SubOf__4EDDB18F");
 
                     b.Navigation("SubOfNavigation");
                 });
@@ -330,7 +354,8 @@ namespace NebulaKB.Server.Migrations
                     b.HasOne("NebulaKB.Server.Models.User", "UserNavigation")
                         .WithOne("Customer")
                         .HasForeignKey("NebulaKB.Server.Models.Customer", "User")
-                        .HasConstraintName("FK__Customers__User__2645B050");
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK__Customers__User__4A18FC72");
 
                     b.Navigation("UserNavigation");
                 });
@@ -340,9 +365,31 @@ namespace NebulaKB.Server.Migrations
                     b.HasOne("NebulaKB.Server.Models.User", "UserNavigation")
                         .WithOne("Employee")
                         .HasForeignKey("NebulaKB.Server.Models.Employee", "User")
-                        .HasConstraintName("FK__Employee__User__25518C17");
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK__Employee__User__4924D839");
 
                     b.Navigation("UserNavigation");
+                });
+
+            modelBuilder.Entity("NebulaKB.Server.Models.OderDetail", b =>
+                {
+                    b.HasOne("NebulaKB.Server.Models.Order", "OderNavigation")
+                        .WithMany()
+                        .HasForeignKey("Oder")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK__OderDetail__Oder__50C5FA01");
+
+                    b.HasOne("NebulaKB.Server.Models.Product", "ProductNavigation")
+                        .WithMany()
+                        .HasForeignKey("Product")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK__OderDetai__Produ__51BA1E3A");
+
+                    b.Navigation("OderNavigation");
+
+                    b.Navigation("ProductNavigation");
                 });
 
             modelBuilder.Entity("NebulaKB.Server.Models.Order", b =>
@@ -351,28 +398,9 @@ namespace NebulaKB.Server.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("Customer")
                         .IsRequired()
-                        .HasConstraintName("FK__Orders__Customer__2BFE89A6");
+                        .HasConstraintName("FK__Orders__Customer__4FD1D5C8");
 
                     b.Navigation("CustomerNavigation");
-                });
-
-            modelBuilder.Entity("NebulaKB.Server.Models.OrderDetail", b =>
-                {
-                    b.HasOne("NebulaKB.Server.Models.Order", "OderNavigation")
-                        .WithMany()
-                        .HasForeignKey("Order")
-                        .IsRequired()
-                        .HasConstraintName("FK__OderDetail__Oder__2CF2ADDF");
-
-                    b.HasOne("NebulaKB.Server.Models.Product", "ProductNavigation")
-                        .WithMany()
-                        .HasForeignKey("Product")
-                        .IsRequired()
-                        .HasConstraintName("FK__OderDetai__Produ__2DE6D218");
-
-                    b.Navigation("OderNavigation");
-
-                    b.Navigation("ProductNavigation");
                 });
 
             modelBuilder.Entity("NebulaKB.Server.Models.ProductCategory", b =>
@@ -380,14 +408,16 @@ namespace NebulaKB.Server.Migrations
                     b.HasOne("NebulaKB.Server.Models.Category", "CategoriesNavigation")
                         .WithMany()
                         .HasForeignKey("Categories")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK__Product_c__Categ__29221CFB");
+                        .HasConstraintName("FK__Product_c__Categ__4CF5691D");
 
                     b.HasOne("NebulaKB.Server.Models.Product", "ProductsNavigation")
                         .WithMany()
                         .HasForeignKey("Products")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK__Product_c__Produ__2A164134");
+                        .HasConstraintName("FK__Product_c__Produ__4DE98D56");
 
                     b.Navigation("CategoriesNavigation");
 

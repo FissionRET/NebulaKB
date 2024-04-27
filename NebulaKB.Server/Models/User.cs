@@ -1,4 +1,7 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace NebulaKB.Server.Models;
 
 public partial class User
 {

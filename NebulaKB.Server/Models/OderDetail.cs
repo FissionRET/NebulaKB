@@ -1,8 +1,11 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System;
+using System.Collections.Generic;
 
-public partial class OrderDetail
+namespace NebulaKB.Server.Models;
+
+public partial class OderDetail
 {
-    public string Order { get; set; } = null!;
+    public string Oder { get; set; } = null!;
 
     public string Product { get; set; } = null!;
 

@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace NebulaKB.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class NebulaKB1 : Migration
+    public partial class DatabaseUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,9 +21,9 @@ namespace NebulaKB.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Categori__3214EC07FFFB9D73", x => x.Id);
+                    table.PrimaryKey("PK__Categori__3214EC079FDC098A", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__Categorie__SubOf__2B0A656D",
+                        name: "FK__Categorie__SubOf__4EDDB18F",
                         column: x => x.SubOf,
                         principalTable: "Categories",
                         principalColumn: "Id");
@@ -37,11 +38,12 @@ namespace NebulaKB.Server.Migrations
                     Des = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: true),
                     Stock = table.Column<int>(type: "int", nullable: true),
-                    Data = table.Column<string>(type: "text", nullable: true)
+                    Data = table.Column<string>(type: "text", nullable: true),
+                    Images = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Products__3214EC07DEC27877", x => x.Id);
+                    table.PrimaryKey("PK__Products__3214EC078CB13366", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,12 +53,12 @@ namespace NebulaKB.Server.Migrations
                     Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true),
-                    role = table.Column<int>(type: "int", nullable: true, defaultValue: 3)
+                    Status = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    Role = table.Column<int>(type: "int", nullable: true, defaultValue: 3)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__User__3214EC077C134E6A", x => x.Id);
+                    table.PrimaryKey("PK__User__3214EC07402B94DD", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,15 +71,17 @@ namespace NebulaKB.Server.Migrations
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK__Product_c__Categ__29221CFB",
+                        name: "FK__Product_c__Categ__4CF5691D",
                         column: x => x.Categories,
                         principalTable: "Categories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK__Product_c__Produ__2A164134",
+                        name: "FK__Product_c__Produ__4DE98D56",
                         column: x => x.Products,
                         principalTable: "Products",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,21 +89,26 @@ namespace NebulaKB.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    DoB = table.Column<DateOnly>(type: "date", nullable: true),
-                    Address = table.Column<string>(type: "text", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    DoB = table.Column<DateOnly>(type: "date", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: false),
                     Rank = table.Column<int>(type: "int", nullable: true),
                     Point = table.Column<double>(type: "float", nullable: true),
                     User = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Customer__3214EC07914D34D1", x => x.Id);
+                    table.PrimaryKey("PK__Customer__3214EC073F71CA40", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__Customers__User__2645B050",
+                        name: "FK__Customers__User__4A18FC72",
                         column: x => x.User,
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,8 +116,12 @@ namespace NebulaKB.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    DoB = table.Column<DateOnly>(type: "date", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
+                    DoB = table.Column<DateOnly>(type: "date", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
                     OptIn = table.Column<DateOnly>(type: "date", nullable: true),
                     OptOut = table.Column<DateOnly>(type: "date", nullable: true),
@@ -116,12 +129,13 @@ namespace NebulaKB.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Employee__3214EC07EB8375C8", x => x.Id);
+                    table.PrimaryKey("PK__Employee__3214EC0709D67726", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__Employee__User__25518C17",
+                        name: "FK__Employee__User__4924D839",
                         column: x => x.User,
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,15 +149,17 @@ namespace NebulaKB.Server.Migrations
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK__Cart__Customer__2739D489",
+                        name: "FK__Cart__Customer__4B0D20AB",
                         column: x => x.Customer,
                         principalTable: "Customers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK__Cart__Products__282DF8C2",
+                        name: "FK__Cart__Products__4C0144E4",
                         column: x => x.Products,
                         principalTable: "Products",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,9 +176,9 @@ namespace NebulaKB.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Orders__3214EC0796F39D5B", x => x.Id);
+                    table.PrimaryKey("PK__Orders__3214EC073070C9EC", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__Orders__Customer__2BFE89A6",
+                        name: "FK__Orders__Customer__4FD1D5C8",
                         column: x => x.Customer,
                         principalTable: "Customers",
                         principalColumn: "Id");
@@ -178,15 +194,17 @@ namespace NebulaKB.Server.Migrations
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK__OderDetai__Produ__2DE6D218",
+                        name: "FK__OderDetai__Produ__51BA1E3A",
                         column: x => x.Product,
                         principalTable: "Products",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK__OderDetail__Oder__2CF2ADDF",
+                        name: "FK__OderDetail__Oder__50C5FA01",
                         column: x => x.Oder,
                         principalTable: "Orders",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -205,14 +223,14 @@ namespace NebulaKB.Server.Migrations
                 column: "SubOf");
 
             migrationBuilder.CreateIndex(
-                name: "UQ__Customer__BD20C6F1C81C634B",
+                name: "UQ__Customer__BD20C6F1C798F498",
                 table: "Customers",
                 column: "User",
                 unique: true,
                 filter: "[User] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "UQ__Employee__BD20C6F1A8FAAAC8",
+                name: "UQ__Employee__BD20C6F153E9EFF6",
                 table: "Employee",
                 column: "User",
                 unique: true,
@@ -244,7 +262,7 @@ namespace NebulaKB.Server.Migrations
                 column: "Products");
 
             migrationBuilder.CreateIndex(
-                name: "UQ__User__536C85E433C0D29B",
+                name: "UQ__User__536C85E4BB203206",
                 table: "User",
                 column: "Username",
                 unique: true);
