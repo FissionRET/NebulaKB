@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace NebulaKB.Server.DTO.Users
+﻿namespace NebulaKB.Server.DTO.Users
 {
     public class DeleteDTO
     {

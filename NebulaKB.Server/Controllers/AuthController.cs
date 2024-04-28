@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NebulaKB.Server.DTO.Users;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
 using Newtonsoft.Json;
 using System.Security.Claims;
-using System.Text;
 
 namespace NebulaKB.Server.Controllers
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NebulaKB.Server.Models;
+﻿namespace NebulaKB.Server.Models;
 
 public partial class Product
 {

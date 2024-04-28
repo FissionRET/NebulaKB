@@ -34,9 +34,11 @@ export const registerSchema = z.object({
         message: "Tối đa là 30 ký tự"
     }),
 
-    gender: z.string(),
+    gender: z.string().trim().min(1, {
+        message: "Vui lòng chọn giới tính"
+    }),
 
-    dOB: z.string().refine((value) => /(?:(?:(?:0?[13578]|1[02])(\/|-|\.)31)\1|(?:(?:0?[1,3-9]|1[0-2])(\/|-|\.)(?:29|30)\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:0?2(\/|-|\.)29\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:(?:0?[1-9])|(?:1[0-2]))(\/|-|\.)(?:0?[1-9]|1\d|2[0-8])\4(?:(?:1[6-9]|[2-9]\d)?\d{2})/.test(value), {
+    doB: z.string().refine((value) => /(?:(?:(?:0?[13578]|1[02])(\/|-|\.)31)\1|(?:(?:0?[1,3-9]|1[0-2])(\/|-|\.)(?:29|30)\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:0?2(\/|-|\.)29\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:(?:0?[1-9])|(?:1[0-2]))(\/|-|\.)(?:0?[1-9]|1\d|2[0-8])\4(?:(?:1[6-9]|[2-9]\d)?\d{2})/.test(value), {
         message: "Ngày sinh không đúng định dạng"
     }),
 
@@ -51,19 +53,19 @@ export const registerSchema = z.object({
     // Address info
 
     street: z.string().trim().min(1, {
-        message: "Không thể để trống phố"
+        message: "Không thể để trống đường"
     }),
 
-    city: z.string().trim().min(1, {
-        message: "Không thể để trống thành phố"
+    wards: z.string().trim().min(1, {
+        message: "Mục này không thể để trống"
+    }),
+
+    district: z.string().trim().min(1, {
+        message: "Mục này không thể để trống"
     }),
 
     province: z.string().trim().min(1, {
         message: "Không thể để trống tỉnh thành"
-    }),
-
-    country: z.string().trim().min(1, {
-        message: "Không thể để trống quốc gia"
     }),
 }).refine((data) => data.password === data.repeatPassword, {
     message: "Xác thực mật khẩu không khớp",
