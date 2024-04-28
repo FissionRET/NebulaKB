@@ -98,7 +98,7 @@ namespace NebulaKB.Server.Controllers
                 FirstName = dto.customer.FirstName,
                 LastName = dto.customer.LastName,
                 Gender = dto.customer.Gender,
-                DoB = dto.customer.DoB,
+                DoB = DateOnly.FromDateTime(dto.customer.DoB),
                 Phone = dto.customer.Phone,
                 Email = dto.customer.Email,
 

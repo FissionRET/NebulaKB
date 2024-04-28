@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace NebulaKB.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class DatabaseUpdate : Migration
+    public partial class ChangeTypes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,11 +35,11 @@ namespace NebulaKB.Server.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Des = table.Column<string>(type: "text", nullable: true),
+                    Des = table.Column<string>(type: "ntext", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: true),
                     Stock = table.Column<int>(type: "int", nullable: true),
-                    Data = table.Column<string>(type: "text", nullable: true),
-                    Images = table.Column<string>(type: "text", nullable: true)
+                    Data = table.Column<string>(type: "ntext", nullable: true),
+                    Images = table.Column<string>(type: "ntext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,7 +95,7 @@ namespace NebulaKB.Server.Migrations
                     DoB = table.Column<DateOnly>(type: "date", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Address = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "ntext", nullable: false),
                     Rank = table.Column<int>(type: "int", nullable: true),
                     Point = table.Column<double>(type: "float", nullable: true),
                     User = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
@@ -121,7 +122,7 @@ namespace NebulaKB.Server.Migrations
                     DoB = table.Column<DateOnly>(type: "date", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "ntext", nullable: false),
                     OptIn = table.Column<DateOnly>(type: "date", nullable: true),
                     OptOut = table.Column<DateOnly>(type: "date", nullable: true),
                     User = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
@@ -171,7 +172,7 @@ namespace NebulaKB.Server.Migrations
                     Status = table.Column<int>(type: "int", nullable: true),
                     Additional_fee = table.Column<double>(type: "float", nullable: true),
                     Total = table.Column<double>(type: "float", nullable: true),
-                    Breakdown = table.Column<string>(type: "text", nullable: true)
+                    Breakdown = table.Column<string>(type: "ntext", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -72,7 +72,7 @@ public partial class NebulaKBContext : DbContext
             entity.HasIndex(e => e.User, "UQ__Customer__BD20C6F1C798F498").IsUnique();
 
             entity.Property(e => e.Id).HasMaxLength(255);
-            entity.Property(e => e.Address).HasColumnType("text");
+            entity.Property(e => e.Address).HasColumnType("ntext");
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.FirstName).HasMaxLength(255);
             entity.Property(e => e.LastName).HasMaxLength(255);
@@ -94,7 +94,7 @@ public partial class NebulaKBContext : DbContext
             entity.HasIndex(e => e.User, "UQ__Employee__BD20C6F153E9EFF6").IsUnique();
 
             entity.Property(e => e.Id).HasMaxLength(255);
-            entity.Property(e => e.Address).HasColumnType("text");
+            entity.Property(e => e.Address).HasColumnType("ntext");
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.FirstName).HasMaxLength(255);
             entity.Property(e => e.LastName).HasMaxLength(255);
@@ -130,7 +130,7 @@ public partial class NebulaKBContext : DbContext
             entity.Property(e => e.Id).HasMaxLength(255);
             entity.Property(e => e.AdditionalFee).HasColumnName("Additional_fee");
             entity.Property(e => e.Address).HasMaxLength(255);
-            entity.Property(e => e.Breakdown).HasColumnType("text");
+            entity.Property(e => e.Breakdown).HasColumnType("ntext");
             entity.Property(e => e.Customer).HasMaxLength(255);
 
             entity.HasOne(d => d.CustomerNavigation).WithMany(p => p.Orders)
@@ -144,9 +144,9 @@ public partial class NebulaKBContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Products__3214EC078CB13366");
 
             entity.Property(e => e.Id).HasMaxLength(255);
-            entity.Property(e => e.Data).HasColumnType("text");
-            entity.Property(e => e.Des).HasColumnType("text");
-            entity.Property(e => e.Images).HasColumnType("text");
+            entity.Property(e => e.Data).HasColumnType("ntext");
+            entity.Property(e => e.Des).HasColumnType("ntext");
+            entity.Property(e => e.Images).HasColumnType("ntext");
             entity.Property(e => e.Name).HasMaxLength(255);
         });
 

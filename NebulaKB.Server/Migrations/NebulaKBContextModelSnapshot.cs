@@ -74,7 +74,7 @@ namespace NebulaKB.Server.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<DateOnly>("DoB")
                         .HasColumnType("date");
@@ -129,7 +129,7 @@ namespace NebulaKB.Server.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<DateOnly>("DoB")
                         .HasColumnType("date");
@@ -212,7 +212,7 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Breakdown")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Customer")
                         .IsRequired()
@@ -240,13 +240,13 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Data")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Des")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Images")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)

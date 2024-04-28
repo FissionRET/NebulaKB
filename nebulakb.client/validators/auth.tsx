@@ -38,22 +38,26 @@ export const registerSchema = z.object({
         message: "Vui lòng chọn giới tính"
     }),
 
-    doB: z.string().refine((value) => /(?:(?:(?:0?[13578]|1[02])(\/|-|\.)31)\1|(?:(?:0?[1,3-9]|1[0-2])(\/|-|\.)(?:29|30)\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:0?2(\/|-|\.)29\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:(?:0?[1-9])|(?:1[0-2]))(\/|-|\.)(?:0?[1-9]|1\d|2[0-8])\4(?:(?:1[6-9]|[2-9]\d)?\d{2})/.test(value), {
-        message: "Ngày sinh không đúng định dạng"
+    doB: z.date({
+        required_error: "Mục ngày sinh là bắt buộc"
+    }).refine((value) => new Date().getFullYear() - value.getFullYear(), {
+        message: "Bạn phải đủ 13 tuổi để tạo tài khoản"
     }),
 
-    phone: z.string().trim().min(10).max(10, {
-        message: "Số điện thoại không hợp lệ"
+    phone: z.string().trim().min(10, {
+        message: "Số điện thoại phải ít nhất 10 số"
+    }).max(10, {
+        message: "Số điện thoại chỉ có tối đa 10 số"
     }),
 
     email: z.string().email().trim().min(1, {
-        message: "Không thể để trống email"
+        message: "Email không được để trống"
     }),
 
     // Address info
 
     street: z.string().trim().min(1, {
-        message: "Không thể để trống đường"
+        message: "Mục này không được để trống"
     }),
 
     wards: z.string().trim().min(1, {

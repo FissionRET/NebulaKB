@@ -2,10 +2,10 @@
 
 // Hooks
 
-import { SetStateAction, Suspense, useEffect, useRef, useState } from "react";
+import { SetStateAction, Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useForm, UseFormReturn, UseFormWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -55,7 +55,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { registerSchema } from "@/validators/auth";
-
 import { getDistricts, getProvinces, getWards } from 'vietnam-provinces'
 
 const steps = [
@@ -81,7 +80,7 @@ export default function Signup() {
             firstName: "",
             lastName: "",
             gender: "",
-            doB: "",
+            doB: new Date("1999-01-01"),
             phone: "",
             email: "",
 
@@ -97,7 +96,6 @@ export default function Signup() {
     const [selectedProvinceCode, setSelectedProvinceCode] = useState('');
     const [selectedDistrictCode, setSelectedDistrictCode] = useState('');
 
-    // Function to handle province selection
     const handleProvinceChange = (selectedCode: SetStateAction<string>) => {
         setSelectedProvinceCode(selectedCode);
     };
@@ -130,33 +128,59 @@ export default function Signup() {
         ));
     };
 
-    function onSubmit(data: Input) {
-        var registerData = {
-            user: {
-                username: data.username,
-                password: data.password,
-                repeatPassword: data.repeatPassword
-            },
-            customer: {
-                firstName: data.firstName,
-                lastName: data.lastName,
-                gender: data.gender,
-                doB: {
-                    year: data.doB.split("/")[2],
-                    month: data.doB.split("/")[1],
-                    day: data.doB.split("/")[0],
-                    dayOfWeek: 0
-                },
-                phone: data.phone,
-                email: data.email,
+    async function onSubmit(data: Input) {
+        var userData = {
+            username: data.username,
+            password: data.password,
+            repeatPassword: data.repeatPassword
+        };
+
+        var customerData = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            gender: data.gender === "Nam" ? 0 : data.gender === "Nữ" ? 1 : null,
+            doB: data.doB,
+            phone: data.phone,
+            email: data.email,
+            address: {
                 street: data.street,
                 province: data.province.split("-")[1],
                 district: data.district.split("-")[1],
                 wards: data.wards.split("-")[1],
+                formattedAddress: data.street + " " + data.wards.split("-")[1] + " " + data.district.split("-")[1] + " " + data.province.split("-")[1],
             }
         };
 
-        alert(JSON.stringify(registerData, null, 4));
+        try {
+            const resp = await axios.post("http://localhost:1337/api/register", { user: userData, customer: customerData }, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (resp.status === 200) {
+                toast({
+                    title: "Đăng ký thành công !",
+                    description: "Trình xử lý ủy quyền / Next.js (turbo)",
+                });
+
+                setTimeout(() => {
+                    dismiss();
+                    router.push("/auth/login");
+                }, 2000);
+            }
+        } catch (err) {
+            console.error("err: ", err);
+
+            toast({
+                title: "Đăng ký thất bại !",
+                description: "Trình xử lý ủy quyền / Next.js (turbo)",
+            });
+
+            setTimeout(() => {
+                dismiss();
+            }, 2000);
+        }
     }
 
     return (
@@ -234,6 +258,7 @@ export default function Signup() {
                                                                                 <FormControl>
                                                                                     <Input
                                                                                         placeholder="Nhập mật khẩu"
+                                                                                        type="password"
                                                                                         id={field.name.toString()}
                                                                                         {...field}
                                                                                     />
@@ -261,6 +286,7 @@ export default function Signup() {
                                                                                 <FormControl>
                                                                                     <Input
                                                                                         placeholder="Nhập lại mật khẩu"
+                                                                                        type="password"
                                                                                         id={field.name.toString()}
                                                                                         {...field}
                                                                                     />
@@ -396,13 +422,37 @@ export default function Signup() {
                                                                                             Ngày sinh
                                                                                         </FormLabel>
 
-                                                                                        <FormControl>
-                                                                                            <Input
-                                                                                                placeholder="Nhập ngày sinh, VD: 30/11/2004"
-                                                                                                id={field.name.toString()}
-                                                                                                {...field}
-                                                                                            />
-                                                                                        </FormControl>
+                                                                                        <Popover>
+                                                                                            <PopoverTrigger asChild>
+                                                                                                <FormControl>
+                                                                                                    <Button
+                                                                                                        variant={"outline"}
+                                                                                                        className={cn(
+                                                                                                            "pl-3 text-left font-normal",
+                                                                                                            !field.value && "text-muted-foreground"
+                                                                                                        )}
+                                                                                                    >
+                                                                                                        {field.value ? (
+                                                                                                            format(field.value, "dd/MM/yyyy")
+                                                                                                        ) : (
+                                                                                                            <span>Chọn ngày sinh</span>
+                                                                                                        )}
+                                                                                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                                                                    </Button>
+                                                                                                </FormControl>
+                                                                                            </PopoverTrigger>
+                                                                                            <PopoverContent className="w-auto p-0" align="start">
+                                                                                                <Calendar
+                                                                                                    mode="single"
+                                                                                                    captionLayout="dropdown-buttons"
+                                                                                                    fromYear={1990}
+                                                                                                    toYear={2024}
+                                                                                                    selected={field.value}
+                                                                                                    onSelect={field.onChange}
+                                                                                                    initialFocus
+                                                                                                />
+                                                                                            </PopoverContent>
+                                                                                        </Popover>
 
                                                                                         <FormMessage />
                                                                                     </FormItem>
@@ -518,15 +568,15 @@ export default function Signup() {
                                                                                             </SelectTrigger>
                                                                                             <SelectContent>
                                                                                                 {getProvinces().map(item => {
-                                                                                                        return (
-                                                                                                            <SelectItem
-                                                                                                                value={`${item.code}-${item.name}`}
-                                                                                                                key={item.code}
-                                                                                                            >
-                                                                                                                {item.name}
-                                                                                                            </SelectItem>
-                                                                                                        );
-                                                                                                    }
+                                                                                                    return (
+                                                                                                        <SelectItem
+                                                                                                            value={`${item.code}-${item.name}`}
+                                                                                                            key={item.code}
+                                                                                                        >
+                                                                                                            {item.name}
+                                                                                                        </SelectItem>
+                                                                                                    );
+                                                                                                }
                                                                                                 )}
                                                                                             </SelectContent>
                                                                                         </Select>
@@ -612,7 +662,7 @@ export default function Signup() {
                                                                             )}
                                                                         />
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                             )}
                                                         </Step>

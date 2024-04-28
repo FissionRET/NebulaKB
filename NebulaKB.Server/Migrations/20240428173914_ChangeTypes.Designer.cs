@@ -12,8 +12,8 @@ using NebulaKB.Server.Models;
 namespace NebulaKB.Server.Migrations
 {
     [DbContext(typeof(NebulaKBContext))]
-    [Migration("20240426125311_DatabaseUpdate")]
-    partial class DatabaseUpdate
+    [Migration("20240428173914_ChangeTypes")]
+    partial class ChangeTypes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace NebulaKB.Server.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<DateOnly>("DoB")
                         .HasColumnType("date");
@@ -132,7 +132,7 @@ namespace NebulaKB.Server.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<DateOnly>("DoB")
                         .HasColumnType("date");
@@ -215,7 +215,7 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Breakdown")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Customer")
                         .IsRequired()
@@ -243,13 +243,13 @@ namespace NebulaKB.Server.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Data")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Des")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Images")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
