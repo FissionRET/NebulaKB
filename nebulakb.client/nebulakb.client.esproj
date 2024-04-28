@@ -9,8 +9,10 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="app\auth\signup\" />
-    <Folder Include="app\handlers\auth\" />
+    <None Remove="middleware\**" />
+    <TypeScriptConfiguration Remove="middleware\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="components\ui\" />
   </ItemGroup>
 </Project>

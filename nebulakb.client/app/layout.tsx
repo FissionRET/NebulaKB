@@ -23,7 +23,9 @@ export default function RootLayout({
     return (
         <>
             <html lang="en" suppressHydrationWarning suppressContentEditableWarning>
-                <head />
+                <head>
+                    <meta charSet="UTF-8"/>
+                </head>
 
                 <body className={cn("min-h-screen bg-background antialiased", spaceGrot.className)}>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

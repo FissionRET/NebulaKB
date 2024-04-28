@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 // Shadcn components
 
-import LoginForm from "@/app/auth/login/loginHandler"
+import LoginForm from "@/app/auth/login/login"
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Framer

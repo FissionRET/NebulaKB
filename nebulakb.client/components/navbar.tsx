@@ -1,8 +1,7 @@
-﻿import React, { SyntheticEvent, useEffect, useRef, useState } from "react"
+﻿import React, { useState } from "react"
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
-import Logout from '@/app/handlers/auth/logout'
-import { AnimatePresence, animate, motion, stagger } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 // Icons
 
@@ -10,6 +9,7 @@ import {
     AlignJustify,
     BoxSelect,
     Boxes,
+    CalendarDays,
     CircuitBoard,
     Codesandbox,
     Command,
@@ -33,8 +33,10 @@ import {
 
 // Components
 
+import Logout from '@/app/auth/logout/logout'
 import { ModeToggle } from "@/components/mode-toggle"
 import { Tooltip } from "@nextui-org/react";
+import { AnimatePresence, motion } from 'framer-motion'
 
 // Shadcn components
 
@@ -54,6 +56,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useToast } from "@/components/ui/use-toast"
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
+
 
 // NextUI Components
 
@@ -65,6 +78,8 @@ export default function NavigationBar(props: { auth: any }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const router = useRouter();
     const { toast, dismiss } = useToast();
+    const pathname = usePathname();
+
     let authorizedItems;
 
     // Logic
@@ -304,7 +319,7 @@ export default function NavigationBar(props: { auth: any }) {
                                     <DropdownMenuSeparator />
 
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem className={`${pathname === '/profile' ? 'bg-zinc-800 text-zinc-50' : ''}`} onClick={() => router.push("/profile")}>
                                             <User className="mr-2 h-4 w-4" />
                                             <span>Thông tin cá nhân</span>
                                         </DropdownMenuItem>
@@ -362,7 +377,38 @@ export default function NavigationBar(props: { auth: any }) {
                                 />
                             </svg>
 
-                            <p className="font-bold text-inherit">Nebula Keyboard</p>
+                            <HoverCard>
+                                <HoverCardTrigger asChild>
+                                    <Button variant="link" onClick={() => router.push("/")} className="font-bold text-inherit">NebulaKB</Button>
+                                </HoverCardTrigger>
+                                <HoverCardContent className="w-auto">
+                                    <div className="flex justify-between space-x-4">
+                                        <Avatar>
+                                            <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
+                                                <path
+                                                    clipRule="evenodd"
+                                                    d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
+                                                    fill="currentColor"
+                                                    fillRule="evenodd"
+                                                />
+                                            </svg>
+                                        </Avatar>
+
+                                        <div className="space-y-1">
+                                            <h4 className="text-sm font-semibold">Nebula Keyboard</h4>
+                                            <p className="text-sm">
+                                                Nơi cung cấp các mẫu bàn phím đa dạng và phù hợp cho mọi người.
+                                            </p>
+                                            <div className="flex items-center pt-2">
+                                                <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
+                                                <span className="text-xs text-muted-foreground">
+                                                    Thành lập từ 2020
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </HoverCardContent>
+                            </HoverCard>
                         </NavbarBrand>
                     </Link>
                 </NavbarContent>

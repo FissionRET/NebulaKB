@@ -21,7 +21,7 @@ export default function Footer() {
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", delay: 0.1 }}
-            className="min-h-[10rem] mt-4 mb-2 py-6 px-6"
+            className="min-h-[3rem] mt-4 py-6 px-6"
         >
             <div className="space-y-2">
                 <div className="text-md font-medium leading-none">

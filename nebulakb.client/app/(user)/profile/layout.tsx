@@ -1,19 +1,16 @@
-"use client";
+"use client"
 
 // Hooks
 
 import { useEffect, useState } from "react";
 import CheckAuthorization from '@/app/handlers/userinfo/get'
 
-// Local components
+// Components
 
 import Navbar from "@/components/navbar";
-import Hero from "@/components/hero";
 import Footer from "@/components/footer";
 
-export default function Home() {
-    // Authorization check
-
+export default function ProfileLayout({ children }: { children: React.ReactNode }) {
     const [auth, setAuth] = useState<boolean>(false);
 
     useEffect(() => {
@@ -34,17 +31,16 @@ export default function Home() {
         };
 
         checkAuth();
-    }, []); // Only run once to avoid re-renders
+    }, []);
 
     return (
-        <>
-            <div className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
-                <Navbar auth={auth} />
+        <div className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
+            <Navbar auth={auth} />
 
-                <Hero />
+            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}
+            </main>
 
-                <Footer />
-            </div>  
-        </>
+            <Footer />
+        </div>
     );
 }
