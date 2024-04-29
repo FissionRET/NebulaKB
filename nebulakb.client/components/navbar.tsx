@@ -66,11 +66,23 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
 
 
 // NextUI Components
 
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
+import { Label } from "./ui/label"
+import { Input } from "./ui/input"
 
 export default function NavigationBar(props: { auth: any }) {
     // Variables
@@ -292,9 +304,25 @@ export default function NavigationBar(props: { auth: any }) {
                 >
                     <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Giỏ hàng">
                         <NavbarItem>
-                            <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
-                                <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
-                            </Link>
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button variant="outline">
+                                        <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
+                                    </Button>
+                                </SheetTrigger>
+
+                                <SheetContent>
+                                    <SheetHeader>
+                                        <SheetTitle>Giỏ hàng của bạn</SheetTitle>
+                                    </SheetHeader>
+
+                                    <SheetFooter>
+                                        <SheetClose asChild>
+                                            <Button type="submit">Thanh toán ngay</Button>
+                                        </SheetClose>
+                                    </SheetFooter>
+                                </SheetContent>
+                            </Sheet>
                         </NavbarItem>
                     </Tooltip>
                 </motion.div>

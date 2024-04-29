@@ -98,7 +98,7 @@ namespace NebulaKB.Server.Controllers
                 FirstName = dto.customer.FirstName,
                 LastName = dto.customer.LastName,
                 Gender = dto.customer.Gender,
-                DoB = DateOnly.FromDateTime(dto.customer.DoB),
+                DoB = DateOnly.FromDateTime(dto.customer.DoB).AddDays(1),
                 Phone = dto.customer.Phone,
                 Email = dto.customer.Email,
 
@@ -146,22 +146,53 @@ namespace NebulaKB.Server.Controllers
         public IActionResult UserInfo()
         {
             var username = User.FindFirst(ClaimTypes.Name)?.Value;
-            var user = _context.Users.SingleOrDefault(u => u.Username == username);
+            var userInfo = _context.Users.SingleOrDefault(u => u.Username == username);
+            var customerInfo = _context.Customers.SingleOrDefault(u => u.User == userInfo!.Id);
 
-            if (user == null)
+            if (userInfo == null)
             {
                 return NotFound(new
                 {
-                    message = "User not found"
+                    message = "Không tìm thấy người dùng"
                 });
             }
 
+            if (customerInfo == null)
+            {
+                return NotFound(new
+                {
+                    message = "Không tìm thấy khách hàng"
+                });
+            }
+
+            var userData = new
+            {
+                userInfo = new
+                {
+                    userInfo.Id,
+                    userInfo.Username,
+                    userInfo.Status,
+                    userInfo.Role,
+                },
+                customerInfo = new
+                {
+                    customerInfo.Id,
+                    customerInfo.FirstName,
+                    customerInfo.LastName,
+                    customerInfo.Gender,
+                    customerInfo.DoB,
+                    customerInfo.Phone,
+                    customerInfo.Email,
+                    Address = JsonConvert.DeserializeObject<AddressDTO>(customerInfo.Address),
+                    customerInfo.Rank,
+                    customerInfo.Point,
+                    customerInfo.User
+                }
+            };
+
             return Ok(new
             {
-                user.Id,
-                user.Username,
-                user.Status,
-                user.Role
+                userData
             });
         }
 

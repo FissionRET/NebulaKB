@@ -3,7 +3,7 @@
 import { SyntheticEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 // Shadcn components
 
@@ -50,8 +50,8 @@ export default function LoginForm() {
                 dismiss();
                 router.push("/");
             }, 2000);
-        } catch (err) {
-            console.error("err: ", err);
+        } catch {
+            console.error("Login failed: ", AxiosError.ERR_BAD_REQUEST);
 
             toast({
                 title: "Đăng nhập thất bại !",

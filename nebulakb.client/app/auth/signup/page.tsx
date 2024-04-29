@@ -4,7 +4,7 @@
 
 import { SetStateAction, Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -169,8 +169,8 @@ export default function Signup() {
                     router.push("/auth/login");
                 }, 2000);
             }
-        } catch (err) {
-            console.error("err: ", err);
+        } catch {
+            console.error("Registeration failed: ", AxiosError.ERR_BAD_REQUEST);
 
             toast({
                 title: "Đăng ký thất bại !",
