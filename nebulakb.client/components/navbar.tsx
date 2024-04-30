@@ -25,6 +25,7 @@ import {
     ReceiptText,
     Shell,
     ShoppingBasket,
+    ShoppingCart,
     SquareArrowRight,
     Trello,
     Type,
@@ -304,25 +305,9 @@ export default function NavigationBar(props: { auth: any }) {
                 >
                     <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Giỏ hàng">
                         <NavbarItem>
-                            <Sheet>
-                                <SheetTrigger asChild>
-                                    <Button variant="outline">
-                                        <ShoppingBasket className="h-[1.2rem] w-[1.2rem]" />
-                                    </Button>
-                                </SheetTrigger>
-
-                                <SheetContent>
-                                    <SheetHeader>
-                                        <SheetTitle>Giỏ hàng của bạn</SheetTitle>
-                                    </SheetHeader>
-
-                                    <SheetFooter>
-                                        <SheetClose asChild>
-                                            <Button type="submit">Thanh toán ngay</Button>
-                                        </SheetClose>
-                                    </SheetFooter>
-                                </SheetContent>
-                            </Sheet>
+                            <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
+                                <ShoppingCart className="h-4 w-4" />
+                            </Link>
                         </NavbarItem>
                     </Tooltip>
                 </motion.div>

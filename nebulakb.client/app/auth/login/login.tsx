@@ -72,7 +72,7 @@ export default function LoginForm() {
                     <Input
                         id="username"
                         type="text"
-                        placeholder="keyboardlover69"
+                        placeholder="Nhập tên đăng nhập"
                         required
                         onChange={(e) => setUsername(e.target.value)}
                     />
@@ -91,6 +91,7 @@ export default function LoginForm() {
                     <Input
                         id="password"
                         type="password"
+                        placeholder="Nhập mật khẩu"
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />

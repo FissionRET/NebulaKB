@@ -1,4 +1,7 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System.Text.Json.Serialization;
+using NTJson = Newtonsoft.Json;
+
+namespace NebulaKB.Server.Models;
 
 public partial class Order
 {
@@ -16,5 +19,7 @@ public partial class Order
 
     public string? Breakdown { get; set; }
 
+    [JsonIgnore]
+    [NTJson.JsonIgnore]
     public virtual Customer CustomerNavigation { get; set; } = null!;
 }

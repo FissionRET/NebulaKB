@@ -1,4 +1,7 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System.Text.Json.Serialization;
+using NTJson = Newtonsoft.Json;
+
+namespace NebulaKB.Server.Models;
 
 public partial class Employee
 {
@@ -24,5 +27,7 @@ public partial class Employee
 
     public string? User { get; set; }
 
+    [JsonIgnore]
+    [NTJson.JsonIgnore]
     public virtual User? UserNavigation { get; set; }
 }

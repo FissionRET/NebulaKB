@@ -1,4 +1,7 @@
-﻿namespace NebulaKB.Server.Models;
+﻿using System.Text.Json.Serialization;
+using NTJson = Newtonsoft.Json;
+
+namespace NebulaKB.Server.Models;
 
 public partial class Customer
 {
@@ -14,7 +17,7 @@ public partial class Customer
 
     public string Phone { get; set; } = null!;
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
     public string Address { get; set; } = null!;
 
@@ -24,7 +27,11 @@ public partial class Customer
 
     public string? User { get; set; }
 
+    [JsonIgnore]
+    [NTJson.JsonIgnore]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
+    [JsonIgnore]
+    [NTJson.JsonIgnore]
     public virtual User? UserNavigation { get; set; }
 }

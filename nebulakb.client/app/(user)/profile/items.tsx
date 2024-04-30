@@ -99,7 +99,7 @@ export const InformationCard = () => {
 
                         <div className="grid max-w-md gap-2">
                             <Label htmlFor="username">Tên người dùng</Label>
-                            <Input type="text" id="username" defaultValue={userData.user.username} />
+                            <Input type="text" id="username" defaultValue={userData.user.username} readOnly />
                         </div>
 
                         <div className="grid max-w-md gap-2">

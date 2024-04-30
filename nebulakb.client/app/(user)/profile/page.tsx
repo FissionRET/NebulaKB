@@ -45,12 +45,7 @@ export default function Profile() {
 
                         <motion.div variants={itemVariants} className="mb-3" onClick={() => handleNavItemClick("Security")}>
                             <Link className={selectedNavItem === "Security" ? "font-semibold underline underline-offset-4" : ''} href="#">Security (Bảo mật)</Link>
-                        </motion.div>
-
-                        <motion.div variants={itemVariants} className="mb-3" onClick={() => handleNavItemClick("Orders")}>
-                            <Link className={selectedNavItem === "Orders" ? "font-semibold underline underline-offset-4" : ''} href="#">Orders (Lịch sử mua hàng)</Link>
-                        </motion.div>
-                        
+                        </motion.div>                        
                     </motion.div>
                 </motion.nav>
 
@@ -79,19 +74,6 @@ export default function Profile() {
                                 <SecurityCard/>
                             </motion.div>
                         )}
-
-                        {selectedNavItem === "Orders" && (
-                            <motion.div
-                                key="security"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                {/* Orders Card later */}
-                            </motion.div>
-                        )}
-
                     </AnimatePresence>
                 </div>
             </div>

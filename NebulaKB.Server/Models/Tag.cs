@@ -3,17 +3,15 @@ using NTJson = Newtonsoft.Json;
 
 namespace NebulaKB.Server.Models;
 
-public partial class Category
+public partial class Tag
 {
     public string Id { get; set; } = null!;
 
     public string? Name { get; set; }
 
-    [JsonIgnore]
-    [NTJson.JsonIgnore]
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public string Category { get; set; } = null!;
 
     [JsonIgnore]
     [NTJson.JsonIgnore]
-    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+    public virtual Category CategoryNavigation { get; set; } = null!;
 }
