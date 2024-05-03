@@ -40,5 +40,7 @@ namespace NebulaKB.Server.Helpers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        
+        
     }
 }

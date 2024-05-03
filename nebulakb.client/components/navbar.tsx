@@ -364,12 +364,12 @@ export default function NavigationBar(props: { auth: any }) {
                                         <DropdownMenuSeparator />
 
                                         {userRole === 0 ? (
-                                            <DropdownMenuItem onClick={() => router.push("/admin")}>
+                                            <DropdownMenuItem onClick={() => router.push("/admin-dashboard")}>
                                                 <AppWindow className="mr-2 h-4 w-4" />
                                                 <span>Panel Quản lý</span>
                                             </DropdownMenuItem>
                                         ) : userRole === 1 ? (
-                                            <DropdownMenuItem onClick={() => router.push("/employee")}>
+                                            <DropdownMenuItem onClick={() => router.push("/employee-dashboard")}>
                                                 <AppWindow className="mr-2 h-4 w-4" />
                                                 <span>Panel Nhân viên</span>
                                             </DropdownMenuItem>
