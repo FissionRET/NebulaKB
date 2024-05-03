@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { PasswordInput } from "../../../components/password-input";
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
@@ -37,6 +38,7 @@ export default function LoginForm() {
             const data = resp.data;
 
             if (resp.status === 200) {
+                sessionStorage.setItem("user_id", data.id);
                 sessionStorage.setItem("token", data.token);
                 sessionStorage.setItem("username", data.username);
             }
@@ -88,13 +90,12 @@ export default function LoginForm() {
                             Quên mật khẩu?
                         </Link>
                     </div>
-                    <Input
+
+                    <PasswordInput
                         id="password"
-                        type="password"
                         placeholder="Nhập mật khẩu"
                         onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                        required />
                 </div>
 
                 <Button type="submit" className="w-full">

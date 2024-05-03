@@ -2,11 +2,13 @@
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
+import axios from "axios"
 
 // Icons
 
 import {
     AlignJustify,
+    AppWindow,
     BoxSelect,
     Boxes,
     CalendarDays,
@@ -77,18 +79,18 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 
 // NextUI Components
 
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
 
 export default function NavigationBar(props: { auth: any }) {
     // Variables
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [userRole, setUserRole] = useState(0)
     const router = useRouter();
     const { toast, dismiss } = useToast();
     const pathname = usePathname();
@@ -280,7 +282,24 @@ export default function NavigationBar(props: { auth: any }) {
             }, 2000);
         }
     }
-
+    
+    const roleHandler = async () => {
+        const resp = await axios.post("http://localhost:1337/permission/check-permission",
+            {
+                userId: sessionStorage.getItem("user_id")
+            },
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                }
+            }
+        );
+        
+        if(resp.status === 200) {
+            setUserRole(resp.data.role);
+        }
+    }
+    
     if (!props.auth) {
         authorizedItems = (
             <motion.div
@@ -319,8 +338,8 @@ export default function NavigationBar(props: { auth: any }) {
                 >
                     <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Thông tin của bạn">
                         <NavbarItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
+                            <DropdownMenu>                                
+                                <DropdownMenuTrigger asChild onClick={roleHandler}>
                                     <Button variant="outline">
                                         <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
                                     </Button>
@@ -337,10 +356,24 @@ export default function NavigationBar(props: { auth: any }) {
                                             <span>Thông tin cá nhân</span>
                                         </DropdownMenuItem>
 
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => router.push("/orders")}>
                                             <ReceiptText className="mr-2 h-4 w-4" />
                                             <span>Đơn hàng của tôi</span>
                                         </DropdownMenuItem>
+
+                                        <DropdownMenuSeparator />
+
+                                        {userRole === 0 ? (
+                                            <DropdownMenuItem onClick={() => router.push("/admin")}>
+                                                <AppWindow className="mr-2 h-4 w-4" />
+                                                <span>Panel Quản lý</span>
+                                            </DropdownMenuItem>
+                                        ) : userRole === 1 ? (
+                                            <DropdownMenuItem onClick={() => router.push("/employee")}>
+                                                <AppWindow className="mr-2 h-4 w-4" />
+                                                <span>Panel Nhân viên</span>
+                                            </DropdownMenuItem>
+                                        ) : null}
 
                                         <DropdownMenuSeparator />
 

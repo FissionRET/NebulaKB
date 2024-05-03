@@ -56,6 +56,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { registerSchema } from "@/validators/auth";
 import { getDistricts, getProvinces, getWards } from 'vietnam-provinces'
+import { PasswordInput } from "../../../components/password-input";
 
 const steps = [
     { label: "Bước 1", description: "Thông tin đăng nhập" },
@@ -256,9 +257,8 @@ export default function Signup() {
                                                                                 </FormLabel>
 
                                                                                 <FormControl>
-                                                                                    <Input
+                                                                                    <PasswordInput
                                                                                         placeholder="Nhập mật khẩu"
-                                                                                        type="password"
                                                                                         id={field.name.toString()}
                                                                                         {...field}
                                                                                     />
@@ -284,9 +284,8 @@ export default function Signup() {
                                                                                 </FormLabel>
 
                                                                                 <FormControl>
-                                                                                    <Input
+                                                                                    <PasswordInput
                                                                                         placeholder="Nhập lại mật khẩu"
-                                                                                        type="password"
                                                                                         id={field.name.toString()}
                                                                                         {...field}
                                                                                     />

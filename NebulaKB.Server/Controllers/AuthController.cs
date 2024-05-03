@@ -10,17 +10,8 @@ namespace NebulaKB.Server.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class AuthController : Controller
+    public class AuthController(NebulaKBContext context, JwtServices jwtServices) : Controller
     {
-        private readonly NebulaKBContext _context;
-        private readonly JwtServices _jwtServices;
-
-        public AuthController(NebulaKBContext context, JwtServices jwtServices)
-        {
-            _context = context;
-            _jwtServices = jwtServices;
-        }
-
         [HttpPost("login")]
         [AllowAnonymous]
         public IActionResult Login(LoginDTO dto) // using Task<> for asynchronous operation
@@ -40,7 +31,7 @@ namespace NebulaKB.Server.Controllers
                 return BadRequest(new { message = "Invalid user data" });
             }
 
-            var isExist = _context.Users.FirstOrDefault(u => u.Username == dto.Username && u.Password == dto.Password);
+            var isExist = context.Users.FirstOrDefault(u => u.Username == dto.Username && u.Password == dto.Password);
 
             if (isExist == null)
             {
@@ -50,12 +41,11 @@ namespace NebulaKB.Server.Controllers
                 });
             }
 
-            var token = _jwtServices.Generate(isExist);
+            var token = jwtServices.Generate(isExist);
             return Ok(new
             {
                 isExist.Id,
                 isExist.Username,
-                isExist.Role,
                 token
             });
         }
@@ -73,7 +63,7 @@ namespace NebulaKB.Server.Controllers
                 });
             }
 
-            if (_context.Users.Any(u => u.Username == dto.user.Username))
+            if (context.Users.Any(u => u.Username == dto.user.Username))
             {
                 return BadRequest(new
                 {
@@ -85,9 +75,7 @@ namespace NebulaKB.Server.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = dto.user.Username,
-                Password = dto.user.Password,
-                Role = 0,
-                Status = 0
+                Password = dto.user.Password
             };
 
             var newCustomer = new Customer
@@ -111,13 +99,13 @@ namespace NebulaKB.Server.Controllers
                 User = newUser.Id
             };
 
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
+            context.Users.Add(newUser);
+            await context.SaveChangesAsync();
 
-            _context.Customers.Add(newCustomer);
-            await _context.SaveChangesAsync();
+            context.Customers.Add(newCustomer);
+            await context.SaveChangesAsync();
 
-            var token = _jwtServices.Generate(newUser);
+            var token = jwtServices.Generate(newUser);
             return Ok(new { token });
         }
 
@@ -146,8 +134,8 @@ namespace NebulaKB.Server.Controllers
         public IActionResult UserInfo()
         {
             var username = User.FindFirst(ClaimTypes.Name)?.Value;
-            var userInfo = _context.Users.SingleOrDefault(u => u.Username == username);
-            var customerInfo = _context.Customers.SingleOrDefault(u => u.User == userInfo!.Id);
+            var userInfo = context.Users.SingleOrDefault(u => u.Username == username);
+            var customerInfo = context.Customers.SingleOrDefault(u => u.User == userInfo!.Id);
 
             if (userInfo == null)
             {
@@ -218,15 +206,15 @@ namespace NebulaKB.Server.Controllers
                 return BadRequest(new { message = "Invalid user id" });
             }
 
-            var user = _context.Users.Find(dto.UserId);
+            var user = context.Users.Find(dto.UserId);
 
             if (user == null)
             {
                 return NotFound(new { message = "User not found" });
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            context.Users.Remove(user);
+            await context.SaveChangesAsync();
 
             return Ok(new { message = "User deleted successfully" });
         }
