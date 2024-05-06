@@ -26,7 +26,7 @@ export default function AdminDashboard() {
                         <DollarSign className="h-4 w-4 text-muted-foreground"/>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">1.147.362.422,19 VNĐ</div>
+                        <div className="text-2xl font-bold">1.147.362.422 VNĐ</div>
                         <p className="text-xs text-muted-foreground">
                             +20.1% từ tháng trước
                         </p>
@@ -108,7 +108,7 @@ export default function AdminDashboard() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Khách hàng đặt mua</TableHead>
-                                    <TableHead>Loại</TableHead>
+                                    <TableHead>Loại hàng</TableHead>
                                     <TableHead>Trạng thái</TableHead>
                                     <TableHead>Ngày mua</TableHead>
                                     <TableHead className="text-center">Số lượng</TableHead>
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                                     </TableCell>
                                     <TableCell>
                                         <Badge className="text-xs" variant="outline">
-                                            Hoàn tất
+                                            Hoàn thành
                                         </Badge>
                                     </TableCell>
                                     <TableCell>
@@ -138,7 +138,7 @@ export default function AdminDashboard() {
                                     <TableCell className="text-center">
                                         5
                                     </TableCell>
-                                    <TableCell className="text-right">$250.00</TableCell>
+                                    <TableCell className="text-right">6.303.663 VNĐ</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -164,7 +164,7 @@ export default function AdminDashboard() {
                                     helloworld@email.com
                                 </p>
                             </div>
-                            <div className="ml-auto font-medium">+$1,999.00</div>
+                            <div className="ml-auto font-medium">+ 6.303.663 VNĐ</div>
                         </div>
                     </CardContent>
                 </Card>

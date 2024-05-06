@@ -30,6 +30,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import AdminDashboard from "@/app/(dashboard)/admin-dashboard/page";
+import {OrdersManagement} from "@/app/(dashboard)/admin-dashboard/components/items";
 
 export function DashboardHeader() {
     const [selectedNavItem, setSelectedNavItem] = useState('Dashboard');
@@ -347,6 +348,18 @@ export function DashboardHeader() {
                                     transition={{ duration: 0.3 }}
                                 >
                                     <AdminDashboard/>
+                                </motion.div>
+                            )}
+
+                            {selectedNavItem === "Orders" && (
+                                <motion.div
+                                    key="orders"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <OrdersManagement/>
                                 </motion.div>
                             )}
                         </AnimatePresence>
