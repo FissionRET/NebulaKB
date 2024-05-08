@@ -5,7 +5,7 @@ import Link from "next/link"
 
 // Icons
 
-import {Activity, ArrowUpRight, CreditCard, DollarSign, Users} from "lucide-react";
+import {Activity, ArrowUpRight, CreditCard, DollarSign, ScrollText, Users} from "lucide-react";
 
 // Shadcn components
 
@@ -15,6 +15,7 @@ import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
+import TransactionTable from "@/app/(dashboard)/admin-dashboard/components/dashboard/dashboard-transaction";
 
 export default function AdminDashboard() {
     return (
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
                 </Card>
             </div>
 
-            <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3 mt-3">
+            <div className="grid gap-4 md:gap-4 lg:grid-cols-2 xl:grid-cols-3 mt-3">
                 <Card className="xl:col-span-2">
                     <CardHeader className="flex flex-row items-center">
                         <div className="grid gap-2">
@@ -94,54 +95,14 @@ export default function AdminDashboard() {
                                 Tất cả những giao dịch gần đây của shop bạn
                             </CardDescription>
                         </div>
-                        
-                        <Button asChild size="sm" className="ml-auto gap-1">
-                            <Link href="#">
-                                Xem tất cả
-                                <ArrowUpRight className="h-4 w-4" />
-                            </Link>
-                        </Button>
+
+                        <div className="ml-auto mr-4 gap-1">
+                            <ScrollText className="h-10 w-10"/>
+                        </div>
                     </CardHeader>
-                    
+
                     <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Khách hàng đặt mua</TableHead>
-                                    <TableHead>Loại hàng</TableHead>
-                                    <TableHead>Trạng thái</TableHead>
-                                    <TableHead>Ngày mua</TableHead>
-                                    <TableHead className="text-center">Số lượng</TableHead>
-                                    <TableHead className="text-right">Giá tiền</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell>
-                                        <div className="font-medium">Tuấn Khôi</div>
-                                        <div className="hidden text-sm text-muted-foreground md:inline">
-                                            helloworld@gmail.com
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        Red Switch
-                                    </TableCell>
-                                    <TableCell>
-                                        <Badge className="text-xs" variant="outline">
-                                            Hoàn thành
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        04-05-2024
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                        5
-                                    </TableCell>
-                                    <TableCell className="text-right">6.303.663 VNĐ</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
+                        <TransactionTable/>
                     </CardContent>
                 </Card>
                 

@@ -341,7 +341,7 @@ export default function NavigationBar(props: { auth: any }) {
                             <DropdownMenu>                                
                                 <DropdownMenuTrigger asChild onClick={roleHandler}>
                                     <Button variant="outline">
-                                        <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null}
+                                        <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : 'Guest'}
                                     </Button>
                                 </DropdownMenuTrigger>
 

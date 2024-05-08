@@ -10,7 +10,19 @@ import Image from "next/image"
 // Components & Icons
 
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {Home, Info, LineChart, LogOut, Package, PanelLeft, Settings, ShoppingCart, Users2} from "lucide-react";
+import {
+    Home,
+    Info,
+    LineChart,
+    LogOut,
+    Package,
+    PanelLeft,
+    Settings,
+    ShoppingCart,
+    Truck,
+    User,
+    Users2
+} from "lucide-react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {
@@ -30,7 +42,12 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import AdminDashboard from "@/app/(dashboard)/admin-dashboard/page";
-import {OrdersManagement} from "@/app/(dashboard)/admin-dashboard/components/items";
+import {
+    CustomersManagement,
+    OrdersManagement,
+    ProductsManagement
+} from "@/app/(dashboard)/admin-dashboard/components/items";
+import {ModeToggle} from "@/components/mode-toggle";
 
 export function DashboardHeader() {
     const [selectedNavItem, setSelectedNavItem] = useState('Dashboard');
@@ -50,13 +67,14 @@ export function DashboardHeader() {
     };
 
     return (
-        <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <div
+            className="flex min-h-screen w-full flex-col bg-muted/40 dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2]">
             <aside
                 className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-700 bg-background sm:flex">
                 <motion.nav className="flex flex-col items-center gap-4 px-2 sm:py-5" initial="hidden" animate="visible"
                             variants={containerVariants}>
                     <Link href="#"
-                          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-default text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base">
+                          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-default text-lg font-semibold md:h-8 md:w-8 md:text-base">
                         <svg fill="none" height="36" viewBox="0 0 32 32" width="36"
                              className={"transition-all group-hover:scale-110"}>
                             <path
@@ -75,7 +93,7 @@ export function DashboardHeader() {
                                 <motion.a
                                     href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Dashboard" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Dashboard" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
                                     onClick={() => handleSidebarClick("Dashboard")}
                                 >
                                     <Home className="h-5 w-5"/>
@@ -90,10 +108,10 @@ export function DashboardHeader() {
                                 <motion.a
                                     href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Orders" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Orders" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
                                     onClick={() => handleSidebarClick("Orders")}
                                 >
-                                    <ShoppingCart className="h-5 w-5"/>
+                                    <Truck className="h-5 w-5"/>
                                     <span className="sr-only">Đơn hàng</span>
                                 </motion.a>
                             </TooltipTrigger>
@@ -105,7 +123,7 @@ export function DashboardHeader() {
                                 <motion.a
                                     href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Products" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Products" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
                                     onClick={() => handleSidebarClick("Products")}
                                 >
                                     <Package className="h-5 w-5"/>
@@ -120,7 +138,7 @@ export function DashboardHeader() {
                                 <motion.a
                                     href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Customers" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Customers" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
                                     onClick={() => handleSidebarClick("Customers")}
                                 >
                                     <Users2 className="h-5 w-5"/>
@@ -128,21 +146,6 @@ export function DashboardHeader() {
                                 </motion.a>
                             </TooltipTrigger>
                             <TooltipContent side="right">Quản lý khách</TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <motion.a
-                                    href="#"
-                                    variants={itemVariants}
-                                    className={selectedNavItem === "Analytics" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-foreground md:h-8 md:w-8'}
-                                    onClick={() => handleSidebarClick("Analytics")}
-                                >
-                                    <LineChart className="h-5 w-5"/>
-                                    <span className="sr-only">Thống kê</span>
-                                </motion.a>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Thống kê</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                 </motion.nav>
@@ -287,16 +290,6 @@ export function DashboardHeader() {
                                 </>
                             ) : null}
 
-                            {selectedNavItem === "Analytics" ? (
-                                <>
-                                    <BreadcrumbSeparator/>
-
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>Thống kê</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                </>
-                            ) : null}
-
                             {selectedNavItem === "Settings" ? (
                                 <>
                                     <BreadcrumbSeparator/>
@@ -311,7 +304,9 @@ export function DashboardHeader() {
 
                     {/* User actions */}
 
-                    <div className="relative ml-auto flex-1 md:grow-0"></div>
+                    <div className="relative ml-auto flex-1 md:grow-0">
+                        <ModeToggle/>
+                    </div>
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -322,7 +317,10 @@ export function DashboardHeader() {
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Tài khoản của bạn</DropdownMenuLabel>
+                            <DropdownMenuLabel className="text-center">
+                                {sessionStorage.getItem("username") !== null ? sessionStorage.getItem("username") : 'Guest'}
+                            </DropdownMenuLabel>
+
                             <DropdownMenuSeparator/>
 
                             <DropdownMenuItem>
@@ -336,16 +334,17 @@ export function DashboardHeader() {
                     </DropdownMenu>
                 </header>
 
-                <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
+                <main
+                    className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
                     <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-4">
                         <AnimatePresence mode="wait">
                             {selectedNavItem === "Dashboard" && (
                                 <motion.div
                                     key="dashboard"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.3 }}
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    exit={{opacity: 0}}
+                                    transition={{duration: 0.3}}
                                 >
                                     <AdminDashboard/>
                                 </motion.div>
@@ -354,12 +353,36 @@ export function DashboardHeader() {
                             {selectedNavItem === "Orders" && (
                                 <motion.div
                                     key="orders"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.3 }}
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    exit={{opacity: 0}}
+                                    transition={{duration: 0.3}}
                                 >
                                     <OrdersManagement/>
+                                </motion.div>
+                            )}
+
+                            {selectedNavItem === "Products" && (
+                                <motion.div
+                                    key="products"
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    exit={{opacity: 0}}
+                                    transition={{duration: 0.3}}
+                                >
+                                    <ProductsManagement/>
+                                </motion.div>
+                            )}
+
+                            {selectedNavItem === "Customers" && (
+                                <motion.div
+                                    key="customers"
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    exit={{opacity: 0}}
+                                    transition={{duration: 0.3}}
+                                >
+                                    <CustomersManagement/>
                                 </motion.div>
                             )}
                         </AnimatePresence>
