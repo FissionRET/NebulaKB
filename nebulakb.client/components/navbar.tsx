@@ -250,12 +250,13 @@ export default function NavigationBar(props: { auth: any }) {
 
     const logoutHandler = async () => {
         try {
-            const token = sessionStorage.getItem('token');
+            const token = localStorage.getItem('token');
 
             if (token) {
                 const message = await Logout({ token });
 
                 if (message === "success") {
+                    localStorage.clear();
                     sessionStorage.clear();
 
                     toast({

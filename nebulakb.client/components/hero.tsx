@@ -28,19 +28,19 @@ import { Badge } from "@/components/ui/badge"
 import { Heart } from "lucide-react";
 
 export default function Hero() {
-    //const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
 
-    //useEffect(() => {
-    //    const timer = setTimeout(() => {
-    //        setLoading(false);
-    //    }, 2000);
+    useEffect(() => {
+       const timer = setTimeout(() => {
+           setLoading(false);
+       }, 1000);
 
-    //    return () => clearTimeout(timer);
-    //}, []);
+       return () => clearTimeout(timer);
+    }, []);
 
-    //if (isLoading) {
-    //    return (<Loader />);
-    //}
+    if (isLoading) {
+       return (<Loader />);
+    }
 
     const images = [
         "imgs/KIT-10.jpg",

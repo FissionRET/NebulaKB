@@ -2,10 +2,12 @@
 
 // Hooks
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {cn} from "@/lib/utils"
 import Link from "next/link";
 import Image from "next/image"
+import { useRouter } from "next/navigation";
+import {AnimatePresence, motion} from "framer-motion";
 
 // Components & Icons
 
@@ -33,7 +35,6 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import {AnimatePresence, motion} from "framer-motion";
 import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuItem,
@@ -48,9 +49,13 @@ import {
     ProductsManagement
 } from "@/app/(dashboard)/admin-dashboard/components/items";
 import {ModeToggle} from "@/components/mode-toggle";
+import Logout from "@/app/auth/logout/logout";
+import {useToast} from "@/components/ui/use-toast";
 
 export function DashboardHeader() {
     const [selectedNavItem, setSelectedNavItem] = useState('Dashboard');
+    const router = useRouter();
+    const { toast, dismiss } = useToast();
 
     const containerVariants = {
         hidden: {opacity: 0},
@@ -65,6 +70,48 @@ export function DashboardHeader() {
     const handleSidebarClick = (navItem: string) => {
         setSelectedNavItem(navItem);
     };
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && localStorage.getItem('token') === null) {
+            router.push("/auth/login");
+        }
+    }, []);
+
+    const logoutHandler = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            if (token !== null) {
+                const message = await Logout({ token });
+
+                if (message === "success") {
+                    localStorage.clear();
+                    sessionStorage.clear();
+
+                    toast({
+                        title: "Đăng xuất thành công !",
+                        description: "Trình xử lý ủy quyền / Next.js (turbo)",
+                    });
+
+                    setTimeout(() => {
+                        dismiss();
+                        router.push("/auth/login");
+                    }, 2000);
+                }
+            }
+        } catch (err) {
+            console.error('Error: ', err);
+
+            toast({
+                title: "Có lỗi không xác định xảy ra !",
+                description: "Trình xử lý ủy quyền / Next.js (turbo)",
+            });
+
+            setTimeout(() => {
+                dismiss();
+            }, 2000);
+        }
+    }
 
     return (
         <div
@@ -327,7 +374,7 @@ export function DashboardHeader() {
                                 <Info className="mr-2 h-4 w-4"/> Trang cá nhân
                             </DropdownMenuItem>
 
-                            <DropdownMenuItem className="text-danger">
+                            <DropdownMenuItem className="text-danger" onClick={logoutHandler}>
                                 <LogOut className="mr-2 h-4 w-4"/> Đăng xuất
                             </DropdownMenuItem>
                         </DropdownMenuContent>

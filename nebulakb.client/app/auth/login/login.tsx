@@ -39,7 +39,7 @@ export default function LoginForm() {
 
             if (resp.status === 200) {
                 sessionStorage.setItem("user_id", data.id);
-                sessionStorage.setItem("token", data.token);
+                localStorage.setItem("token", data.token);
                 sessionStorage.setItem("username", data.username);
             }
 

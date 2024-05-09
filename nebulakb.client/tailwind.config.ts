@@ -1,7 +1,8 @@
-import type { Config } from "tailwindcss"
+import type {Config} from "tailwindcss"
 
-import { nextui } from "@nextui-org/react"
+import {nextui} from "@nextui-org/react"
 import svgToDataUri from 'mini-svg-data-uri'
+
 const {
     default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -27,28 +28,38 @@ const config = {
         extend: {
             keyframes: {
                 "accordion-down": {
-                    from: { height: "0" },
-                    to: { height: "var(--radix-accordion-content-height)" },
+                    from: {height: "0"},
+                    to: {height: "var(--radix-accordion-content-height)"},
                 },
                 "accordion-up": {
-                    from: { height: "var(--radix-accordion-content-height)" },
-                    to: { height: "0" },
+                    from: {height: "var(--radix-accordion-content-height)"},
+                    to: {height: "0"},
                 },
                 meteor: {
-                    "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
-                    "70%": { opacity: "1" },
+                    "0%": {transform: "rotate(215deg) translateX(0)", opacity: "1"},
+                    "70%": {opacity: "1"},
                     "100%": {
                         transform: "rotate(215deg) translateX(-500px)",
                         opacity: "0",
                     },
                 },
                 "collapsible-down": {
-                    from: { height: "0" },
-                    to: { height: "var(--radix-collapsible-content-height)" },
+                    from: {height: "0"},
+                    to: {height: "var(--radix-collapsible-content-height)"},
                 },
                 "collapsible-up": {
-                    from: { height: "var(--radix-collapsible-content-height)" },
-                    to: { height: "0" },
+                    from: {height: "var(--radix-collapsible-content-height)"},
+                    to: {height: "0"},
+                },
+                "spotlight": {
+                    "0%": {
+                        opacity: "0",
+                        transform: "translate(-72%, -62%) scale(0.5)",
+                    },
+                    "100%": {
+                        opacity: "1",
+                        transform: "translate(-50%,-40%) scale(1)",
+                    },
                 },
             },
             animation: {
@@ -57,13 +68,14 @@ const config = {
                 "meteor-effect": "meteor 5s linear infinite",
                 "collapsible-down": "collapsible-down 0.2s ease-out",
                 "collapsible-up": "collapsible-up 0.2s ease-out",
+                "spotlight": "spotlight 2s ease .75s 1 forwards",
             },
         },
     },
     plugins: [
         nextui(),
         require("tailwindcss-animate"),
-        function ({ matchUtilities, theme }: any) {
+        function ({matchUtilities, theme}: any) {
             matchUtilities(
                 {
                     "bg-grid": (value: any) => ({
@@ -82,7 +94,7 @@ const config = {
                         )}")`,
                     }),
                 },
-                { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
+                {values: flattenColorPalette(theme("backgroundColor")), type: "color"}
             );
         },
     ],

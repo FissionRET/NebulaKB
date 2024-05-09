@@ -1,5 +1,4 @@
-﻿
-// Next components
+﻿// Next components
 
 import Link from "next/link"
 

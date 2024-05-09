@@ -12,7 +12,7 @@ export default async function Logout({ token }: LogoutProps): Promise<string> {
 
         try {
             if (!token) {
-                console.error('Token is undefined');
+                return console.error('Token is undefined');
             }
 
             const resp = await axios.post(

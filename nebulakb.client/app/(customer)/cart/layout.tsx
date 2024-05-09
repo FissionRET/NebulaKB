@@ -16,7 +16,7 @@ export default function CartLayout({ children }: { children: React.ReactNode }) 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const token = sessionStorage.getItem('token');
+                const token = localStorage.getItem('token');
 
                 if (token) {
                     const isAuth = await CheckAuthorization({ token });
@@ -35,12 +35,18 @@ export default function CartLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <div className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
-            <Navbar auth={auth} />
+            {auth ? (
+                <>
+                    <Navbar auth={auth} />
 
-            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}
-            </main>
+                    <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}
+                    </main>
 
-            <Footer />
+                    <Footer />
+                </>
+            ) : (
+                <h1 className="mx-auto">Bạn chưa đăng nhập</h1>
+            )}
         </div>
     );
 }

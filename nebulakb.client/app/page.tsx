@@ -19,7 +19,7 @@ export default function Home() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const token = sessionStorage.getItem('token');
+                const token = localStorage.getItem('token');
 
                 if (token) {
                     const isAuth = await CheckAuthorization({ token });
