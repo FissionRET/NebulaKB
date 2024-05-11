@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import {cn} from "@/lib/utils"
 import Link from "next/link";
 import Image from "next/image"
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import {AnimatePresence, motion} from "framer-motion";
 
 // Components & Icons
@@ -23,6 +23,7 @@ import {
     ShoppingCart,
     Truck,
     User,
+    UserRoundCog,
     Users2
 } from "lucide-react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
@@ -44,7 +45,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import AdminDashboard from "@/app/(dashboard)/admin-dashboard/page";
 import {
-    CustomersManagement,
+    CustomersManagement, EmployeesManagement,
     OrdersManagement,
     ProductsManagement
 } from "@/app/(dashboard)/admin-dashboard/components/items";
@@ -55,7 +56,7 @@ import {useToast} from "@/components/ui/use-toast";
 export function DashboardHeader() {
     const [selectedNavItem, setSelectedNavItem] = useState('Dashboard');
     const router = useRouter();
-    const { toast, dismiss } = useToast();
+    const {toast, dismiss} = useToast();
 
     const containerVariants = {
         hidden: {opacity: 0},
@@ -82,7 +83,7 @@ export function DashboardHeader() {
             const token = localStorage.getItem('token');
 
             if (token !== null) {
-                const message = await Logout({ token });
+                const message = await Logout({token});
 
                 if (message === "success") {
                     localStorage.clear();
@@ -120,7 +121,7 @@ export function DashboardHeader() {
                 className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-slate-700 bg-background sm:flex">
                 <motion.nav className="flex flex-col items-center gap-4 px-2 sm:py-5" initial="hidden" animate="visible"
                             variants={containerVariants}>
-                    <Link href="#"
+                    <Link href="/"
                           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-default text-lg font-semibold md:h-8 md:w-8 md:text-base">
                         <svg fill="none" height="36" viewBox="0 0 32 32" width="36"
                              className={"transition-all group-hover:scale-110"}>
@@ -138,9 +139,8 @@ export function DashboardHeader() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <motion.a
-                                    href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Dashboard" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Dashboard" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8 cursor-pointer'}
                                     onClick={() => handleSidebarClick("Dashboard")}
                                 >
                                     <Home className="h-5 w-5"/>
@@ -153,9 +153,8 @@ export function DashboardHeader() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <motion.a
-                                    href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Orders" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Orders" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8 cursor-pointer'}
                                     onClick={() => handleSidebarClick("Orders")}
                                 >
                                     <Truck className="h-5 w-5"/>
@@ -168,9 +167,8 @@ export function DashboardHeader() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <motion.a
-                                    href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Products" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Products" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8 cursor-pointer'}
                                     onClick={() => handleSidebarClick("Products")}
                                 >
                                     <Package className="h-5 w-5"/>
@@ -183,9 +181,8 @@ export function DashboardHeader() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <motion.a
-                                    href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Customers" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8'}
+                                    className={selectedNavItem === "Customers" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8 cursor-pointer'}
                                     onClick={() => handleSidebarClick("Customers")}
                                 >
                                     <Users2 className="h-5 w-5"/>
@@ -193,6 +190,20 @@ export function DashboardHeader() {
                                 </motion.a>
                             </TooltipTrigger>
                             <TooltipContent side="right">Quản lý khách</TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <motion.a
+                                    variants={itemVariants}
+                                    className={selectedNavItem === "Employees" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:text-foreground md:h-8 md:w-8 cursor-pointer'}
+                                    onClick={() => handleSidebarClick("Employees")}
+                                >
+                                    <UserRoundCog className="h-5 w-5"/>
+                                    <span className="sr-only">Nhân viên</span>
+                                </motion.a>
+                            </TooltipTrigger>
+                            <TooltipContent side="right">Quản lý nhân viên</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                 </motion.nav>
@@ -202,16 +213,15 @@ export function DashboardHeader() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <motion.a
-                                    href="#"
                                     variants={itemVariants}
-                                    className={selectedNavItem === "Settings" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-foreground md:h-8 md:w-8'}
-                                    onClick={() => handleSidebarClick("Settings")}
+                                    className={selectedNavItem === "Logout" ? "flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:text-foreground md:h-8 md:w-8" : 'flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:text-danger md:h-8 md:w-8 cursor-pointer'}
+                                    onClick={logoutHandler}
                                 >
-                                    <Settings className="h-5 w-5"/>
-                                    <span className="sr-only">Tùy chỉnh</span>
+                                    <LogOut className="h-4 w-4"/>
+                                    <span className="sr-only">Logout</span>
                                 </motion.a>
                             </TooltipTrigger>
-                            <TooltipContent side="right">Tùy chỉnh</TooltipContent>
+                            <TooltipContent side="right">Đăng xuất</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
                 </nav>
@@ -280,16 +290,8 @@ export function DashboardHeader() {
                                     href="#"
                                     className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                                 >
-                                    <LineChart className="h-5 w-5"/>
-                                    Thống kê
-                                </Link>
-
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Settings className="h-5 w-5"/>
-                                    Tùy chỉnh
+                                    <UserRoundCog className="h-5 w-5"/>
+                                    Quản lý nhân viên
                                 </Link>
                             </nav>
                         </SheetContent>
@@ -337,12 +339,12 @@ export function DashboardHeader() {
                                 </>
                             ) : null}
 
-                            {selectedNavItem === "Settings" ? (
+                            {selectedNavItem === "Employees" ? (
                                 <>
                                     <BreadcrumbSeparator/>
 
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>Tùy chỉnh</BreadcrumbPage>
+                                        <BreadcrumbPage>Quản lý nhân viên</BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </>
                             ) : null}
@@ -372,10 +374,6 @@ export function DashboardHeader() {
 
                             <DropdownMenuItem>
                                 <Info className="mr-2 h-4 w-4"/> Trang cá nhân
-                            </DropdownMenuItem>
-
-                            <DropdownMenuItem className="text-danger" onClick={logoutHandler}>
-                                <LogOut className="mr-2 h-4 w-4"/> Đăng xuất
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -430,6 +428,18 @@ export function DashboardHeader() {
                                     transition={{duration: 0.3}}
                                 >
                                     <CustomersManagement/>
+                                </motion.div>
+                            )}
+
+                            {selectedNavItem === "Employees" && (
+                                <motion.div
+                                    key="employees"
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    exit={{opacity: 0}}
+                                    transition={{duration: 0.3}}
+                                >
+                                    <EmployeesManagement/>
                                 </motion.div>
                             )}
                         </AnimatePresence>

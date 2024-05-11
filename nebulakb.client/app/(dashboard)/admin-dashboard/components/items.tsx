@@ -1,6 +1,7 @@
 // Hooks & functions
 
 import Link from "next/link";
+import { useState } from "react";
 
 // Components
 
@@ -38,7 +39,7 @@ import {Pagination, PaginationContent, PaginationItem} from "@/components/ui/pag
 import ProductsTable from "@/app/(dashboard)/admin-dashboard/components/products/products-table";
 import OrdersTable from "@/app/(dashboard)/admin-dashboard/components/orders/orders-table";
 import CustomersTable from "@/app/(dashboard)/admin-dashboard/components/customers/customers-table";
-import { useState } from "react";
+import EmployeesTable from "@/app/(dashboard)/admin-dashboard/components/employees/employees-table";
 
 export const OrdersManagement = () => {
     const [copied, setCopied] = useState(false);
@@ -409,6 +410,31 @@ export const CustomersManagement = () => {
 
                 <CardContent>
                     <CustomersTable/>
+                </CardContent>
+            </Card>
+        </>
+    )
+}
+
+export const EmployeesManagement = () => {
+    return (
+        <>
+            <Card className="mt-4">
+                <CardHeader className="flex flex-row items-center">
+                    <div className="grid gap-2">
+                        <CardTitle>Danh sách nhân viên</CardTitle>
+                        <CardDescription>
+                            Tất cả các nhân viên đang hoạt động tại shop
+                        </CardDescription>
+                    </div>
+
+                    <div className="ml-auto mr-4 gap-1">
+                        <UserRoundSearch className="h-10 w-10"/>
+                    </div>
+                </CardHeader>
+
+                <CardContent>
+                    <EmployeesTable/>
                 </CardContent>
             </Card>
         </>

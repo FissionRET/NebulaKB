@@ -45,19 +45,19 @@ import {cn} from "@/lib/utils";
 import {Calendar} from "@/components/ui/calendar";
 import {format} from "date-fns"
 
-export type Customers = {
+export type Employees = {
     id: string
-    customer: string
+    employee: string
     email: string
     gender: "Nam" | "Nữ"
     DoB: string
     phone: string
     address: string
-    rank: string
-    point: number
+    optIn: string
+    optOut: string
 }
 
-export const columns: ColumnDef<Customers>[] = [
+export const columns: ColumnDef<Employees>[] = [
     {
         id: "select",
         header: ({table}) => (
@@ -81,7 +81,7 @@ export const columns: ColumnDef<Customers>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "customer",
+        accessorKey: "employee",
         header: "Họ tên"
     },
     {
@@ -188,24 +188,24 @@ export const columns: ColumnDef<Customers>[] = [
         }
     },
     {
-        accessorKey: "rank",
+        accessorKey: "optIn",
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Hạng / Rank"/>
+            <DataTableColumnHeader column={column} title="Ngày vào làm"/>
         ),
         cell: ({row}) => {
             return (
-                <Badge variant="outline">{row.getValue("rank")}</Badge>
+                <Badge variant="secondary">{row.getValue("optIn")}</Badge>
             );
         }
     },
     {
-        accessorKey: "point",
+        accessorKey: "optOut",
         header: ({column}) => (
-            <DataTableColumnHeader column={column} title="Điểm thưởng"/>
+            <DataTableColumnHeader column={column} title="Ngày nghỉ việc"/>
         ),
         cell: ({row}) => {
             return (
-                <Badge>{row.getValue("point")}pt</Badge>
+                <Badge variant="secondary">{row.getValue("optOut")}</Badge>
             );
         }
     },
@@ -213,9 +213,10 @@ export const columns: ColumnDef<Customers>[] = [
         id: "actions",
         header: "Thao tác",
         cell: ({row}) => {
-            const user = row.original
-            const [gender, setGender] = useState<string>(user.gender);
-            const [rank, setRank] = useState<string>(user.rank);
+            const employee = row.original
+            const [gender, setGender] = useState<string>(employee.gender);
+            const [optIn, setOptIn] = useState<Date>()
+            const [optOut, setOptOut] = useState<Date>()
 
             const genders = [
                 {
@@ -228,27 +229,12 @@ export const columns: ColumnDef<Customers>[] = [
                 }
             ];
 
-            const ranks = [
-                {
-                    value: "0",
-                    label: "Hội viên thường"
-                },
-                {
-                    value: "1",
-                    label: "Thành viên vàng"
-                },
-                {
-                    value: "2",
-                    label: "Thành viên kim cương"
-                }
-            ];
-
             return (
                 <div className="grid grid-cols-3 gap-6">
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <Button variant="outline" onClick={() => navigator.clipboard.writeText(user.id)}>
+                                <Button variant="outline" onClick={() => navigator.clipboard.writeText(employee.id)}>
                                     <Copy className="h-4 w-4"/>
                                 </Button>
                             </TooltipTrigger>
@@ -278,12 +264,12 @@ export const columns: ColumnDef<Customers>[] = [
 
                                 <div className="grid gap-4 py-4">
                                     <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="customer" className="text-right">
+                                        <Label htmlFor="employee" className="text-right">
                                             Họ tên
                                         </Label>
                                         <Input
-                                            id="customer"
-                                            defaultValue={user.customer}
+                                            id="employee"
+                                            defaultValue={employee.employee}
                                             className="col-span-3"
                                         />
                                     </div>
@@ -294,7 +280,7 @@ export const columns: ColumnDef<Customers>[] = [
                                         </Label>
                                         <Input
                                             id="email"
-                                            defaultValue={user.email}
+                                            defaultValue={employee.email}
                                             type="email"
                                             className="col-span-3"
                                         />
@@ -325,7 +311,7 @@ export const columns: ColumnDef<Customers>[] = [
                                         </Label>
                                         <Input
                                             id="phone"
-                                            defaultValue={user.phone}
+                                            defaultValue={employee.phone}
                                             type="number"
                                             className="col-span-3"
                                         />
@@ -337,40 +323,73 @@ export const columns: ColumnDef<Customers>[] = [
                                         </Label>
                                         <Textarea
                                             id="address"
-                                            defaultValue={user.address}
+                                            defaultValue={employee.address}
                                             className="col-span-3"
                                         />
                                     </div>
 
                                     <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="rank" className="text-right">
-                                            Hạng thành viên
+                                        <Label htmlFor="optIn" className="text-right">
+                                            Ngày vào làm
                                         </Label>
 
-                                        <Select onValueChange={e => setGender(e.valueOf())}>
-                                            <SelectTrigger className="col-span-3">
-                                                <SelectValue placeholder="Thay đổi hạng"/>
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    {ranks.map((rank) => (
-                                                        <SelectItem value={rank.value}>{rank.label}</SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "col-span-3 justify-start text-left font-normal",
+                                                        !optIn && "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    {optIn ? format(optIn, "dd/MM/yyyy") : <span>Chọn ngày</span>}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="p-0">
+                                                <Calendar
+                                                    mode="single"
+                                                    captionLayout="dropdown-buttons"
+                                                    fromYear={2000}
+                                                    toYear={2024}
+                                                    selected={optIn}
+                                                    onSelect={setOptIn}
+                                                    initialFocus
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
                                     </div>
 
                                     <div className="grid grid-cols-4 items-center gap-4">
                                         <Label htmlFor="point" className="text-right">
-                                            Điểm thưởng
+                                            Ngày nghỉ việc
                                         </Label>
-                                        <Input
-                                            id="point"
-                                            defaultValue={user.point}
-                                            type="number"
-                                            className="col-span-3"
-                                        />
+                                        
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "col-span-3 justify-start text-left font-normal",
+                                                        !optOut && "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    {optOut ? format(optOut, "dd/MM/yyyy") : <span>Chọn ngày</span>}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="p-0">
+                                                <Calendar
+                                                    mode="single"
+                                                    captionLayout="dropdown-buttons"
+                                                    fromYear={2000}
+                                                    toYear={2024}
+                                                    selected={optOut}
+                                                    onSelect={setOptOut}
+                                                    initialFocus
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
                                     </div>
                                 </div>
 
@@ -415,32 +434,6 @@ export const columns: ColumnDef<Customers>[] = [
                         </DialogContent>
                     </Dialog>
                 </div>
-
-                // <DropdownMenu>
-                //     <DropdownMenuTrigger asChild>
-                //         <Button variant="ghost" className="h-8 w-8 p-0">
-                //             <span className="sr-only">Open actions menu</span>
-                //             <MoreHorizontal className="h-4 w-4"/>
-                //         </Button>
-                //     </DropdownMenuTrigger>
-                //     <DropdownMenuContent align="end">
-                //         <DropdownMenuLabel className="text-center">Thao tác</DropdownMenuLabel>
-                //         <DropdownMenuSeparator/>
-                //         <DropdownMenuItem
-                //             onClick={() => navigator.clipboard.writeText(user.id)}
-                //         >
-                //             <Copy className="mr-2 h-4 w-4"/> Copy ID
-                //         </DropdownMenuItem>
-                //
-                //         <DropdownMenuItem>
-                //             <FilePenLine className="mr-2 h-4 w-4"/> Chỉnh sửa
-                //         </DropdownMenuItem>
-                //
-                //         <DropdownMenuItem className="text-danger">
-                //             <UserRoundX className="mr-2 h-4 w-4"/> Đình chỉ
-                //         </DropdownMenuItem>
-                //     </DropdownMenuContent>
-                // </DropdownMenu>
             )
         }
     }
