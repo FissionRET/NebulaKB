@@ -13,6 +13,7 @@
     <TypeScriptConfiguration Remove="middleware\**" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="components\cart\" />
     <Folder Include="components\ui\" />
   </ItemGroup>
 </Project>

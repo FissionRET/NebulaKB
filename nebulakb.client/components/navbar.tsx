@@ -283,7 +283,7 @@ export default function NavigationBar(props: { auth: any }) {
             }, 2000);
         }
     }
-    
+
     const roleHandler = async () => {
         const resp = await axios.post("http://localhost:1337/permission/check-permission",
             {
@@ -295,12 +295,12 @@ export default function NavigationBar(props: { auth: any }) {
                 }
             }
         );
-        
+
         if(resp.status === 200) {
             setUserRole(resp.data.role);
         }
     }
-    
+
     if (!props.auth) {
         authorizedItems = (
             <motion.div
@@ -339,7 +339,7 @@ export default function NavigationBar(props: { auth: any }) {
                 >
                     <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Thông tin của bạn">
                         <NavbarItem>
-                            <DropdownMenu>                                
+                            <DropdownMenu>
                                 <DropdownMenuTrigger asChild onClick={roleHandler}>
                                     <Button variant="outline">
                                         <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : 'Guest'}

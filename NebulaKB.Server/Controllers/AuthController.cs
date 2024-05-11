@@ -5,6 +5,7 @@ using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Text;
 
 namespace NebulaKB.Server.Controllers
 {
@@ -42,6 +43,7 @@ namespace NebulaKB.Server.Controllers
             }
 
             var token = jwtServices.Generate(isExist);
+            
             return Ok(new
             {
                 isExist.Id,

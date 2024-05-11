@@ -34,13 +34,11 @@ export default function LoginForm() {
                     withCredentials: true,
                 }
             );
-
-            const data = resp.data;
-
-            if (resp.status === 200) {
-                sessionStorage.setItem("user_id", data.id);
-                localStorage.setItem("token", data.token);
-                sessionStorage.setItem("username", data.username);
+            
+            if(resp.status === 200) {
+                sessionStorage.setItem("user_id", resp.data.id);
+                localStorage.setItem("token", resp.data.token);
+                sessionStorage.setItem("username", resp.data.username);
             }
 
             toast({
