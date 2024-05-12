@@ -1,10 +1,10 @@
 ﻿'use client'
 
 import {Spotlight} from "@/components/custom/spotlight";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button, buttonVariants} from "@/components/ui/button";
 import {RotateCcw} from "lucide-react";
 import {SparklesCore} from "@/components/custom/sparkles";
+import {ErrorCard} from "@/components/error-card";
 
 export default function GlobalError({error, reset,}: {
     error: Error & { digest?: string }
@@ -32,18 +32,8 @@ export default function GlobalError({error, reset,}: {
                         className="-top-40 left-0 md:left-60 md:-top-20"
                         fill="white"
                     />
-                    <Card className="mx-auto max-w-sm relative z-20">
-                        <CardHeader>
-                            <CardTitle className="text-6xl text-center">Đã xảy ra sự cố</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid gap-4">
-                                <Button onClick={() => reset()} className={buttonVariants({variant: "default"})}>
-                                    <RotateCcw className="mr-2 h-4 w-4"/> Hãy thử lại
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
+
+                    <ErrorCard title="Có lỗi xảy ra" description="Lỗi không xác định xảy ra vui lòng thử lại" retryLink="/" retryLinkText="Trở về trang chủ"/>
                 </div>
             </body>
         </html>

@@ -17,22 +17,22 @@ import {ArrowLeft} from "lucide-react";
 import Link from "next/link"
 
 export default function CartLayout({children}: { children: React.ReactNode }) {
-    const [auth, setAuth] = useState<boolean>(false);
+    const [auth, setAuth] = useState<boolean>(true);
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = await localStorage.getItem('token');
 
                 if (token) {
                     const isAuth = await CheckAuthorization({token});
-                    setAuth(isAuth);
+                    await setAuth(isAuth);
                 } else {
-                    setAuth(false);
+                    await setAuth(false);
                 }
             } catch (err) {
                 console.error('Authentication error: ', err);
-                setAuth(false);
+                await setAuth(false);
             }
         };
 
@@ -86,8 +86,7 @@ export default function CartLayout({children}: { children: React.ReactNode }) {
                 <Navbar auth={auth}/>
 
                 <main
-                    className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}
-                </main>
+                    className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}</main>
 
                 <Footer/>
             </div>

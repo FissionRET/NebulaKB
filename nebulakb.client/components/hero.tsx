@@ -276,7 +276,7 @@ export default function Hero() {
                                     </div>
 
 
-                                    <Link href="/" className="text-sm border font-light dark:border-white/[0.2] border-black/[0.2] rounded-full mt-4 text-black dark:text-white px-2 py-0.5">
+                                    <Link href="/product/Wikuo-Fuyu-Switch" className="text-sm border font-light dark:border-white/[0.2] border-black/[0.2] rounded-full mt-4 text-black dark:text-white px-2 py-0.5">
                                         Mua ngay
                                     </Link>
                                 </div>

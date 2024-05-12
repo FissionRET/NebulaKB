@@ -23,13 +23,13 @@ export default function Home() {
 
                 if (token) {
                     const isAuth = await CheckAuthorization({ token });
-                    setAuth(isAuth);
+                    await setAuth(isAuth);
                 } else {
-                    setAuth(false);
+                    await setAuth(false);
                 }
             } catch (err) {
                 console.error('Authentication error: ', err);
-                setAuth(false);
+                await setAuth(false);
             }
         };
 

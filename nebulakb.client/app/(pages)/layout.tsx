@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 // Hooks
 
@@ -10,7 +10,7 @@ import CheckAuthorization from '@/app/handlers/userinfo/get'
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
-export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+export default function PagesLayout({ children }: { children: React.ReactNode }) {
     const [auth, setAuth] = useState<boolean>(false);
 
     useEffect(() => {

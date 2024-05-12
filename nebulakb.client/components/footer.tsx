@@ -42,15 +42,15 @@ export default function Footer() {
             <Separator className="my-4" />
 
             <div className="flex h-5 items-center space-x-4 text-sm">
-                <Link href="/" className={buttonVariants({ variant: "outline" })}>FAQ</Link>
+                <Link href="/faq" className={buttonVariants({ variant: "outline" })}>FAQ</Link>
 
                 <Separator orientation="vertical" />
 
-                <Link href="/" className={buttonVariants({ variant: "outline" })}>Chính sách vận chuyển</Link>
+                <Link href="/shipping-policy" className={buttonVariants({ variant: "outline" })}>Chính sách vận chuyển</Link>
 
                 <Separator orientation="vertical" />
 
-                <Link href="/" className={buttonVariants({ variant: "outline" })}>Hỗ trợ</Link>
+                <Link href="/contact" className={buttonVariants({ variant: "outline" })}>Hỗ trợ</Link>
             </div>
 
             <div className="w-10 h-10" style={{ position: 'fixed', bottom: '30px', right: '38px', margin: 'auto' }}>
