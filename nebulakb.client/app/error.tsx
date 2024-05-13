@@ -1,8 +1,6 @@
 ﻿'use client'
 
 import {Spotlight} from "@/components/custom/spotlight";
-import {Button, buttonVariants} from "@/components/ui/button";
-import {RotateCcw} from "lucide-react";
 import {SparklesCore} from "@/components/custom/sparkles";
 import {ErrorCard} from "@/components/error-card";
 
@@ -29,8 +27,9 @@ export default function Error({error, reset,}: {
                 className="-top-40 left-0 md:left-60 md:-top-20"
                 fill="white"
             />
-            
-            <ErrorCard title="Có lỗi xảy ra" description="Lỗi không xác định xảy ra vui lòng thử lại" retryLink="/" retryLinkText="Trở về trang chủ"/>
+
+            <ErrorCard title="Có lỗi xảy ra" description="Lỗi không xác định xảy ra vui lòng thử lại" retryLink="/"
+                       retryLinkText="Trở về trang chủ"/>
         </div>
     )
 }

@@ -1,24 +1,17 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import React, {
-    createContext,
-    useState,
-    useContext,
-    useRef,
-    useEffect,
-} from "react";
+import {cn} from "@/lib/utils";
+import React, {createContext, useContext, useEffect, useRef, useState,} from "react";
 
 const MouseEnterContext = createContext<
     [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
 >(undefined);
 
 export const CardContainer = ({
-    children,
-    className,
-    containerClassName,
-}: {
+                                  children,
+                                  className,
+                                  containerClassName,
+                              }: {
     children?: React.ReactNode;
     className?: string;
     containerClassName?: string;
@@ -28,7 +21,7 @@ export const CardContainer = ({
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!containerRef.current) return;
-        const { left, top, width, height } =
+        const {left, top, width, height} =
             containerRef.current.getBoundingClientRect();
         const x = (e.clientX - left - width / 2) / 25;
         const y = (e.clientY - top - height / 2) / 25;
@@ -77,9 +70,9 @@ export const CardContainer = ({
 };
 
 export const CardBody = ({
-    children,
-    className,
-}: {
+                             children,
+                             className,
+                         }: {
     children: React.ReactNode;
     className?: string;
 }) => {
@@ -96,17 +89,17 @@ export const CardBody = ({
 };
 
 export const CardItem = ({
-    as: Tag = "div",
-    children,
-    className,
-    translateX = 0,
-    translateY = 0,
-    translateZ = 0,
-    rotateX = 0,
-    rotateY = 0,
-    rotateZ = 0,
-    ...rest
-}: {
+                             as: Tag = "div",
+                             children,
+                             className,
+                             translateX = 0,
+                             translateY = 0,
+                             translateZ = 0,
+                             rotateX = 0,
+                             rotateY = 0,
+                             rotateZ = 0,
+                             ...rest
+                         }: {
     as?: React.ElementType;
     children: React.ReactNode;
     className?: string;

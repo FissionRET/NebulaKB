@@ -62,8 +62,8 @@ const config = {
                     },
                 },
                 "shine": {
-                    from: { backgroundPosition: '200% 0' },
-                    to: { backgroundPosition: '-200% 0' },
+                    from: {backgroundPosition: '200% 0'},
+                    to: {backgroundPosition: '-200% 0'},
                 },
             },
             animation: {

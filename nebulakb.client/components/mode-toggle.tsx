@@ -1,25 +1,21 @@
 // React hooks
 
-import { useState, useEffect } from "react"
+import {useEffect, useState} from "react"
 
 // Icons
-
-import { Moon, Sun } from "lucide-react"
+import {Moon, Sun} from "lucide-react"
 
 // UI Components
-
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 
 // Components
-
-import { useTheme } from "next-themes"
+import {useTheme} from "next-themes"
 
 // Utils
-
-import { AnimatePresence, motion } from "framer-motion"
+import {AnimatePresence, motion} from "framer-motion"
 
 export function ModeToggle() {
-    const { theme, setTheme } = useTheme()
+    const {theme, setTheme} = useTheme()
     const [icon, setIcon] = useState('sun');
 
     useEffect(() => {
@@ -46,20 +42,20 @@ export function ModeToggle() {
                 {icon === "moon" ? (
                     <motion.div
                         key="moon"
-                        initial={{ opacity: 0, x: '-100%' }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: '-100%' }}
+                        initial={{opacity: 0, x: '-100%'}}
+                        animate={{opacity: 1, x: 0}}
+                        exit={{opacity: 0, x: '-100%'}}
                     >
-                        <Moon className="h-[1.2rem] w-[1.2rem]" />
+                        <Moon className="h-[1.2rem] w-[1.2rem]"/>
                     </motion.div>
                 ) : (
                     <motion.div
                         key="sun"
-                        initial={{ opacity: 0, x: '100%' }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: '100%' }}
+                        initial={{opacity: 0, x: '100%'}}
+                        animate={{opacity: 1, x: 0}}
+                        exit={{opacity: 0, x: '100%'}}
                     >
-                        <Sun className="h-[1.2rem] w-[1.2rem]" />
+                        <Sun className="h-[1.2rem] w-[1.2rem]"/>
                     </motion.div>
                 )}
             </AnimatePresence>

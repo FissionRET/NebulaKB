@@ -3,7 +3,7 @@ using NTJson = Newtonsoft.Json;
 
 namespace NebulaKB.Server.Models;
 
-public partial class OrderDetail
+public class OrderDetail
 {
     public string OrderId { get; set; } = null!;
 
@@ -11,11 +11,7 @@ public partial class OrderDetail
 
     public int? Quantity { get; set; }
 
-    [JsonIgnore]
-    [NTJson.JsonIgnore]
-    public virtual Order Order { get; set; } = null!;
+    [JsonIgnore] [NTJson.JsonIgnore] public virtual Order Order { get; set; } = null!;
 
-    [JsonIgnore]
-    [NTJson.JsonIgnore]
-    public virtual Product ProductNavigation { get; set; } = null!;
+    [JsonIgnore] [NTJson.JsonIgnore] public virtual Product ProductNavigation { get; set; } = null!;
 }

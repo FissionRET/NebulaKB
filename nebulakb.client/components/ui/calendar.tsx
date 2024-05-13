@@ -1,20 +1,20 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import { DayPicker } from "react-day-picker"
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react"
+import {DayPicker} from "react-day-picker"
+import {cn} from "@/lib/utils"
+import {buttonVariants} from "@/components/ui/button"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 function Calendar({
-    className,
-    classNames,
-    showOutsideDays = true,
-    ...props
-}: CalendarProps & { onChange?: React.ChangeEventHandler<HTMLSelectElement> }) {
+                      className,
+                      classNames,
+                      showOutsideDays = true,
+                      ...props
+                  }: CalendarProps & { onChange?: React.ChangeEventHandler<HTMLSelectElement> }) {
 
     const handleCalendarChange = (_value: string | number, _e: React.ChangeEventHandler<HTMLSelectElement>) => {
         const _event = {
@@ -43,7 +43,7 @@ function Calendar({
                 vhidden: "hidden [.is-between_&]:flex [.is-end_&]:flex [.is-start.is-end_&]:hidden",
                 nav: "flex items-center [&:has([name='previous-month'])]:order-first [&:has([name='next-month'])]:order-last gap-1",
                 nav_button: cn(
-                    buttonVariants({ variant: "outline" }),
+                    buttonVariants({variant: "outline"}),
                     "h-7 w-7 bg-transparent p-0 text-muted-foreground"
                 ),
                 nav_button_previous: 'absolute left-1',
@@ -59,7 +59,7 @@ function Calendar({
                         : "[&:has([aria-selected])]:rounded-md"
                 ),
                 day: cn(
-                    buttonVariants({ variant: "ghost" }),
+                    buttonVariants({variant: "ghost"}),
                     "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
                 ),
                 day_range_start: "day-range-start",
@@ -73,9 +73,9 @@ function Calendar({
                 day_hidden: "invisible",
             }}
             components={{
-                IconLeft: ({ ...props }) => <ChevronLeftIcon className="h-4 w-4" />,
-                IconRight: ({ ...props }) => <ChevronRightIcon className="h-4 w-4" />,
-                Dropdown: ({ ...props }) => (
+                IconLeft: ({...props}) => <ChevronLeftIcon className="h-4 w-4"/>,
+                IconRight: ({...props}) => <ChevronRightIcon className="h-4 w-4"/>,
+                Dropdown: ({...props}) => (
                     <Select
                         {...props}
                         onValueChange={(value) => {
@@ -85,13 +85,16 @@ function Calendar({
                         }}
                         value={props.value as string}
                     >
-                        <SelectTrigger className={cn(buttonVariants({ variant: "ghost" }), "pl-2 pr-1 py-2 h-7 w-fit font-medium [.is-between_&]:hidden [.is-end_&]:hidden [.is-start.is-end_&]:flex")}>
-                            <SelectValue placeholder={props?.caption} >{props?.caption}</SelectValue>
+                        <SelectTrigger
+                            className={cn(buttonVariants({variant: "ghost"}), "pl-2 pr-1 py-2 h-7 w-fit font-medium [.is-between_&]:hidden [.is-end_&]:hidden [.is-start.is-end_&]:flex")}>
+                            <SelectValue placeholder={props?.caption}>{props?.caption}</SelectValue>
                         </SelectTrigger>
-                        <SelectContent className="max-h-[var(--radix-popper-available-height);] overflow-y-auto scrolling-auto min-w-[var(--radix-popper-anchor-width)]">
+                        <SelectContent
+                            className="max-h-[var(--radix-popper-available-height);] overflow-y-auto scrolling-auto min-w-[var(--radix-popper-anchor-width)]">
                             {props.children &&
                                 React.Children.map(props.children, (child) =>
-                                    <SelectItem value={(child as React.ReactElement<any>)?.props?.value} className="min-w-[var(--radix-popper-anchor-width)]">{(child as React.ReactElement<any>)?.props?.children}</SelectItem>
+                                    <SelectItem value={(child as React.ReactElement<any>)?.props?.value}
+                                                className="min-w-[var(--radix-popper-anchor-width)]">{(child as React.ReactElement<any>)?.props?.children}</SelectItem>
                                 )
                             }
                         </SelectContent>
@@ -102,6 +105,7 @@ function Calendar({
         />
     )
 }
+
 Calendar.displayName = "Calendar"
 
-export { Calendar }
+export {Calendar}

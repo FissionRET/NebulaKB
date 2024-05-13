@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 import React from "react";
 
 export const Meteors = ({
-    number,
-    className,
-}: {
+                            number,
+                            className,
+                        }: {
     number?: number;
     className?: string;
 }) => {

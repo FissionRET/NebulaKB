@@ -3,23 +3,15 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Check, Eye, Plus } from "lucide-react"
-import { toast } from "sonner"
+import {Check, Eye, Plus} from "lucide-react"
 
 //import { addToCart } from "@/lib/actions/cart"
-import { cn, formatPrice } from "@/lib/utils"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Button, buttonVariants } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Icons } from "@/components/icons"
-import { PlaceholderImage } from "@/components/placeholder-image"
+import {cn, formatPrice} from "@/lib/utils"
+import {AspectRatio} from "@/components/ui/aspect-ratio"
+import {Button, buttonVariants} from "@/components/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
+import {Icons} from "@/components/icons"
+import {PlaceholderImage} from "@/components/placeholder-image"
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
     product: Pick<any, "id" | "name" | "price" | "images" | "inventory"> & {
@@ -60,7 +52,7 @@ export function ProductCard({
                                 loading="lazy"
                             />
                         ) : (
-                            <PlaceholderImage className="rounded-none" asChild />
+                            <PlaceholderImage className="rounded-none" asChild/>
                         )}
                     </AspectRatio>
                 </CardHeader>
@@ -82,7 +74,8 @@ export function ProductCard({
                             size="sm"
                             className="h-8 w-full rounded-sm"
                             onClick={async () => {
-                                startUpdateTransition(() => {})
+                                startUpdateTransition(() => {
+                                })
                                 // const { error } = await addToCart({
                                 //     productId: product.id,
                                 //     quantity: 1,
@@ -113,7 +106,7 @@ export function ProductCard({
                                 })
                             )}
                         >
-                            <Eye className="size-4" aria-hidden="true" />
+                            <Eye className="size-4" aria-hidden="true"/>
                             <span className="sr-only">Preview</span>
                         </Link>
                     </div>
@@ -123,7 +116,8 @@ export function ProductCard({
                         size="sm"
                         className="h-8 w-full rounded-sm"
                         onClick={async () => {
-                            startUpdateTransition(async () => {})
+                            startUpdateTransition(async () => {
+                            })
                             await onSwitch?.()
                         }}
                         disabled={isUpdatePending}
@@ -134,9 +128,9 @@ export function ProductCard({
                                 aria-hidden="true"
                             />
                         ) : isAddedToCart ? (
-                            <Check className="mr-2 size-4" aria-hidden="true" />
+                            <Check className="mr-2 size-4" aria-hidden="true"/>
                         ) : (
-                            <Plus className="mr-2 size-4" aria-hidden="true" />
+                            <Plus className="mr-2 size-4" aria-hidden="true"/>
                         )}
                         {isAddedToCart ? "Added" : "Add to cart"}
                     </Button>

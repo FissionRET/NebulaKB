@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 import CheckAuthorization from '@/app/handlers/userinfo/get'
 
 // Components
-
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import {SparklesCore} from "@/components/custom/sparkles";
@@ -66,7 +65,7 @@ export default function CartLayout({children}: { children: React.ReactNode }) {
                             Bạn chưa đăng nhập.
                         </CardDescription>
                     </CardHeader>
-                    
+
                     <CardContent>
                         <div className="grid gap-4">
                             <Link href={"/auth/login/"} className={buttonVariants({variant: "default"})}>

@@ -1,9 +1,8 @@
 ﻿// Hooks & functions
 
-import { Control, FieldValues } from "react-hook-form";
+import {Control, FieldValues} from "react-hook-form";
 
 // Components
-
 import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {PasswordInput} from "@/components/password-input";
 import {Input} from "@/components/ui/input";

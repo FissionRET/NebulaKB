@@ -1,5 +1,5 @@
 ﻿import {DataTable} from "@/app/(dashboard)/admin-dashboard/components/orders/data-table"
-import {Orders, columns} from "@/app/(dashboard)/admin-dashboard/components/orders/columns";
+import {columns, Orders} from "@/app/(dashboard)/admin-dashboard/components/orders/columns";
 import {generateRandomString} from "@/lib/utils";
 
 function getData(): Orders[] {

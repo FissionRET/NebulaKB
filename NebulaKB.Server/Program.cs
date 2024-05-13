@@ -1,10 +1,10 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +33,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<NebulaKBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDbContext<NebulaKBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<JwtServices>();
 
@@ -43,14 +44,15 @@ builder.Services.AddScoped<JwtServices>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer {token}\"",
+        Description =
+            "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer {token}\""
     });
 
     options.OperationFilter<HandlerAuthFilter>();
@@ -66,9 +68,9 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
-     });
+    });
 });
 
 var app = builder.Build();
@@ -90,10 +92,10 @@ app.UseAuthentication(); // Authenticate using jwt
 app.UseAuthorization();
 
 app.UseCors(x => x
-.AllowAnyMethod()
-.AllowAnyHeader()
-.SetIsOriginAllowed(origin => true) // allow any origin
-.AllowCredentials());
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials());
 
 app.MapControllers();
 

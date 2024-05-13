@@ -1,38 +1,32 @@
 // Hooks & functions
 
-import Link from "next/link";
-import { useState } from "react";
+import {useState} from "react";
 
 // Components
-
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Progress} from "@/components/ui/progress";
 import {Button} from "@/components/ui/button";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Badge} from "@/components/ui/badge";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
     Activity,
-    ArrowUpRight,
-    CreditCard,
-    DollarSign,
-    ListFilter,
-    Users,
-    File,
+    Check,
     ChevronLeft,
     ChevronRight,
-    MoreVertical,
-    Truck,
     Copy,
+    CreditCard,
+    File,
+    MoreVertical,
     Package,
+    Truck,
     UserRoundPlus,
-    UserRoundSearch,
-    Check
+    UserRoundSearch
 } from "lucide-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {
-    DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
-    DropdownMenuSeparator, DropdownMenuTrigger
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Separator} from "@/components/ui/separator";
 import {Pagination, PaginationContent, PaginationItem} from "@/components/ui/pagination";
@@ -43,16 +37,16 @@ import EmployeesTable from "@/app/(dashboard)/admin-dashboard/components/employe
 
 export const OrdersManagement = () => {
     const [copied, setCopied] = useState(false);
-    
+
     const handleCopy = () => {
         navigator.clipboard.writeText("Oe31b70H");
         setCopied(true);
-        
+
         setTimeout(() => {
             setCopied(false);
         }, 1500);
     }
-    
+
     return (
         <>
             <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
@@ -143,12 +137,12 @@ export const OrdersManagement = () => {
                                     >
                                         {copied ? (
                                             <>
-                                                <Check className="h-3 w-3" />
+                                                <Check className="h-3 w-3"/>
                                                 <span className="sr-only">Copied</span>
                                             </>
                                         ) : (
                                             <>
-                                                <Copy className="h-3 w-3" />
+                                                <Copy className="h-3 w-3"/>
                                                 <span className="sr-only">Copy ID đơn hàng</span>
                                             </>
                                         )}
@@ -269,7 +263,8 @@ export const OrdersManagement = () => {
                                 </dl>
                             </div>
                         </CardContent>
-                        <CardFooter className="flex flex-row items-center border-t border-zinc-800 bg-muted/50 px-6 py-3">
+                        <CardFooter
+                            className="flex flex-row items-center border-t border-zinc-800 bg-muted/50 px-6 py-3">
                             <div className="text-xs text-muted-foreground">
                                 Cập nhật <time dateTime="2024-05-07">Tháng 5 07, 2024</time>
                             </div>

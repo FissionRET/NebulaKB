@@ -1,16 +1,7 @@
 ﻿"use client"
 
-import Link from "next/link"
-
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger,} from "@/components/ui/accordion"
 import {Separator} from "@/components/ui/separator";
-import {buttonVariants} from "@/components/ui/button";
-import {ChevronLeft, ChevronRight} from "lucide-react";
 import {motion} from "framer-motion"
 
 export default function FAQ() {

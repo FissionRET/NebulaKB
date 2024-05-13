@@ -1,28 +1,28 @@
-﻿import {DataTable} from "@/app/(dashboard)/admin-dashboard/components/employees/data-table"
+﻿"use client";
+
+import axios from "axios";
+import {useEffect, useState} from "react";
+import {DataTable} from "@/app/(dashboard)/admin-dashboard/components/employees/data-table"
 import {generateRandomString} from "@/lib/utils";
-import {Employees, columns} from "@/app/(dashboard)/admin-dashboard/components/employees/columns";
-
-function getData(): Employees[] {
-    // Fetch data from server later, now data for testing is placed here
-
-    return [
-        {
-            id: generateRandomString(6),
-            employee: "Phạm Tuấn Khôi",
-            email: "helloworld@gmail.com",
-            gender: "Nam",
-            DoB: "2004-11-30",
-            phone: "0865005719",
-            address: "Số 12, Tổ 3, Khu 4, Phường Trần Hưng Đạo",
-            optIn: new Date().toLocaleDateString(),
-            optOut: new Date().toLocaleDateString()
-        },
-    ]
-}
+import {columns, Employees} from "@/app/(dashboard)/admin-dashboard/components/employees/columns";
 
 export default function EmployeesTable() {
-    const data = getData();
+    const [data, setData] = useState<Employees[]>([]);
+    
+    const getData = async () => {
+        const resp = await axios.get<Employees[]>("http://localhost:1337/employee/getAll", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        
+        setData(resp.data);
+    }
 
+    useEffect(() => {
+        getData();
+    }, []);
+    
     return (
         <DataTable columns={columns} data={data}/>
     )

@@ -1,7 +1,7 @@
 ﻿"use client"
 
 import {ColumnDef} from "@tanstack/react-table"
-import {Copy, MoreHorizontal, ArrowUpDown, Eye} from "lucide-react"
+import {Copy, Eye, MoreHorizontal} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
 import {
@@ -13,7 +13,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {Badge} from "@/components/ui/badge"
-import {Textarea} from "@/components/ui/textarea"
 import {DataTableColumnHeader} from "@/components/datatable/column-header";
 import {Checkbox} from "@/components/ui/checkbox"
 

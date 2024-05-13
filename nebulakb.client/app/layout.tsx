@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import type {Metadata} from "next";
+import {Space_Grotesk} from "next/font/google";
 import "@/styles/globals.css";
 
 import ThemeProvider from "@/components/theme-provider"
-import { Providers } from "@/components/providers"
-import { Toaster } from "@/components/ui/toaster"
+import {Providers} from "@/components/providers"
+import {Toaster} from "@/components/ui/toaster"
 
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 
-const spaceGrot = Space_Grotesk({ subsets: ["latin"] });
+const spaceGrot = Space_Grotesk({subsets: ["latin"]});
 
 export const metadata: Metadata = {
     title: "Nebula Keyboard",
@@ -16,26 +16,26 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-    children,
-}: Readonly<{
+                                       children,
+                                   }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <>
             <html lang="en" suppressHydrationWarning suppressContentEditableWarning>
-                <head>
-                    <meta charSet="UTF-8"/>
-                </head>
+            <head>
+                <meta charSet="UTF-8"/>
+            </head>
 
-                <body className={cn("min-h-screen bg-background antialiased", spaceGrot.className)}>
-                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                        <Providers>
-                            {children}
+            <body className={cn("min-h-screen bg-background antialiased", spaceGrot.className)}>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                <Providers>
+                    {children}
 
-                            <Toaster/>
-                        </Providers>
-                    </ThemeProvider>
-                </body>
+                    <Toaster/>
+                </Providers>
+            </ThemeProvider>
+            </body>
             </html>
         </>
     );

@@ -1,4 +1,4 @@
-export const SvgIcon = ({ className, ...rest }: any) => {
+export const SvgIcon = ({className, ...rest}: any) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +9,7 @@ export const SvgIcon = ({ className, ...rest }: any) => {
             className={className}
             {...rest}
         >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6"/>
         </svg>
     );
 };

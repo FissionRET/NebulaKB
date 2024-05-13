@@ -4,10 +4,14 @@ namespace NebulaKB.Server.Models;
 
 public partial class NebulaKBContext : DbContext
 {
-    public NebulaKBContext() { }
+    public NebulaKBContext()
+    {
+    }
 
     public NebulaKBContext(DbContextOptions<NebulaKBContext> options)
-        : base(options) { }
+        : base(options)
+    {
+    }
 
     public virtual DbSet<Cart> Carts { get; set; }
 

@@ -1,38 +1,24 @@
 ﻿"use client"
 
 import {useState} from "react"
+import {useRouter} from "next/navigation"
 import {
     ColumnDef,
     ColumnFiltersState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
-    getFilteredRowModel,
-    useReactTable,
     SortingState,
+    useReactTable,
     VisibilityState
 } from "@tanstack/react-table"
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import {Badge} from "@/components/ui/badge"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {Eye, Search} from "lucide-react"
+import {Search, UserRoundPlus} from "lucide-react"
 import {DataTablePagination} from "@/components/datatable/pagination"
 import {DataTableViewOptions} from "@/components/datatable/column-toggle";
 
@@ -66,6 +52,8 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
         },
     })
 
+    const router = useRouter();
+
     return (
         <>
             <div className="flex items-center py-4">
@@ -82,6 +70,11 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
                         <Search className="h-4 w-4"/>
                     </span>
                 </div>
+                
+                <Button className="ml-2 max-w-sm" variant="expandIcon" Icon={UserRoundPlus} iconPlacement="right"
+                        onClick={() => router.push('/actions/add-customer')}>
+                    Thêm khách hàng
+                </Button>
 
                 <DataTableViewOptions table={table}/>
             </div>

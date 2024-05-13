@@ -1,23 +1,22 @@
 ﻿"use client";
 
-import { SyntheticEvent, useState } from "react";
+import {SyntheticEvent, useState} from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
+import {useRouter} from "next/navigation";
+import axios, {AxiosError} from "axios";
 
 // Shadcn components
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
-import { PasswordInput } from "../../../components/password-input";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {useToast} from "@/components/ui/use-toast";
+import {PasswordInput} from "../../../components/password-input";
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const { toast, dismiss } = useToast();
+    const {toast, dismiss} = useToast();
     const router = useRouter();
 
     const loginHandler = async (event: SyntheticEvent) => {
@@ -26,7 +25,7 @@ export default function LoginForm() {
         try {
             const resp = await axios.post(
                 "http://localhost:1337/api/login",
-                { username, password },
+                {username, password},
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -34,8 +33,8 @@ export default function LoginForm() {
                     withCredentials: true,
                 }
             );
-            
-            if(resp.status === 200) {
+
+            if (resp.status === 200) {
                 sessionStorage.setItem("user_id", resp.data.id);
                 localStorage.setItem("token", resp.data.token);
                 sessionStorage.setItem("username", resp.data.username);
@@ -93,7 +92,7 @@ export default function LoginForm() {
                         id="password"
                         placeholder="Nhập mật khẩu"
                         onChange={(e) => setPassword(e.target.value)}
-                        required />
+                        required/>
                 </div>
 
                 <Button type="submit" className="w-full">

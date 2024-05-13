@@ -1,10 +1,10 @@
-﻿import { DataTable } from "@/app/(dashboard)/admin-dashboard/components/dashboard/data-table"
-import {Transaction, columns} from "@/app/(dashboard)/admin-dashboard/components/dashboard/columns";
+﻿import {DataTable} from "@/app/(dashboard)/admin-dashboard/components/dashboard/data-table"
+import {columns, Transaction} from "@/app/(dashboard)/admin-dashboard/components/dashboard/columns";
 import {generateRandomString} from "@/lib/utils";
 
 function getData(): Transaction[] {
     // Fetch data from server later, now data for testing is placed here
-    
+
     return [
         {
             id: generateRandomString(6),

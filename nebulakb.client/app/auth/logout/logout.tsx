@@ -6,7 +6,7 @@ interface LogoutProps {
     token?: string;
 }
 
-export default async function Logout({ token }: LogoutProps): Promise<string> {
+export default async function Logout({token}: LogoutProps): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
         let message = '';
 

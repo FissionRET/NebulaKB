@@ -35,7 +35,8 @@ export default function Contact() {
 
                     <ul className="my-6 ml-6 list-disc">
                         <li className="mt-2">
-                            Email: <a className="font-medium underline underline-offset-4" href="mailto:helloworld@gmail.com">
+                            Email: <a className="font-medium underline underline-offset-4"
+                                      href="mailto:helloworld@gmail.com">
                             helloworld@gmail.com</a>
                         </li>
                         <li className="mt-2">
@@ -43,7 +44,8 @@ export default function Contact() {
                             0865 005 719</a>
                         </li>
                         <li className="mt-2">
-                            Discord: <a className="font-medium underline underline-offset-4" href="https://github.com/0xDynamic">
+                            Discord: <a className="font-medium underline underline-offset-4"
+                                        href="https://github.com/0xDynamic">
                             Chino#6969</a>
                         </li>
                     </ul>
@@ -54,7 +56,7 @@ export default function Contact() {
                         variant: "gooeyRight",
                         className: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2"
                     })}><ChevronLeft className="mr-2 h-4 w-4"/> Về chúng tôi</Link>
-                    
+
                     <Link href="/terms" className={buttonVariants({
                         variant: "gooeyLeft",
                         className: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 ml-auto"

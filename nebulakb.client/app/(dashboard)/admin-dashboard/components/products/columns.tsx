@@ -1,36 +1,25 @@
 ﻿"use client"
 
 import {ColumnDef} from "@tanstack/react-table"
-import {Copy, FilePenLine, MoreHorizontal, PackageX, ArrowUpDown, Check, ChevronsUpDown} from "lucide-react"
+import {Copy, FilePenLine, PackageX} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {Badge} from "@/components/ui/badge"
 import {Textarea} from "@/components/ui/textarea"
 import {DataTableColumnHeader} from "@/components/datatable/column-header";
 import {Checkbox} from "@/components/ui/checkbox"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
-    Dialog, DialogClose,
+    Dialog,
+    DialogClose,
     DialogContent,
-    DialogDescription, DialogFooter,
+    DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from "@/components/ui/tooltip"
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {
@@ -42,7 +31,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useState } from "react"
+import {useState} from "react"
 
 export type Products = {
     id: string
@@ -270,13 +259,15 @@ export const columns: ColumnDef<Products>[] = [
 
                                             <Select onValueChange={e => setValue(e.valueOf())} defaultValue={value}>
                                                 <SelectTrigger className="col-span-3">
-                                                    <SelectValue placeholder="Chọn danh mục" />
+                                                    <SelectValue placeholder="Chọn danh mục"/>
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
-                                                        <SelectLabel className="text-center">Danh sách danh mục</SelectLabel>
+                                                        <SelectLabel className="text-center">Danh sách danh
+                                                            mục</SelectLabel>
                                                         {categories.map((category) => (
-                                                            <SelectItem value={category.value}>{category.label}</SelectItem>
+                                                            <SelectItem
+                                                                value={category.value}>{category.label}</SelectItem>
                                                         ))}
                                                     </SelectGroup>
                                                 </SelectContent>

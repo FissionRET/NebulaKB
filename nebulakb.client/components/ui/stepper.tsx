@@ -1,15 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { cva } from "class-variance-authority"
-import { CheckIcon, Loader2, LucideIcon, X } from "lucide-react"
+import {cva} from "class-variance-authority"
+import {CheckIcon, Loader2, LucideIcon, X} from "lucide-react"
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-    Collapsible,
-    CollapsibleContent,
-} from "@/components/ui/collapsible"
+import {cn} from "@/lib/utils"
+import {Button} from "@/components/ui/button"
+import {Collapsible, CollapsibleContent,} from "@/components/ui/collapsible"
 
 // <---------- CONTEXT ---------->
 
@@ -26,19 +23,23 @@ interface StepperContextValue extends StepperProps {
 
 const StepperContext = React.createContext<
     StepperContextValue & {
-        nextStep: () => void
-        prevStep: () => void
-        resetSteps: () => void
-        setStep: (step: number) => void
-    }
+    nextStep: () => void
+    prevStep: () => void
+    resetSteps: () => void
+    setStep: (step: number) => void
+}
 >({
     steps: [],
     activeStep: 0,
     initialStep: 0,
-    nextStep: () => { },
-    prevStep: () => { },
-    resetSteps: () => { },
-    setStep: () => { },
+    nextStep: () => {
+    },
+    prevStep: () => {
+    },
+    resetSteps: () => {
+    },
+    setStep: () => {
+    },
 })
 
 type StepperContextProviderProps = {
@@ -46,7 +47,7 @@ type StepperContextProviderProps = {
     children: React.ReactNode
 }
 
-const StepperProvider = ({ value, children }: StepperContextProviderProps) => {
+const StepperProvider = ({value, children}: StepperContextProviderProps) => {
     const isError = value.state === "error"
     const isLoading = value.state === "loading"
 
@@ -105,7 +106,7 @@ function useStepper() {
         throw new Error("useStepper must be used within a StepperProvider")
     }
 
-    const { children, className, ...rest } = context
+    const {children, className, ...rest} = context
 
     const isLastStep = context.activeStep === context.steps.length - 1
     const hasCompletedAllSteps = context.activeStep === context.steps.length
@@ -195,6 +196,7 @@ interface StepOptions {
     }
     scrollTracking?: boolean
 }
+
 interface StepperProps extends StepOptions {
     children?: React.ReactNode
     className?: string
@@ -318,8 +320,8 @@ Stepper.defaultProps = {
     responsive: true,
 }
 
-const VerticalContent = ({ children }: { children: React.ReactNode }) => {
-    const { activeStep } = useStepper()
+const VerticalContent = ({children}: { children: React.ReactNode }) => {
+    const {activeStep} = useStepper()
 
     const childArr = React.Children.toArray(children)
     const stepCount = childArr.length
@@ -350,8 +352,8 @@ const VerticalContent = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
-const HorizontalContent = ({ children }: { children: React.ReactNode }) => {
-    const { activeStep } = useStepper()
+const HorizontalContent = ({children}: { children: React.ReactNode }) => {
+    const {activeStep} = useStepper()
     const childArr = React.Children.toArray(children)
 
     if (activeStep > childArr.length) {
@@ -401,7 +403,8 @@ interface StepInternalConfig {
     isLastStep?: boolean
 }
 
-interface FullStepProps extends StepProps, StepInternalConfig { }
+interface FullStepProps extends StepProps, StepInternalConfig {
+}
 
 const Step = React.forwardRef<HTMLLIElement, StepProps>(
     (props, ref: React.Ref<any>) => {
@@ -421,7 +424,7 @@ const Step = React.forwardRef<HTMLLIElement, StepProps>(
             onClickStep,
         } = props as FullStepProps
 
-        const { isVertical, isError, isLoading, clickable } = useStepper()
+        const {isVertical, isError, isLoading, clickable} = useStepper()
 
         const hasVisited = isCurrentStep || isCompletedStep
 
@@ -550,8 +553,8 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
                                     // is located anywhere other than the top of the view.
                                     scrollTracking &&
                                     ((index === 0 &&
-                                        previousActiveStep &&
-                                        previousActiveStep === steps.length) ||
+                                            previousActiveStep &&
+                                            previousActiveStep === steps.length) ||
                                         (index && index > 0))
                                 ) {
                                     node?.scrollIntoView({
@@ -603,7 +606,7 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
                     )}
                 >
                     <StepButtonContainer
-                        {...{ isLoading: localIsLoading, isError: localIsError, ...props }}
+                        {...{isLoading: localIsLoading, isError: localIsError, ...props}}
                     >
                         <StepIcon
                             {...{
@@ -621,7 +624,7 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
                     <StepLabel
                         label={label}
                         description={description}
-                        {...{ isCurrentStep, opacity }}
+                        {...{isCurrentStep, opacity}}
                     />
                 </div>
                 <div
@@ -719,7 +722,7 @@ const HorizontalStep = React.forwardRef<HTMLDivElement, StepSharedProps>(
                     )}
                 >
                     <StepButtonContainer
-                        {...{ ...props, isError: localIsError, isLoading: localIsLoading }}
+                        {...{...props, isError: localIsError, isLoading: localIsLoading}}
                     >
                         <StepIcon
                             {...{
@@ -738,7 +741,7 @@ const HorizontalStep = React.forwardRef<HTMLDivElement, StepSharedProps>(
                     <StepLabel
                         label={label}
                         description={description}
-                        {...{ isCurrentStep, opacity }}
+                        {...{isCurrentStep, opacity}}
                     />
                 </div>
             </div>
@@ -753,13 +756,13 @@ type StepButtonContainerProps = StepSharedProps & {
 }
 
 const StepButtonContainer = ({
-    isCurrentStep,
-    isCompletedStep,
-    children,
-    isError,
-    isLoading: isLoadingProp,
-    onClickStep,
-}: StepButtonContainerProps) => {
+                                 isCurrentStep,
+                                 isCompletedStep,
+                                 children,
+                                 isError,
+                                 isLoading: isLoadingProp,
+                                 onClickStep,
+                             }: StepButtonContainerProps) => {
     const {
         clickable,
         isLoading: isLoadingContext,
@@ -833,7 +836,7 @@ interface StepIconProps {
 
 const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
     (props, ref) => {
-        const { size } = useStepper()
+        const {size} = useStepper()
 
         const {
             isCompletedStep,
@@ -867,13 +870,13 @@ const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
                 if (isError && isKeepError) {
                     return (
                         <div key="icon">
-                            <X className={cn(iconVariants({ size }))} />
+                            <X className={cn(iconVariants({size}))}/>
                         </div>
                     )
                 }
                 return (
                     <div key="check-icon">
-                        <Check className={cn(iconVariants({ size }))} />
+                        <Check className={cn(iconVariants({size}))}/>
                     </div>
                 )
             }
@@ -881,27 +884,27 @@ const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
                 if (isError && ErrorIcon) {
                     return (
                         <div key="error-icon">
-                            <ErrorIcon className={cn(iconVariants({ size }))} />
+                            <ErrorIcon className={cn(iconVariants({size}))}/>
                         </div>
                     )
                 }
                 if (isError) {
                     return (
                         <div key="icon">
-                            <X className={cn(iconVariants({ size }))} />
+                            <X className={cn(iconVariants({size}))}/>
                         </div>
                     )
                 }
                 if (isLoading) {
                     return (
-                        <Loader2 className={cn(iconVariants({ size }), "animate-spin")} />
+                        <Loader2 className={cn(iconVariants({size}), "animate-spin")}/>
                     )
                 }
             }
             if (Icon) {
                 return (
                     <div key="step-icon">
-                        <Icon className={cn(iconVariants({ size }))} />
+                        <Icon className={cn(iconVariants({size}))}/>
                     </div>
                 )
             }
@@ -966,12 +969,12 @@ const descriptionVariants = cva("", {
 })
 
 const StepLabel = ({
-    isCurrentStep,
-    opacity,
-    label,
-    description,
-}: StepLabelProps) => {
-    const { variant, styles, size, orientation } = useStepper()
+                       isCurrentStep,
+                       opacity,
+                       label,
+                       description,
+                   }: StepLabelProps) => {
+    const {variant, styles, size, orientation} = useStepper()
     const shouldRender = !!label || !!description
 
     return shouldRender ? (
@@ -994,7 +997,7 @@ const StepLabel = ({
                 <span
                     className={cn(
                         "stepper__step-label",
-                        labelVariants({ size }),
+                        labelVariants({size}),
                         styles?.["step-label"]
                     )}
                 >
@@ -1006,7 +1009,7 @@ const StepLabel = ({
                     className={cn(
                         "stepper__step-description",
                         "text-muted-foreground",
-                        descriptionVariants({ size }),
+                        descriptionVariants({size}),
                         styles?.["step-description"]
                     )}
                 >
@@ -1017,5 +1020,5 @@ const StepLabel = ({
     ) : null
 }
 
-export { Stepper, Step, useStepper }
-export type { StepProps, StepperProps, StepItem }
+export {Stepper, Step, useStepper}
+export type {StepProps, StepperProps, StepItem}

@@ -6,7 +6,7 @@ interface GetProps {
     token?: string;
 }
 
-export default async function CheckAuthorization({ token }: GetProps): Promise<boolean> {
+export default async function CheckAuthorization({token}: GetProps): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
         let isAuth = false;
 

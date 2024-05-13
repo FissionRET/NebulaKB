@@ -2,14 +2,14 @@
 
 // Hooks
 
-import { forwardRef, useState } from 'react'
-import { Input, type InputProps } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { Eye, EyeOff } from 'lucide-react';
+import {forwardRef, useState} from 'react'
+import {Input, type InputProps} from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+import {cn} from '@/lib/utils';
+import {Eye, EyeOff} from 'lucide-react';
 
 const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, ...props }, ref) => {
+    ({className, ...props}, ref) => {
         const [showPassword, setShowPassword] = useState(false)
 
         return (
@@ -29,9 +29,9 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
                     disabled={props.value === "" || props.disabled}
                 >
                     {showPassword ? (
-                        <EyeOff className="size-4" aria-hidden="true" />
+                        <EyeOff className="size-4" aria-hidden="true"/>
                     ) : (
-                        <Eye className="size-4" aria-hidden="true" />
+                        <Eye className="size-4" aria-hidden="true"/>
                     )}
                     <span className="sr-only">
                         {showPassword ? "Hide password" : "Show password"}
@@ -43,4 +43,4 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
 )
 PasswordInput.displayName = "PasswordInput"
 
-export { PasswordInput }
+export {PasswordInput}

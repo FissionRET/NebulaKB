@@ -1,13 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import {motion} from "framer-motion";
 
 export default function Cart() {
     const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+        hidden: {opacity: 0},
+        visible: {opacity: 1, transition: {staggerChildren: 0.1}}
     };
-    
+
     return (
         <>
             <motion.div className="mx-auto grid w-full max-w-6xl gap-2" variants={containerVariants}>

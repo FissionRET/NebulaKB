@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import {useEffect, useState} from 'react';
+import {motion} from 'framer-motion';
 
 const AnimatedIcon = () => {
     const [progress, setProgress] = useState(100);
@@ -51,8 +51,8 @@ const AnimatedIcon = () => {
                     fillOpacity: progress,
                     pathLength: progress
                 }}
-                initial={{ fillOpacity: 0, pathLength: 0 }}
-                transition={{ ease: "easeInOut", duration: 1.5 }}
+                initial={{fillOpacity: 0, pathLength: 0}}
+                transition={{ease: "easeInOut", duration: 1.5}}
                 fillRule="evenodd"
             />
         </motion.svg>

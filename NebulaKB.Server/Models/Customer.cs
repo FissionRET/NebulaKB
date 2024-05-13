@@ -3,7 +3,7 @@ using NTJson = Newtonsoft.Json;
 
 namespace NebulaKB.Server.Models;
 
-public partial class Customer
+public class Customer
 {
     public string Id { get; set; } = null!;
 
@@ -27,11 +27,7 @@ public partial class Customer
 
     public string? User { get; set; }
 
-    [JsonIgnore]
-    [NTJson.JsonIgnore]
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    [JsonIgnore] [NTJson.JsonIgnore] public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    [JsonIgnore]
-    [NTJson.JsonIgnore]
-    public virtual User? UserNavigation { get; set; }
+    [JsonIgnore] [NTJson.JsonIgnore] public virtual User? UserNavigation { get; set; }
 }

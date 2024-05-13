@@ -1,11 +1,11 @@
 ﻿import * as React from "react"
 
-import { Slot } from "@radix-ui/react-slot"
+import {Slot} from "@radix-ui/react-slot"
 
-import { cn } from "@/lib/utils"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Eye } from "lucide-react"
+import {cn} from "@/lib/utils"
+import {AspectRatio} from "@/components/ui/aspect-ratio"
+import {Skeleton} from "@/components/ui/skeleton"
+import {Eye} from "lucide-react"
 
 interface PlaceholderImageProps
     extends React.ComponentPropsWithoutRef<typeof AspectRatio> {

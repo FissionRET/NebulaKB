@@ -1,10 +1,10 @@
-﻿import { Products, columns } from "@/app/(dashboard)/admin-dashboard/components/products/columns"
-import { DataTable } from "@/app/(dashboard)/admin-dashboard/components/products/data-table"
+﻿import {columns, Products} from "@/app/(dashboard)/admin-dashboard/components/products/columns"
+import {DataTable} from "@/app/(dashboard)/admin-dashboard/components/products/data-table"
 import {generateRandomString} from "@/lib/utils";
 
 function getData(): Products[] {
     // Fetch data from server later, now data for testing is placed here
-    
+
     return [
         {
             id: generateRandomString(6),

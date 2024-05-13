@@ -6,33 +6,17 @@ import {
     ColumnFiltersState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
-    getFilteredRowModel,
-    useReactTable,
     SortingState,
+    useReactTable,
     VisibilityState
 } from "@tanstack/react-table"
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
-import {Badge} from "@/components/ui/badge"
-import {Button} from "@/components/ui/button"
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Input} from "@/components/ui/input"
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {Eye, Search} from "lucide-react"
+import {Search} from "lucide-react"
 import {DataTablePagination} from "@/components/datatable/pagination"
 import {DataTableViewOptions} from "@/components/datatable/column-toggle";
 

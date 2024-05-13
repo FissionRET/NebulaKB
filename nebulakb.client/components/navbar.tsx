@@ -1,16 +1,13 @@
-﻿import React, { useState } from "react"
+﻿import React, {useState} from "react"
 import Link from "next/link"
-import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import axios from "axios"
 
 // Icons
-
 import {
     AlignJustify,
     AppWindow,
     BoxSelect,
-    Boxes,
     CalendarDays,
     CircuitBoard,
     Codesandbox,
@@ -21,12 +18,9 @@ import {
     LayoutGrid,
     LibraryBig,
     Option,
-    PackageCheck,
-    PackagePlus,
     Power,
     ReceiptText,
     Shell,
-    ShoppingBasket,
     ShoppingCart,
     SquareArrowRight,
     Trello,
@@ -35,15 +29,23 @@ import {
 } from "lucide-react"
 
 // Components
-
 import Logout from '@/app/auth/logout/logout'
-import { ModeToggle } from "@/components/mode-toggle"
-import { Tooltip } from "@nextui-org/react";
-import { AnimatePresence, motion } from 'framer-motion'
+import {ModeToggle} from "@/components/mode-toggle"
+// NextUI Components
+import {
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+    NavbarMenu,
+    NavbarMenuItem,
+    NavbarMenuToggle,
+    Tooltip
+} from "@nextui-org/react";
+import {AnimatePresence, motion} from 'framer-motion'
 
 // Shadcn components
-
-import { Button, buttonVariants } from "@/components/ui/button"
+import {Button, buttonVariants} from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -52,39 +54,14 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useToast } from "@/components/ui/use-toast"
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card"
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar"
-import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-
-// NextUI Components
-
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
+import {useToast} from "@/components/ui/use-toast"
+import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
+import {Avatar,} from "@/components/ui/avatar"
 
 export default function NavigationBar(props: { auth: any }) {
     // Variables
@@ -92,7 +69,7 @@ export default function NavigationBar(props: { auth: any }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userRole, setUserRole] = useState(0)
     const router = useRouter();
-    const { toast, dismiss } = useToast();
+    const {toast, dismiss} = useToast();
     const pathname = usePathname();
 
     let authorizedItems;
@@ -114,58 +91,62 @@ export default function NavigationBar(props: { auth: any }) {
             dropdownContent: [
                 {
                     label: 'Bàn phím',
-                    icon: <Keyboard className="mr-2 h-4 w-4" />,
+                    icon: <Keyboard className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: 'Cases (Vỏ bàn phím)', icon: <BoxSelect className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Plates (Tấm cố định)', icon: <FileBox className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'PCBs (Bảng mạch in)', icon: <CircuitBoard className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Kits (Bảng dựng sẵn)', icon: <Grid2X2 className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: 'Cases (Vỏ bàn phím)', icon: <BoxSelect className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Plates (Tấm cố định)', icon: <FileBox className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'PCBs (Bảng mạch in)', icon: <CircuitBoard className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Kits (Bảng dựng sẵn)', icon: <Grid2X2 className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Keycaps (Nút bấm)',
-                    icon: <Command className="mr-2 h-4 w-4" />,
+                    icon: <Command className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: 'Các bộ keycaps', icon: <LibraryBig className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Artisan (Chất liệu nút khác)', icon: <Command className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: 'Các bộ keycaps', icon: <LibraryBig className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Artisan (Chất liệu nút khác)', icon: <Command className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Switches (Công tắc)',
-                    icon: <SquareArrowRight className="mr-2 h-4 w-4" />,
+                    icon: <SquareArrowRight className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: 'Linear', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Tactile', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Clicky', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Silent', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Switch tester (bộ thử switch)', icon: <Codesandbox className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: 'Linear', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Tactile', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Clicky', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Silent', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {
+                            label: 'Switch tester (bộ thử switch)',
+                            icon: <Codesandbox className="mr-2 h-4 w-4"/>,
+                            link: '/'
+                        }
                     ]
                 },
                 {
                     label: 'Stabilizers (Bộ ổn định)',
-                    icon: <AlignJustify className="mr-2 h-4 w-4" />,
+                    icon: <AlignJustify className="mr-2 h-4 w-4"/>,
                     items: [
-                        { headerLabel: 'Các hãng stab', headerType: 'headerLabel' },
-                        { label: 'TX', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'DUROCK', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Gateron', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'GMK', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Owlab', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'AEBoards Staebies', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'WS', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'C³ Equalz', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {headerLabel: 'Các hãng stab', headerType: 'headerLabel'},
+                        {label: 'TX', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'DUROCK', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Gateron', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'GMK', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Owlab', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'AEBoards Staebies', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'WS', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'C³ Equalz', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Springs (Lò xo)',
-                    icon: <Shell className="mr-2 h-4 w-4" />,
+                    icon: <Shell className="mr-2 h-4 w-4"/>,
                     items: [
-                        { headerLabel: 'Các hãng lò xo', headerType: 'headerLabel' },
-                        { label: 'TX', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'DUROCK', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'GAZZEW', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'WS', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'SPRiT', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {headerLabel: 'Các hãng lò xo', headerType: 'headerLabel'},
+                        {label: 'TX', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'DUROCK', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'GAZZEW', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'WS', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'SPRiT', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 }
             ]
@@ -175,73 +156,73 @@ export default function NavigationBar(props: { auth: any }) {
             dropdownContent: [
                 {
                     label: 'Cases (Vỏ bàn phím)',
-                    icon: <BoxSelect className="mr-2 h-4 w-4" />,
+                    icon: <BoxSelect className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: '60%', icon: <Option className="mr-2 h-4 w-4" />, link: '/', asChild: true },
-                        { label: '65%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '75%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'TKL', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Full-size', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Khác', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: '60%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/', asChild: true},
+                        {label: '65%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '75%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'TKL', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Full-size', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Khác', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Plates (Tấm cố định)',
-                    icon: <FileBox className="mr-2 h-4 w-4" />,
+                    icon: <FileBox className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: '60%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '65%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '75%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Keychron', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Glorius', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Khác', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: '60%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '65%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '75%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Keychron', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Glorius', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Khác', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'PCBs (Bảng mạch in)',
-                    icon: <CircuitBoard className="mr-2 h-4 w-4" />,
+                    icon: <CircuitBoard className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: '60%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '65%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '75%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'ANSI', icon: <Type className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'ISO', icon: <Type className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Hot-swap', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Solderable (Có thể hàn)', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Khác', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: '60%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '65%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '75%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'ANSI', icon: <Type className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'ISO', icon: <Type className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Hot-swap', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Solderable (Có thể hàn)', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Khác', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Kits (Bảng dựng sẵn)',
-                    icon: <Grid2X2 className="mr-2 h-4 w-4" />,
+                    icon: <Grid2X2 className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: '60%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '65%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '75%', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'TKL', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Full-size (Kích cỡ đầy đủ)', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Khác', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: '60%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '65%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '75%', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'TKL', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Full-size (Kích cỡ đầy đủ)', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Khác', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Layout',
-                    icon: <LayoutGrid className="mr-2 h-4 w-4" />,
+                    icon: <LayoutGrid className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: 'ANSI', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'ISO', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: 'ANSI', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'ISO', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 },
                 {
                     label: 'Brands (Hãng)',
-                    icon: <Trello className="mr-2 h-4 w-4" />,
+                    icon: <Trello className="mr-2 h-4 w-4"/>,
                     items: [
-                        { label: 'Keychron', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'KBD', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'KBDCraft', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: '8BitDo', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Akko', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'Ducky', icon: <Option className="mr-2 h-4 w-4" />, link: '/' },
-                        { label: 'IDOBAO', icon: <Option className="mr-2 h-4 w-4" />, link: '/' }
+                        {label: 'Keychron', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'KBD', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'KBDCraft', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: '8BitDo', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Akko', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'Ducky', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'},
+                        {label: 'IDOBAO', icon: <Option className="mr-2 h-4 w-4"/>, link: '/'}
                     ]
                 }
             ]
@@ -253,7 +234,7 @@ export default function NavigationBar(props: { auth: any }) {
             const token = localStorage.getItem('token');
 
             if (token) {
-                const message = await Logout({ token });
+                const message = await Logout({token});
 
                 if (message === "success") {
                     localStorage.clear();
@@ -296,7 +277,7 @@ export default function NavigationBar(props: { auth: any }) {
             }
         );
 
-        if(resp.status === 200) {
+        if (resp.status === 200) {
             setUserRole(resp.data.role);
         }
     }
@@ -304,9 +285,9 @@ export default function NavigationBar(props: { auth: any }) {
     if (!props.auth) {
         authorizedItems = (
             <motion.div
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ type: "spring", delay: 0.5 }}
+                initial={{opacity: 0, x: 100}}
+                animate={{opacity: 1, x: 0}}
+                transition={{type: "spring", delay: 0.5}}
             >
                 <NavbarItem className="hidden lg:flex">
                     <Button variant="default" asChild>
@@ -319,67 +300,72 @@ export default function NavigationBar(props: { auth: any }) {
         authorizedItems = (
             <>
                 <motion.div
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ type: "spring", delay: 0.5 }}
+                    initial={{opacity: 0, x: 100}}
+                    animate={{opacity: 1, x: 0}}
+                    transition={{type: "spring", delay: 0.5}}
                 >
                     <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Giỏ hàng">
                         <NavbarItem>
-                            <Link href={"/cart"} className={buttonVariants({ variant: "outline" })}>
-                                <ShoppingCart className="h-4 w-4" />
+                            <Link href={"/cart"} className={buttonVariants({variant: "outline"})}>
+                                <ShoppingCart className="h-4 w-4"/>
                             </Link>
                         </NavbarItem>
                     </Tooltip>
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ type: "spring", delay: 0.5 }}
+                    initial={{opacity: 0, x: 100}}
+                    animate={{opacity: 1, x: 0}}
+                    transition={{type: "spring", delay: 0.5}}
                 >
-                    <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Thông tin của bạn">
+                    <Tooltip color="default" placement="bottom" showArrow={true} offset={10}
+                             content="Thông tin của bạn">
                         <NavbarItem>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild onClick={roleHandler}>
                                     <Button variant="outline">
-                                        <User className="mr-2 h-4 w-4" /> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : 'Guest'}
+                                        <User
+                                            className="mr-2 h-4 w-4"/> {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : 'Guest'}
                                     </Button>
                                 </DropdownMenuTrigger>
 
                                 <DropdownMenuContent className="w-56">
-                                    <DropdownMenuLabel>👋 Xin chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
+                                    <DropdownMenuLabel>👋 Xin
+                                        chào, {sessionStorage.getItem("username") ? sessionStorage.getItem("username") : null} !</DropdownMenuLabel>
 
-                                    <DropdownMenuSeparator />
+                                    <DropdownMenuSeparator/>
 
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem className={`${pathname === '/profile' ? 'bg-zinc-800 text-zinc-50' : ''}`} onClick={() => router.push("/profile")}>
-                                            <User className="mr-2 h-4 w-4" />
+                                        <DropdownMenuItem
+                                            className={`${pathname === '/profile' ? 'bg-zinc-800 text-zinc-50' : ''}`}
+                                            onClick={() => router.push("/profile")}>
+                                            <User className="mr-2 h-4 w-4"/>
                                             <span>Thông tin cá nhân</span>
                                         </DropdownMenuItem>
 
                                         <DropdownMenuItem onClick={() => router.push("/orders")}>
-                                            <ReceiptText className="mr-2 h-4 w-4" />
+                                            <ReceiptText className="mr-2 h-4 w-4"/>
                                             <span>Đơn hàng của tôi</span>
                                         </DropdownMenuItem>
 
-                                        <DropdownMenuSeparator />
+                                        <DropdownMenuSeparator/>
 
                                         {userRole === 0 ? (
                                             <DropdownMenuItem onClick={() => router.push("/admin-dashboard")}>
-                                                <AppWindow className="mr-2 h-4 w-4" />
+                                                <AppWindow className="mr-2 h-4 w-4"/>
                                                 <span>Panel Quản lý</span>
                                             </DropdownMenuItem>
                                         ) : userRole === 1 ? (
                                             <DropdownMenuItem onClick={() => router.push("/employee-dashboard")}>
-                                                <AppWindow className="mr-2 h-4 w-4" />
+                                                <AppWindow className="mr-2 h-4 w-4"/>
                                                 <span>Panel Nhân viên</span>
                                             </DropdownMenuItem>
                                         ) : null}
 
-                                        <DropdownMenuSeparator />
+                                        <DropdownMenuSeparator/>
 
                                         <DropdownMenuItem onClick={logoutHandler} className="text-danger">
-                                            <Power className="mr-2 h-4 w-4" />
+                                            <Power className="mr-2 h-4 w-4"/>
                                             <span>Đăng xuất</span>
                                         </DropdownMenuItem>
                                     </DropdownMenuGroup>
@@ -400,10 +386,10 @@ export default function NavigationBar(props: { auth: any }) {
     return (
         <motion.div
             key="navbarAnimation"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ type: "spring", damping: 20, stiffness: 100, delay: 0.5 }}
-            exit={{ opacity: 0 }}
+            initial={{opacity: 0, x: -100}}
+            animate={{opacity: 1, x: 0}}
+            transition={{type: "spring", damping: 20, stiffness: 100, delay: 0.5}}
+            exit={{opacity: 0}}
             onAnimationComplete={() => setIsCompleted(true)}
         >
             <Navbar isBlurred isBordered onMenuOpenChange={setIsMenuOpen}>
@@ -426,7 +412,8 @@ export default function NavigationBar(props: { auth: any }) {
 
                             <HoverCard>
                                 <HoverCardTrigger asChild>
-                                    <Button variant="link" onClick={() => router.push("/")} className="font-bold text-inherit">NebulaKB</Button>
+                                    <Button variant="link" onClick={() => router.push("/")}
+                                            className="font-bold text-inherit">NebulaKB</Button>
                                 </HoverCardTrigger>
                                 <HoverCardContent className="w-auto">
                                     <div className="flex justify-between space-x-4">
@@ -447,7 +434,7 @@ export default function NavigationBar(props: { auth: any }) {
                                                 Nơi cung cấp các mẫu bàn phím đa dạng và phù hợp cho mọi người.
                                             </p>
                                             <div className="flex items-center pt-2">
-                                                <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
+                                                <CalendarDays className="mr-2 h-4 w-4 opacity-70"/>{" "}
                                                 <span className="text-xs text-muted-foreground">
                                                     Thành lập từ 2020
                                                 </span>
@@ -465,34 +452,36 @@ export default function NavigationBar(props: { auth: any }) {
                         {isCompleted ? (
                             <>
                                 <motion.div
-                                    initial={{ opacity: 0, y: 100, scale: 0.3 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    transition={{ type: "spring", delay: 0.1 }}
-                                    exit={{ opacity: 0 }}
+                                    initial={{opacity: 0, y: 100, scale: 0.3}}
+                                    animate={{opacity: 1, y: 0, scale: 1}}
+                                    transition={{type: "spring", delay: 0.1}}
+                                    exit={{opacity: 0}}
                                 >
                                     <NavbarItem>
-                                        <Link href={"/"} className={buttonVariants({ variant: "outline" })}>Trang chủ</Link>
+                                        <Link href={"/"} className={buttonVariants({variant: "outline"})}>Trang
+                                            chủ</Link>
                                     </NavbarItem>
                                 </motion.div>
 
                                 <motion.div
-                                    initial={{ opacity: 0, y: 100, scale: 0.3 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    transition={{ type: "spring", delay: 0.2 }}
-                                    exit={{ opacity: 0 }}
+                                    initial={{opacity: 0, y: 100, scale: 0.3}}
+                                    animate={{opacity: 1, y: 0, scale: 1}}
+                                    transition={{type: "spring", delay: 0.2}}
+                                    exit={{opacity: 0}}
                                 >
                                     <NavbarItem>
-                                        <Link href={"/about"} className={buttonVariants({ variant: "outline" })}>Giới thiệu</Link>
+                                        <Link href={"/about"} className={buttonVariants({variant: "outline"})}>Giới
+                                            thiệu</Link>
                                     </NavbarItem>
                                 </motion.div>
 
                                 {navMenuItems.map((item, index) => (
                                     <motion.div
                                         key={index}
-                                        initial={{ opacity: 0, y: 100, scale: 0.3 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        transition={{ type: "spring", delay: index * 0.2 }}
-                                        exit={{ opacity: 0 }}
+                                        initial={{opacity: 0, y: 100, scale: 0.3}}
+                                        animate={{opacity: 1, y: 0, scale: 1}}
+                                        transition={{type: "spring", delay: index * 0.2}}
+                                        exit={{opacity: 0}}
                                     >
                                         <NavbarItem key={index}>
                                             <DropdownMenu>
@@ -513,17 +502,19 @@ export default function NavigationBar(props: { auth: any }) {
                                                                 <DropdownMenuPortal>
                                                                     <DropdownMenuSubContent>
                                                                         {subItem.items.map((nestItem, nestIndex) => (
-                                                                            <React.Fragment key={`${index}-${subIndex}-${nestIndex}`}>
+                                                                            <React.Fragment
+                                                                                key={`${index}-${subIndex}-${nestIndex}`}>
                                                                                 {nestItem.headerType === 'headerLabel' ? (
                                                                                     <>
                                                                                         <DropdownMenuLabel>
                                                                                             {nestItem.headerLabel}
                                                                                         </DropdownMenuLabel>
 
-                                                                                        <DropdownMenuSeparator />
+                                                                                        <DropdownMenuSeparator/>
                                                                                     </>
                                                                                 ) : (
-                                                                                    <DropdownMenuItem asChild key={`${index}-${subIndex}-${nestIndex}`}>
+                                                                                    <DropdownMenuItem asChild
+                                                                                                      key={`${index}-${subIndex}-${nestIndex}`}>
                                                                                         <Link href={`${nestItem.link}`}>
                                                                                             {nestItem.icon}
                                                                                             <span>{nestItem.label}</span>
@@ -553,13 +544,13 @@ export default function NavigationBar(props: { auth: any }) {
 
                 <NavbarContent justify="end">
                     <motion.div
-                        initial={{ opacity: 0, x: 100 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ type: "spring", delay: 0.5 }}
+                        initial={{opacity: 0, x: 100}}
+                        animate={{opacity: 1, x: 0}}
+                        transition={{type: "spring", delay: 0.5}}
                     >
                         <Tooltip color="default" placement="bottom" showArrow={true} offset={10} content="Thay đổi màu">
                             <NavbarItem>
-                                <ModeToggle />
+                                <ModeToggle/>
                             </NavbarItem>
                         </Tooltip>
                     </motion.div>

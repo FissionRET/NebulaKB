@@ -3,7 +3,7 @@ using NTJson = Newtonsoft.Json;
 
 namespace NebulaKB.Server.Models;
 
-public partial class Product
+public class Product
 {
     public string Id { get; set; } = null!;
 
@@ -21,7 +21,5 @@ public partial class Product
 
     public string? Category { get; set; }
 
-    [JsonIgnore]
-    [NTJson.JsonIgnore]
-    public virtual Category? CategoryNavigation { get; set; }
+    [JsonIgnore] [NTJson.JsonIgnore] public virtual Category? CategoryNavigation { get; set; }
 }

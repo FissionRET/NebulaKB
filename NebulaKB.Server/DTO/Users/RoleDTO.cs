@@ -1,6 +1,4 @@
-﻿using NebulaKB.Server.Models;
-
-namespace NebulaKB.Server.DTO.Users;
+﻿namespace NebulaKB.Server.DTO.Users;
 
 public class RoleDTO
 {

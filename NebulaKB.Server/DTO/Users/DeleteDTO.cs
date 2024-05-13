@@ -1,9 +1,6 @@
-﻿namespace NebulaKB.Server.DTO.Users
-{
-    public class DeleteDTO
-    {
-        public required string UserId { get; set; }
+﻿namespace NebulaKB.Server.DTO.Users;
 
-        public int Role { get; set; }
-    }
+public class DeleteDTO
+{
+    public string? AdminId { get; set; }
 }

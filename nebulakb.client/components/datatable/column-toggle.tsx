@@ -1,10 +1,10 @@
 ﻿"use client"
 
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
-import { Eye } from "lucide-react"
-import { Table } from "@tanstack/react-table"
+import {DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu"
+import {Eye} from "lucide-react"
+import {Table} from "@tanstack/react-table"
 
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -17,7 +17,7 @@ interface DataTableViewOptionsProps<TData> {
     table: Table<TData>
 }
 
-export function DataTableViewOptions<TData>({ table, }: DataTableViewOptionsProps<TData>) {
+export function DataTableViewOptions<TData>({table,}: DataTableViewOptionsProps<TData>) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -26,13 +26,13 @@ export function DataTableViewOptions<TData>({ table, }: DataTableViewOptionsProp
                     size="sm"
                     className="ml-auto hidden h-8 lg:flex"
                 >
-                    <Eye className="mr-2 h-4 w-4" />
+                    <Eye className="mr-2 h-4 w-4"/>
                     Hiển thị
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[150px]">
                 <DropdownMenuLabel className="text-center">Chuyển đổi cột</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator/>
                 {table
                     .getAllColumns()
                     .filter(

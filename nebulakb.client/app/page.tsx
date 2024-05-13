@@ -2,11 +2,10 @@
 
 // Hooks
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import CheckAuthorization from '@/app/handlers/userinfo/get'
 
 // Local components
-
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import Footer from "@/components/footer";
@@ -22,7 +21,7 @@ export default function Home() {
                 const token = localStorage.getItem('token');
 
                 if (token) {
-                    const isAuth = await CheckAuthorization({ token });
+                    const isAuth = await CheckAuthorization({token});
                     await setAuth(isAuth);
                 } else {
                     await setAuth(false);
@@ -38,13 +37,14 @@ export default function Home() {
 
     return (
         <>
-            <div className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
-                <Navbar auth={auth} />
+            <div
+                className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
+                <Navbar auth={auth}/>
 
-                <Hero />
+                <Hero/>
 
-                <Footer />
-            </div>  
+                <Footer/>
+            </div>
         </>
     );
 }

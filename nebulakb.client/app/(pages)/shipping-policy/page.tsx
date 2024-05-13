@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import {Separator} from "@/components/ui/separator";
 import {buttonVariants} from "@/components/ui/button";
-import {ChevronLeft, ChevronRight} from "lucide-react";
+import {ChevronLeft} from "lucide-react";
 import {motion} from "framer-motion"
 
 export default function ShippingPolicy() {

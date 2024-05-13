@@ -1,19 +1,12 @@
 ﻿// Next components
 
-import Link from "next/link"
-
 // Icons
-
-import {Activity, ArrowUpRight, CreditCard, DollarSign, ScrollText, Users} from "lucide-react";
+import {Activity, CreditCard, DollarSign, ScrollText, Users} from "lucide-react";
 
 // Shadcn components
-
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Badge} from "@/components/ui/badge";
 import TransactionTable from "@/app/(dashboard)/admin-dashboard/components/dashboard/dashboard-transaction";
 
 export default function AdminDashboard() {
@@ -104,7 +97,7 @@ export default function AdminDashboard() {
                         <TransactionTable/>
                     </CardContent>
                 </Card>
-                
+
                 <Card>
                     <CardHeader>
                         <CardTitle>Hàng đã bán gần đây</CardTitle>

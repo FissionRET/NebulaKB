@@ -1,10 +1,9 @@
 // Hooks
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 // NextUI components
-
-import { Spinner } from "@nextui-org/react";
+import {Spinner} from "@nextui-org/react";
 
 export default function Loader() {
     const [loading, setLoading] = useState(true);
@@ -20,7 +19,7 @@ export default function Loader() {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen gap-4">
-                <Spinner label="Initializing components..." color="default" labelColor="foreground" />
+                <Spinner label="Initializing components..." color="default" labelColor="foreground"/>
             </div>
         );
     }

@@ -3,7 +3,7 @@
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import CheckAuthorization from "@/app/handlers/userinfo/get";
-import { useState, useEffect } from "react";
+import {useEffect, useState} from "react";
 
 export default function ProductLayout({children}: Readonly<{ children: React.ReactNode }>) {
     const [auth, setAuth] = useState<boolean>(false);
@@ -14,7 +14,7 @@ export default function ProductLayout({children}: Readonly<{ children: React.Rea
                 const token = localStorage.getItem('token');
 
                 if (token) {
-                    const isAuth = await CheckAuthorization({ token });
+                    const isAuth = await CheckAuthorization({token});
                     setAuth(isAuth);
                 } else {
                     setAuth(false);
@@ -27,15 +27,16 @@ export default function ProductLayout({children}: Readonly<{ children: React.Rea
 
         checkAuth();
     }, []);
-    
+
     return (
         <div
             className="min-h-screen w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative">
-            <Navbar auth={auth} />
+            <Navbar auth={auth}/>
 
-            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}</main>
+            <main
+                className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">{children}</main>
 
-            <Footer />
+            <Footer/>
         </div>
     );
 }

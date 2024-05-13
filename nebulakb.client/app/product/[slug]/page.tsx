@@ -3,26 +3,12 @@
 import Autoplay from "embla-carousel-autoplay"
 import {useRef} from "react";
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,} from "@/components/ui/carousel"
 import {Separator} from "@/components/ui/separator";
 import {Rating} from "@/components/rating";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {ProductCard} from "@/components/product-card";
 
 
 export default function Product({params}: { params: { slug: string } }) {

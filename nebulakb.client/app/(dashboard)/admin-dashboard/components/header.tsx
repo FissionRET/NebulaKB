@@ -3,29 +3,14 @@
 // Hooks
 
 import {useEffect, useState} from "react";
-import {cn} from "@/lib/utils"
 import Link from "next/link";
 import Image from "next/image"
 import {useRouter} from "next/navigation";
 import {AnimatePresence, motion} from "framer-motion";
 
 // Components & Icons
-
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {
-    Home,
-    Info,
-    LineChart,
-    LogOut,
-    Package,
-    PanelLeft,
-    Settings,
-    ShoppingCart,
-    Truck,
-    User,
-    UserRoundCog,
-    Users2
-} from "lucide-react";
+import {Home, Info, LogOut, Package, PanelLeft, ShoppingCart, Truck, UserRoundCog, Users2} from "lucide-react";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {
@@ -38,14 +23,16 @@ import {
 } from "@/components/ui/breadcrumb";
 import {
     DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import AdminDashboard from "@/app/(dashboard)/admin-dashboard/page";
 import {
-    CustomersManagement, EmployeesManagement,
+    CustomersManagement,
+    EmployeesManagement,
     OrdersManagement,
     ProductsManagement
 } from "@/app/(dashboard)/admin-dashboard/components/items";
