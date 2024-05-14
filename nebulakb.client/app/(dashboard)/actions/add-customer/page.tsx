@@ -83,6 +83,7 @@ export default function AddCustomer() {
                 customer: customerData
             }, {
                 headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
                 }
             });

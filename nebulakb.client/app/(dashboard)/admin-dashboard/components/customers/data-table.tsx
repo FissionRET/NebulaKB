@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
                         <Search className="h-4 w-4"/>
                     </span>
                 </div>
-                
+
                 <Button className="ml-2 max-w-sm" variant="expandIcon" Icon={UserRoundPlus} iconPlacement="right"
                         onClick={() => router.push('/actions/add-customer')}>
                     Thêm khách hàng

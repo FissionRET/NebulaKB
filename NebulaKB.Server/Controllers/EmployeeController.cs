@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using NebulaKB.Server.DTO.Authentication;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
-using Newtonsoft.Json;
 
 namespace NebulaKB.Server.Controllers;
 
@@ -53,7 +52,7 @@ public class EmployeeController(NebulaKBContext context, JwtServices jwtServices
             Role = 2
         };
 
-        await context.Users.AddAsync(newUser);
+        context.Users.Add(newUser);
         await context.SaveChangesAsync();
 
         Employee newEmployee = null;
@@ -68,13 +67,13 @@ public class EmployeeController(NebulaKBContext context, JwtServices jwtServices
                 DoB = DateOnly.FromDateTime(dto.Employee.DoB).AddDays(1),
                 Phone = dto.Employee.Phone,
                 Email = dto.Employee.Email,
-                Address = JsonConvert.SerializeObject(dto.Employee.Address),
+                Address = "{}",
                 OptIn = DateOnly.FromDateTime(dto.Employee.OptIn).AddDays(1),
                 OptOut = DateOnly.FromDateTime(dto.Employee.OptOut).AddDays(1),
                 User = newUser.Id
             };
 
-            await context.Employees.AddAsync(newEmployee);
+            context.Employees.Add(newEmployee);
             await context.SaveChangesAsync();
         }
 
@@ -103,9 +102,9 @@ public class EmployeeController(NebulaKBContext context, JwtServices jwtServices
         employee.Gender = updatedEmployee.Gender;
         employee.DoB = DateOnly.FromDateTime(updatedEmployee.DoB).AddDays(1);
         employee.Phone = updatedEmployee.Phone ?? employee.Phone;
-        employee.Address = JsonConvert.SerializeObject(updatedEmployee.Address);
+        employee.Address = "{}";
         employee.OptIn = DateOnly.FromDateTime(updatedEmployee.OptIn).AddDays(1);
-        employee.OptOut = DateOnly.FromDateTime(updatedEmployee.OptIn).AddDays(1);
+        employee.OptOut = DateOnly.FromDateTime(updatedEmployee.OptOut).AddDays(1);
 
         await context.SaveChangesAsync();
         return Ok(employee);

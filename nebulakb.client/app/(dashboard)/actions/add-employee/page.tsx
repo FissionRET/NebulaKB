@@ -5,11 +5,10 @@
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
 import {z} from "zod"
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 import {useRouter} from "next/navigation";
 import {SetStateAction, useState} from "react";
 import {getDistricts, getProvinces, getWards} from "vietnam-provinces";
-import {registerSchema} from "@/validators/auth";
 import {format} from "date-fns";
 import {cn} from "@/lib/utils";
 
@@ -24,8 +23,9 @@ import {ArrowLeft, CalendarIcon, UserRoundPlus} from "lucide-react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Calendar} from "@/components/ui/calendar";
+import {createEmployeeSchema} from "@/validators/addEmployee";
 
-type Input = z.infer<typeof registerSchema>;
+type Input = z.infer<typeof createEmployeeSchema>;
 
 export default function AddCustomer() {
     const [selectedProvinceCode, setSelectedProvinceCode] = useState('');
@@ -34,7 +34,7 @@ export default function AddCustomer() {
     const router = useRouter();
 
     const form = useForm<Input>({
-        resolver: zodResolver(registerSchema),
+        resolver: zodResolver(createEmployeeSchema),
         defaultValues: {
             username: "",
             password: "",
@@ -46,6 +46,8 @@ export default function AddCustomer() {
             doB: new Date("1999-01-01"),
             phone: "",
             email: "",
+            optIn: new Date("1999-01-01"),
+            optOut: new Date("1999-01-01"),
 
             street: "",
             province: "",
@@ -57,8 +59,7 @@ export default function AddCustomer() {
     async function onSubmit(data: Input) {
         var userData = {
             username: data.username,
-            password: data.password,
-            repeatPassword: data.repeatPassword
+            password: data.password
         };
 
         var employeeData = {
@@ -68,13 +69,15 @@ export default function AddCustomer() {
             doB: data.doB,
             phone: data.phone,
             email: data.email,
-            address: {
-                street: data.street,
-                province: data.province.split("-")[1],
-                district: data.district.split("-")[1],
-                wards: data.wards.split("-")[1],
-                formattedAddress: data.street + " " + data.wards.split("-")[1] + " " + data.district.split("-")[1] + " " + data.province.split("-")[1],
-            }
+            optIn: data.optIn,
+            optOut: data.optOut,
+            // address: {
+            //     street: data.street,
+            //     province: data.province.split("-")[1],
+            //     district: data.district.split("-")[1],
+            //     wards: data.wards.split("-")[1],
+            //     formattedAddress: data.street + " " + data.wards.split("-")[1] + " " + data.district.split("-")[1] + " " + data.province.split("-")[1],
+            // }
         };
 
         try {
@@ -83,8 +86,10 @@ export default function AddCustomer() {
                 employee: employeeData
             }, {
                 headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",
-                }
+                },
+                withCredentials: true
             });
 
             if (resp.status === 200) {
@@ -98,8 +103,8 @@ export default function AddCustomer() {
                     router.push("/admin-dashboard");
                 }, 2000);
             }
-        } catch {
-            console.error("Create employee failed: ", AxiosError.ERR_BAD_REQUEST);
+        } catch (err) {
+            console.error("Create employee failed: ", err);
 
             toast({
                 title: "Thêm nhân viên thất bại !",
@@ -356,6 +361,57 @@ export default function AddCustomer() {
                                         )}
                                     />
                                 </div>
+
+                                <FormField
+                                    control={form.control}
+                                    name="optIn"
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({field}) => (
+                                        <FormItem className="grid gap-2 mb-4">
+                                            <FormLabel
+                                                htmlFor={field.name.toString()}
+                                            >
+                                                Ngày vào làm
+                                            </FormLabel>
+
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            className={cn(
+                                                                "pl-3 text-left font-normal",
+                                                                !field.value && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            {field.value ? (
+                                                                format(field.value, "dd/MM/yyyy")
+                                                            ) : (
+                                                                <span>Chọn ngày vào làm</span>
+                                                            )}
+                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50"/>
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <Calendar
+                                                        mode="single"
+                                                        captionLayout="dropdown-buttons"
+                                                        fromYear={1990}
+                                                        toYear={2024}
+                                                        selected={field.value}
+                                                        onSelect={field.onChange}
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
 
                             <div className="flex-1 flex flex-col">
@@ -586,6 +642,57 @@ export default function AddCustomer() {
                                         )}
                                     />
                                 </div>
+
+                                <FormField
+                                    control={form.control}
+                                    name="optOut"
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({field}) => (
+                                        <FormItem className="grid gap-2 mb-4">
+                                            <FormLabel
+                                                htmlFor={field.name.toString()}
+                                            >
+                                                Ngày thôi việc
+                                            </FormLabel>
+
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            className={cn(
+                                                                "pl-3 text-left font-normal",
+                                                                !field.value && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            {field.value ? (
+                                                                format(field.value, "dd/MM/yyyy")
+                                                            ) : (
+                                                                <span>Chọn ngày thôi việc</span>
+                                                            )}
+                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50"/>
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <Calendar
+                                                        mode="single"
+                                                        captionLayout="dropdown-buttons"
+                                                        fromYear={1990}
+                                                        toYear={2024}
+                                                        selected={field.value}
+                                                        onSelect={field.onChange}
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
                         </div>
 

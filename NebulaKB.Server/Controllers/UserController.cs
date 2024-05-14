@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using NebulaKB.Server.DTO.Authentication;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
-using Newtonsoft.Json;
 
 namespace NebulaKB.Server.Controllers;
 
@@ -20,14 +19,14 @@ public class UserController(NebulaKBContext context, JwtServices jwtServices) : 
         var users = context.Users.ToList();
         return Ok(users);
     }
-    
+
     // GET: /user/getById/{id}
     [HttpGet("getById/{id}")]
     [Authorize]
     public IActionResult GetUserById(string id)
     {
         var user = context.Users.FirstOrDefault(u => u.Id == id);
-        if(user == null)
+        if (user == null)
             return NotFound(new
             {
                 message = "User not found"
@@ -35,7 +34,7 @@ public class UserController(NebulaKBContext context, JwtServices jwtServices) : 
 
         return Ok(user);
     }
-    
+
     // POST: /user/create
     [HttpPost("create")]
     [Authorize]
@@ -54,21 +53,21 @@ public class UserController(NebulaKBContext context, JwtServices jwtServices) : 
 
         await context.Users.AddAsync(newUser);
         await context.SaveChangesAsync();
-        
+
         return Ok(new
         {
             message = "success"
         });
     }
-    
+
     // POST: /user/update/{id}
     [HttpPost("update/{id}")]
     [Authorize]
     public async Task<IActionResult> UpdateUser(string id, [FromBody] UserDTO updatedUser)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
-        
-        if(user == null)
+
+        if (user == null)
             return NotFound(new
             {
                 message = "User not found"
@@ -82,20 +81,20 @@ public class UserController(NebulaKBContext context, JwtServices jwtServices) : 
         await context.SaveChangesAsync();
         return Ok(user);
     }
-    
+
     // DELETE: /user/delete/{id}
     [HttpDelete("delete/{id}")]
     [Authorize]
     public async Task<IActionResult> DeleteUser(string id)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
-        
+
         if (user == null)
             return NotFound(new
             {
                 message = "User not found"
             });
-        
+
         context.Users.Remove(user);
         await context.SaveChangesAsync();
 

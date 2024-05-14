@@ -14,7 +14,7 @@ public class EmployeeDTO
 
     public string Email { get; set; } = null!;
 
-    public string Address { get; set; } = null!;
+    public AddressDTO? Address { get; set; } = null!;
 
     public DateTime OptIn { get; set; }
 

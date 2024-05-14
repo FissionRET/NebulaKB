@@ -7,7 +7,7 @@ import {ColumnDef} from "@tanstack/react-table"
 import {useForm} from "react-hook-form"
 import {z} from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
-import axios, {AxiosError} from "axios"
+import axios from "axios"
 import {useToast} from "@/components/ui/use-toast";
 import {useRouter} from "next/navigation"
 import {format} from "date-fns"
@@ -15,7 +15,6 @@ import {cn} from "@/lib/utils";
 import {updateSchema} from "@/validators/updateEmployee";
 
 // Components
-
 import {Button} from "@/components/ui/button"
 import {Badge} from "@/components/ui/badge"
 import {Textarea} from "@/components/ui/textarea"
@@ -34,8 +33,6 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
-import {Label} from "@/components/ui/label";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Calendar} from "@/components/ui/calendar";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -141,7 +138,7 @@ export const columns: ColumnDef<Employees>[] = [
         header: "Ngày sinh",
         cell: ({row}) => {
             return (
-                <Input defaultValue={row.getValue("DoB")} disabled/>
+                <Input defaultValue={row.getValue("doB")} disabled/>
             );
         }
     },
@@ -259,13 +256,13 @@ export const columns: ColumnDef<Employees>[] = [
                     doB: data.doB,
                     phone: data.phone,
                     email: data.email,
-                    address: {
-                        street: data.street,
-                        province: data.province.split("-")[1],
-                        district: data.district.split("-")[1],
-                        wards: data.wards.split("-")[1],
-                        formattedAddress: data.street + " " + data.wards.split("-")[1] + " " + data.district.split("-")[1] + " " + data.province.split("-")[1],
-                    }
+                    // address: {
+                    //     street: data.street,
+                    //     province: data.province.split("-")[1],
+                    //     district: data.district.split("-")[1],
+                    //     wards: data.wards.split("-")[1],
+                    //     formattedAddress: data.street + " " + data.wards.split("-")[1] + " " + data.district.split("-")[1] + " " + data.province.split("-")[1],
+                    // }
                 };
 
                 try {
@@ -273,6 +270,7 @@ export const columns: ColumnDef<Employees>[] = [
                         employee: employeeData
                     }, {
                         headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
                             "Content-Type": "application/json",
                         }
                     });
@@ -288,11 +286,46 @@ export const columns: ColumnDef<Employees>[] = [
                             router.push("/admin-dashboard");
                         }, 2000);
                     }
-                } catch {
-                    console.error("Edit employee failed: ", AxiosError.ERR_BAD_REQUEST);
+                } catch (err) {
+                    console.error("Edit employee failed: ", err);
 
                     toast({
                         title: "Chỉnh sửa nhân viên thất bại !",
+                        description: "Trình xử lý thao tác / Next.js (turbo)",
+                    });
+
+                    setTimeout(() => {
+                        dismiss();
+                    }, 2000);
+                }
+            }
+
+            const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+
+                try {
+                    const resp = await axios.delete(`http://localhost:1337/employee/delete/${employee.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`
+                        }
+                    })
+
+                    if (resp.status === 200) {
+                        toast({
+                            title: "Xóa nhân viên thành công !",
+                            description: "Trình xử lý thao tác / Next.js (turbo)",
+                        });
+
+                        setTimeout(() => {
+                            dismiss();
+                            router.push("/admin-dashboard");
+                        }, 2000);
+                    }
+                } catch (err) {
+                    console.error("Delete employee failed: ", err);
+
+                    toast({
+                        title: "Xóa nhân viên thất bại !",
                         description: "Trình xử lý thao tác / Next.js (turbo)",
                     });
 
@@ -311,7 +344,7 @@ export const columns: ColumnDef<Employees>[] = [
                                     <Copy className="h-4 w-4"/>
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Copy ID sản phẩm</TooltipContent>
+                            <TooltipContent>Copy ID nhân viên</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
 
@@ -561,7 +594,106 @@ export const columns: ColumnDef<Employees>[] = [
                                                                             ) : (
                                                                                 <span>Chọn ngày sinh</span>
                                                                             )}
-                                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50"/>
+                                                                            <CalendarIcon
+                                                                                className="ml-auto h-4 w-4 opacity-50"/>
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-auto p-0" align="start">
+                                                                    <Calendar
+                                                                        mode="single"
+                                                                        captionLayout="dropdown-buttons"
+                                                                        fromYear={1990}
+                                                                        toYear={2024}
+                                                                        selected={field.value}
+                                                                        onSelect={field.onChange}
+                                                                        initialFocus
+                                                                    />
+                                                                </PopoverContent>
+                                                            </Popover>
+
+                                                            <FormMessage/>
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                <FormField
+                                                    control={form.control}
+                                                    name="optIn"
+                                                    render={({field}) => (
+                                                        <FormItem>
+                                                            <FormLabel
+                                                                htmlFor={field.name.toString()}
+                                                            >
+                                                                Ngày vào làm
+                                                            </FormLabel>
+
+                                                            <Popover>
+                                                                <PopoverTrigger asChild>
+                                                                    <FormControl>
+                                                                        <Button
+                                                                            variant={"outline"}
+                                                                            className={cn(
+                                                                                "grow mb-4 w-full justify-between",
+                                                                                !field.value && "text-muted-foreground"
+                                                                            )}
+                                                                        >
+                                                                            {field.value ? (
+                                                                                format(field.value, "dd/MM/yyyy")
+                                                                            ) : (
+                                                                                <span>Chọn ngày vào làm</span>
+                                                                            )}
+                                                                            <CalendarIcon
+                                                                                className="ml-auto h-4 w-4 opacity-50"/>
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-auto p-0" align="start">
+                                                                    <Calendar
+                                                                        mode="single"
+                                                                        captionLayout="dropdown-buttons"
+                                                                        fromYear={1990}
+                                                                        toYear={2024}
+                                                                        selected={field.value}
+                                                                        onSelect={field.onChange}
+                                                                        initialFocus
+                                                                    />
+                                                                </PopoverContent>
+                                                            </Popover>
+
+                                                            <FormMessage/>
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                <FormField
+                                                    control={form.control}
+                                                    name="optOut"
+                                                    render={({field}) => (
+                                                        <FormItem>
+                                                            <FormLabel
+                                                                htmlFor={field.name.toString()}
+                                                            >
+                                                                Ngày thôi việc
+                                                            </FormLabel>
+
+                                                            <Popover>
+                                                                <PopoverTrigger asChild>
+                                                                    <FormControl>
+                                                                        <Button
+                                                                            variant={"outline"}
+                                                                            className={cn(
+                                                                                "grow mb-4 w-full justify-between",
+                                                                                !field.value && "text-muted-foreground"
+                                                                            )}
+                                                                        >
+                                                                            {field.value ? (
+                                                                                format(field.value, "dd/MM/yyyy")
+                                                                            ) : (
+                                                                                <span>Chọn ngày thôi việc</span>
+                                                                            )}
+                                                                            <CalendarIcon
+                                                                                className="ml-auto h-4 w-4 opacity-50"/>
                                                                         </Button>
                                                                     </FormControl>
                                                                 </PopoverTrigger>
@@ -608,20 +740,27 @@ export const columns: ColumnDef<Employees>[] = [
                                             <UserRoundX className="h-4 w-4"/>
                                         </Button>
                                     </TooltipTrigger>
-                                    <TooltipContent>Đình chỉ người dùng</TooltipContent>
+                                    <TooltipContent>Xóa nhân viên</TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Bạn có chắc chắn muốn đình chỉ ?</DialogTitle>
+                                <DialogTitle>Bạn có chắc chắn muốn xóa nhân viên này ?</DialogTitle>
                                 <DialogDescription>
                                     Hành động này không thể hoàn tác. Thao tác này sẽ thực hiện đình chỉ người dùng.
                                 </DialogDescription>
                                 <DialogFooter>
                                     <DialogClose asChild>
-                                        <Button variant="destructive" type="submit">Tôi chắc chắn</Button>
+                                        <Button variant="secondary" type="button">Hủy</Button>
                                     </DialogClose>
+
+                                    <form onSubmit={handleDelete}>
+                                        <DialogClose asChild>
+                                            <Button variant="destructive" type="submit">Tôi chắc chắn <Check
+                                                className="ml-2 h-4 w-4"/></Button>
+                                        </DialogClose>
+                                    </form>
                                 </DialogFooter>
                             </DialogHeader>
                         </DialogContent>

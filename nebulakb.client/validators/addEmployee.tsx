@@ -1,6 +1,27 @@
 ﻿import {z} from 'zod'
 
-export const updateSchema = z.object({
+export const createEmployeeSchema = z.object({
+    username: z.string().min(2, {
+        message: "Tên đăng nhập phải 2 ký tự trở lên",
+    }).max(30, {
+        message: "Tối đa là 30 ký tự"
+    }).trim().transform((value) => value.toLowerCase()),
+
+    password: z.string()
+        .min(8, {
+            message: "Mật khẩu phải ít nhất 8 ký tự"
+        })
+        .refine((value) => /[a-z]/.test(value), {
+            message: "Mật khẩu phải chứa ít nhất 1 ký tự chữ thường"
+        })
+        .refine((value) => /[A-Z]/.test(value), {
+            message: "Mật khẩu phải chứa ít nhất 1 ký tự chữ hoa",
+        })
+        .refine((value) => /[0-9]/.test(value), {
+            message: "Mật khẩu phải chứa ít nhất 1 ký tự số",
+        }),
+    repeatPassword: z.string(),
+
     firstName: z.string().trim().min(1, {
         message: "Không thể để trống họ"
     }).max(30, {
@@ -32,12 +53,10 @@ export const updateSchema = z.object({
     }),
 
     optIn: z.date({
-        required_error: "Mục ngày sinh là bắt buộc"
+        required_error: "Mục ngày vào làm là bắt buộc"
     }),
 
-    optOut: z.date({
-        required_error: "Mục ngày sinh là bắt buộc"
-    }),
+    optOut: z.date(),
 
     // Address info
 
@@ -56,4 +75,7 @@ export const updateSchema = z.object({
     province: z.string().trim().min(1, {
         message: "Không thể để trống tỉnh thành"
     }),
-})
+}).refine((data) => data.password === data.repeatPassword, {
+    message: "Xác thực mật khẩu không khớp",
+    path: ["repeatPassword"]
+});

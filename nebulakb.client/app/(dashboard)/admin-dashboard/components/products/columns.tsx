@@ -37,7 +37,7 @@ export type Products = {
     id: string
     name: string
     des: string
-    price: string
+    price: number
     stock: number
     data: string
     images: string

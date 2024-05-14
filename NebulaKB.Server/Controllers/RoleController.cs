@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NebulaKB.Server.DTO.Users;
 using NebulaKB.Server.Models;
 
 namespace NebulaKB.Server.Controllers;

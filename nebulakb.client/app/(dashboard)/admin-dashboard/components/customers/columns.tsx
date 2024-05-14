@@ -36,7 +36,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
 import {Command, CommandGroup, CommandItem} from "@/components/ui/command";
 import {Calendar} from "@/components/ui/calendar";
-import { format } from "date-fns";
+import {format} from "date-fns";
 
 export type Customers = {
     id: string
@@ -286,6 +286,7 @@ export const columns: ColumnDef<Customers>[] = [
                         customer: customerData
                     }, {
                         headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
                             "Content-Type": "application/json",
                         }
                     });
@@ -306,6 +307,41 @@ export const columns: ColumnDef<Customers>[] = [
 
                     toast({
                         title: "Chỉnh sửa khách hàng thất bại !",
+                        description: "Trình xử lý thao tác / Next.js (turbo)",
+                    });
+
+                    setTimeout(() => {
+                        dismiss();
+                    }, 2000);
+                }
+            }
+
+            const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+
+                try {
+                    const resp = await axios.delete(`http://localhost:1337/customer/delete/${customer.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`
+                        }
+                    })
+
+                    if (resp.status === 200) {
+                        toast({
+                            title: "Xóa khách hàng thành công !",
+                            description: "Trình xử lý thao tác / Next.js (turbo)",
+                        });
+
+                        setTimeout(() => {
+                            dismiss();
+                            router.push("/admin-dashboard");
+                        }, 2000);
+                    }
+                } catch (err) {
+                    console.error("Delete customer failed: ", err);
+
+                    toast({
+                        title: "Xóa khách hàng thất bại !",
                         description: "Trình xử lý thao tác / Next.js (turbo)",
                     });
 
@@ -626,7 +662,8 @@ export const columns: ColumnDef<Customers>[] = [
                                                                             ) : (
                                                                                 <span>Chọn ngày sinh</span>
                                                                             )}
-                                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50"/>
+                                                                            <CalendarIcon
+                                                                                className="ml-auto h-4 w-4 opacity-50"/>
                                                                         </Button>
                                                                     </FormControl>
                                                                 </PopoverTrigger>
@@ -701,20 +738,27 @@ export const columns: ColumnDef<Customers>[] = [
                                             <UserRoundX className="h-4 w-4"/>
                                         </Button>
                                     </TooltipTrigger>
-                                    <TooltipContent>Đình chỉ người dùng</TooltipContent>
+                                    <TooltipContent>Xóa người dùng</TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Bạn có chắc chắn muốn đình chỉ ?</DialogTitle>
+                                <DialogTitle>Bạn có chắc chắn muốn xóa người dùng này ?</DialogTitle>
                                 <DialogDescription>
                                     Hành động này không thể hoàn tác. Thao tác này sẽ thực hiện đình chỉ người dùng.
                                 </DialogDescription>
                                 <DialogFooter>
-                                    <Button variant="destructive" type="submit">
-                                        Tôi chắc chắn <Check className="ml-2 h-4 w-4"/>
-                                    </Button>
+                                    <DialogClose asChild>
+                                        <Button variant="secondary" type="button">Hủy</Button>
+                                    </DialogClose>
+
+                                    <form onSubmit={handleDelete}>
+                                        <DialogClose asChild>
+                                            <Button variant="destructive" type="submit">Tôi chắc chắn <Check
+                                                className="ml-2 h-4 w-4"/></Button>
+                                        </DialogClose>
+                                    </form>
                                 </DialogFooter>
                             </DialogHeader>
                         </DialogContent>

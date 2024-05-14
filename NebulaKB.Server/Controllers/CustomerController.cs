@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using NebulaKB.Server.DTO.Authentication;
 using NebulaKB.Server.Helpers;
 using NebulaKB.Server.Models;
-using Newtonsoft.Json;
 
 namespace NebulaKB.Server.Controllers;
 
@@ -67,7 +66,7 @@ public class CustomerController(NebulaKBContext context, JwtServices jwtServices
                 DoB = DateOnly.FromDateTime(dto.Customer.DoB).AddDays(1),
                 Phone = dto.Customer.Phone,
                 Email = dto.Customer.Email,
-                Address = JsonConvert.SerializeObject(dto.Customer.Address),
+                Address = "{}",
                 User = newUser.Id
             };
 
@@ -100,7 +99,7 @@ public class CustomerController(NebulaKBContext context, JwtServices jwtServices
         customer.Gender = updatedCustomer.Gender;
         customer.DoB = DateOnly.FromDateTime(updatedCustomer.DoB).AddDays(1);
         customer.Phone = updatedCustomer.Phone ?? customer.Phone;
-        customer.Address = JsonConvert.SerializeObject(updatedCustomer.Address);
+        customer.Address = "{}";
         customer.Rank = updatedCustomer.Rank ?? customer.Rank;
         customer.Point = updatedCustomer.Point ?? customer.Point;
 
