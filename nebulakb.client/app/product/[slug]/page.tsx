@@ -50,7 +50,7 @@ export default function Product({params}: { params: { slug: string } }) {
 
                             <div className="flex w-full flex-col gap-4 md:w-1/2">
                                 <div className="space-y-2">
-                                    <h2 className="line-clamp-1 text-2xl font-bold">{params.slug}</h2>
+                                    <h2 className="line-clamp-1 text-2xl font-bold">{params.slug.replace("-", " ")}</h2>
                                     <p className="text-gray-400">
                                         150.000 VNĐ
                                     </p>

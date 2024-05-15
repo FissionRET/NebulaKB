@@ -30,7 +30,7 @@ export default function About() {
                         giữa <a className="font-medium underline underline-offset-4"
                                 href="https://nextjs.org/">Next.js</a> với vai trò front-end làm cho giao diện người sử
                         dụng đẹp và thân thiện hơn và <a className="font-medium underline underline-offset-4"
-                                                         href="https://nextjs.org/">ASP.NET Core</a> với vai trò
+                                                         href="https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-8.0">ASP.NET Core</a> với vai trò
                         back-end để tối
                         ưu trong việc tương tác với cơ sở dữ liệu. Dự án này vẫn đang được hoàn thiện và phát triển. Bạn
                         có thể theo dõi tiến độ tại trang <a
@@ -100,10 +100,10 @@ export default function About() {
                         <li className="mt-2">[ ] Chức năng cho giỏ hàng <strong>Thêm sản phẩm</strong>, <strong>Xóa sản
                             phẩm</strong></li>
                         <li className="mt-2">[ ] Giao diện giỏ hàng</li>
-                        <li className="mt-2">[ ] Giao diện danh sách sản phẩm theo danh mục</li>
-                        <li className="mt-2">[ ] Chức năng cho trang thông tin cá nhân <strong>Cập nhật mật
+                        <li className="mt-2">[x] Giao diện danh sách sản phẩm theo danh mục</li>
+                        <li className="mt-2">[x] Chức năng cho trang thông tin cá nhân <strong>Cập nhật mật
                             khẩu</strong></li>
-                        <li className="mt-2">[ ] Xử lý các thao tác trong panel
+                        <li className="mt-2">[x] Xử lý các thao tác trong panel
                             Admin <strong>Thêm</strong>, <strong>Sửa</strong>, <strong>Xóa</strong></li>
                     </ul>
 

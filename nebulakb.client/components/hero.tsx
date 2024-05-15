@@ -41,6 +41,33 @@ export default function Hero() {
         "imgs/Nomad-Atom.png",
         "imgs/ePBT.jpg"
     ];
+    
+    const keycapsProducts = [
+        {
+            title: "Synthwave 84 Keycaps",
+            img: "imgs/Synth.png",
+            price: "190.000 VNĐ",
+            url: "/product/Synthwave-84"
+        },
+        {
+            title: "TAHO Keycaps",
+            img: "imgs/TAHO.jpg",
+            price: "210.000 VNĐ",
+            url: "/product/TAHO-Keycaps"
+        },
+        {
+            title: "ePBT Keycaps",
+            img: "imgs/ePBT.jpg",
+            price: "150.000 VNĐ",
+            url: "/product/ePBT-Keycaps"
+        },
+        {
+            title: "Nomad Atom Keycaps",
+            img: "imgs/Nomad-Atom.png",
+            price: "250.000 VNĐ",
+            url: "/product/Nomad-Atom-Keycaps"
+        }
+    ];
 
     return (
         <>
@@ -244,42 +271,46 @@ export default function Hero() {
                             initial={{opacity: 0, x: -100}}
                             animate={{opacity: 1, x: 0}}
                             transition={{type: 'spring', damping: 20, stiffness: 100, delay: 0.5}}
-                            className="flex flex-row mb-3"
+                            className="flex flex-row gap-2 mb-3"
                         >
-                            <div className="w-full">
-                                <div
-                                    className="border border-black/[0.2] dark:border-white/[0.2] flex flex-col items-start max-w-sm mx-auto p-4 relative h-[30rem]">
-                                    <SvgIcon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black"/>
-                                    <SvgIcon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black"/>
-                                    <SvgIcon className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black"/>
-                                    <SvgIcon
-                                        className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black"/>
+                            {keycapsProducts.map(item => (
+                                <div className="w-full">
+                                    <div
+                                        className="border border-black/[0.2] dark:border-white/[0.2] flex flex-col items-start max-w-sm mx-auto p-4 relative h-[30rem]">
+                                        <SvgIcon
+                                            className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black"/>
+                                        <SvgIcon
+                                            className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black"/>
+                                        <SvgIcon
+                                            className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black"/>
+                                        <SvgIcon
+                                            className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black"/>
 
-                                    <div className="p-0.5 bg-transparent w-full h-full">
-                                        <motion.img
-                                            initial={{opacity: 0}}
-                                            animate={{opacity: 1}}
-                                            src="imgs/ePBT.jpg"
-                                            alt="cardImg"
-                                            className="h-full object-cover"
-                                        />
+                                        <div className="p-0.5 bg-transparent w-full h-full">
+                                            <motion.img
+                                                initial={{opacity: 0}}
+                                                animate={{opacity: 1}}
+                                                src={item.img}
+                                                alt="cardImg"
+                                                className="h-full object-cover"
+                                            />
+                                        </div>
+
+                                        <div className="flex flex-row mt-4 justify-between w-full">
+                                            <h2 className="dark:text-white text-black text-sm font-light">
+                                                {item.title}
+                                            </h2>
+
+                                            <Badge>{item.price}</Badge>
+                                        </div>
+
+
+                                        <Link href={item.url} className="text-sm border font-light dark:border-white/[0.2] transition-all duration-200 border-black/[0.2] rounded-full mt-4 text-black dark:text-white px-2 py-0.5">
+                                            Mua ngay
+                                        </Link>
                                     </div>
-
-                                    <div className="flex flex-row mt-4 justify-between w-full">
-                                        <h2 className="dark:text-white text-black text-sm font-light">
-                                            Wikuo Fuyu Switch / 10pcs
-                                        </h2>
-
-                                        <Badge variant="outline">5$</Badge>
-                                    </div>
-
-
-                                    <Link href="/product/Wikuo-Fuyu-Switch"
-                                          className="text-sm border font-light dark:border-white/[0.2] border-black/[0.2] rounded-full mt-4 text-black dark:text-white px-2 py-0.5">
-                                        Mua ngay
-                                    </Link>
                                 </div>
-                            </div>
+                            ))}
                         </motion.section>
 
                         <motion.section
@@ -322,9 +353,9 @@ export default function Hero() {
                                         Ấn vào nút dưới đây để liên hệ shop.
                                     </p>
 
-                                    <button className="border px-4 py-1 rounded-lg  border-gray-500 text-gray-300">
+                                    <Link href="/contact" className="border px-4 py-1 rounded-lg  border-gray-500 text-gray-300">
                                         Liên hệ ngay !
-                                    </button>
+                                    </Link>
 
                                     {/* Meaty part - Meteor effect */}
                                     <Meteors number={21}/>
